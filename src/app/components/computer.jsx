@@ -3,18 +3,17 @@ import { useState } from "react";
 import { BottomBar } from "./computer_parts/bottomBar";
 import { WindowProject } from "./computer_parts/windowProject";
 import styles from "./Computer.module.scss";
+
 export function Computer() {
   const [selectedProjects, setSelectedProjects] = useState([]); // Track the selected project
   const [focusWindow, setFocusWindow] = useState(null); // Track the active window
+  const [minimizedProjects, setMinimizedProjects] = useState([]);
 
   const handleProjectSelect = (project) => {
-    // Check if the project is already selected
     if (!selectedProjects.find((p) => p.slug === project.slug)) {
       setSelectedProjects([...selectedProjects, project]); // Add project to selected projects
-      if (focusWindow === project.slug) {
-        setFocusWindow(null);
-      }
     }
+    setFocusWindow(project.slug); // Set focus to the selected project
   };
 
   const handleFocusWindow = (slug) => {
@@ -25,9 +24,30 @@ export function Computer() {
     setSelectedProjects(selectedProjects.filter((p) => p.slug !== slug)); // Remove project from selected projects
   };
 
+  const handleMinimizeWindow = (slug) => {
+    const isMinimized = minimizedProjects.includes(slug);
+    if (!isMinimized) {
+      setMinimizedProjects([...minimizedProjects, slug]); // Add to minimized
+    } else {
+      setMinimizedProjects(minimizedProjects.filter((p) => p !== slug)); // Remove from minimized
+    }
+  };
+
+  const handleClickBottomBarProject = (slug) => {
+    setFocusWindow(slug); // Set as active when clicked from BottomBar
+    setMinimizedProjects(minimizedProjects.filter((p) => p !== slug)); // Restore if minimized
+  };
+
   return (
     <div className={styles.inner}>
-      <BottomBar onProjectSelect={handleProjectSelect} selectedProjects={selectedProjects} />
+      <BottomBar
+        onProjectSelect={handleProjectSelect}
+        selectedProjects={selectedProjects}
+        minimizedProjects={minimizedProjects}
+        onProjectClick={handleClickBottomBarProject}
+        focusProject={focusWindow}
+      />
+
       {selectedProjects &&
         selectedProjects.map((project) => (
           <div key={project.slug}>
@@ -36,6 +56,8 @@ export function Computer() {
               onClose={() => handleCloseWindow(project.slug)}
               isFocus={focusWindow === project.slug} // Pass active state to WindowProject
               onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
+              isMinimized={minimizedProjects.includes(project.slug)} // Pass minimized state
+              onMinimize={() => handleMinimizeWindow(project.slug)}
             />
           </div>
         ))}

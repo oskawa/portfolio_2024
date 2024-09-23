@@ -1,7 +1,13 @@
 import { StartBar } from "./startBar";
 import { useState, useEffect } from "react";
 import styles from "./BottomBar.module.scss";
-export function BottomBar({ onProjectSelect, selectedProjects }) {
+export function BottomBar({
+  onProjectSelect,
+  selectedProjects,
+  minimizedProjects,
+  onProjectClick,
+  focusProject,
+}) {
   const [isStartMenuVisible, setIsStartMenuVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
 
@@ -37,12 +43,26 @@ export function BottomBar({ onProjectSelect, selectedProjects }) {
         </div>
         <div className={styles.bottomBar__applications}>
           {selectedProjects &&
-            selectedProjects.map((project) => (
-              <div className={styles.bottomBar__applicationSingle}>
-                <img src={project.logo} alt="" />
-                <h5>{project.title}</h5>
-              </div>
-            ))}
+            selectedProjects.map((project) => {
+              const isActive =
+                focusProject === project.slug &&
+                !minimizedProjects.includes(project.slug);
+              return (
+                <div
+                  className={`${styles.bottomBar__applicationSingle} ${
+                    isActive ? styles.active : ""
+                  } ${
+                    minimizedProjects.includes(project.slug)
+                      ? styles.minimized
+                      : ''
+                  }`}
+                  onClick={() => onProjectClick(project.slug)}
+                >
+                  <img src={project.logo} alt="" />
+                  <h5>{project.title}</h5>
+                </div>
+              );
+            })}
         </div>
       </div>
       <div className={styles.bottomBar__right}>

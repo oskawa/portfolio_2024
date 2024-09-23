@@ -13,11 +13,27 @@ async function getPortfolioDetails(slug) {
   }
 }
 
-export function WindowProject({ data, onClose, isFocus, onClick }) {
+export function WindowProject({
+  data,
+  onClose,
+  isFocus,
+  onClick,
+  isMinimized,
+  onMinimize,
+}) {
   const [details, setDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [upscale, setUpscale] = useState(false);
   const [mini, setMini] = useState(false);
+
+  useEffect(() => {
+    // Apply the minimized state based on the prop
+    setMini(isMinimized);
+  }, [isMinimized]);
+
+  const handleMini = () => {
+    onMinimize(); // Call the minimize function from parent
+  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -30,9 +46,9 @@ export function WindowProject({ data, onClose, isFocus, onClick }) {
   }, []);
   useEffect(() => {
     if (loading || !details.title) return;
-   
+
     const elmnt = document.getElementById(`application-${data}`);
-  
+
     if (!elmnt) return; // Exit if the element doesn't exist
 
     const header = document.getElementById(`applicationheader-${data}`);
@@ -82,10 +98,8 @@ export function WindowProject({ data, onClose, isFocus, onClick }) {
   }
 
   const handleUpscale = () => {
-    setUpscale((prevUpscale) => !prevUpscale); // Toggle the upscale state
-  };
-  const handleMini = () => {
-    setMini((prevMini) => !prevMini); // Toggle the upscale state
+    setUpscale(!upscale);
+    setMini(false); // Ensure the window is not minimized when upscaled
   };
 
   return (
@@ -93,9 +107,7 @@ export function WindowProject({ data, onClose, isFocus, onClick }) {
       className={`${styles.application} ${
         upscale ? styles.upscale : styles.inactive
       } ${isFocus ? styles.focus : styles.unfocus}
-      ${
-        mini ? styles.mini : styles.inactive
-      } 
+      ${isMinimized ? styles.mini : styles.unmini}
       `}
       id={`application-${data}`}
       onClick={onClick}
@@ -112,7 +124,7 @@ export function WindowProject({ data, onClose, isFocus, onClick }) {
         <div className={styles.applicationButtons}>
           <button
             className={`${styles.applicationButtons__inner} ${styles.applicationButtons__mini}`}
-            onClick={()=>handleMini()}
+            onClick={handleMini}
           ></button>
           <button
             className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
