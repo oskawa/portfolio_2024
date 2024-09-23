@@ -1,0 +1,157 @@
+.startMenu {
+    padding: 3px;
+    position: absolute;
+    width: 274px;
+    height: 250px;
+    left: 0px;
+    bottom: 4.1vh;
+    z-index: 100;
+    background: #b8c0c1;
+    box-shadow:
+        inset -1px -1px 0px #0a0a0a,
+        inset 1px 1px 0px #dfdfdf,
+        inset -2px -2px 0px #808080,
+        inset 2px 2px 0px #ffffff;
+}
+
+.startMenu__logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 8px;
+    isolation: isolate;
+    width: 33px;
+    height: 100%;
+    /* Shortcut/Shortcut Selected Blue */
+    background: #0a0a0a;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    position: relative;
+    img {
+        position: absolute;
+        transform: rotate(-90deg) translate(-108px, -108px);
+        top: 0;
+        left: 0;
+        width: 247px;
+        height: auto;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.startMenu__inner {
+    width: 241px;
+    left: 38px;
+    position: absolute;
+    top: 0;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    .startMenu__innerSingle {
+        padding: 6px;
+        width: 234px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &::after {
+            content: "";
+
+            background-repeat: no-repeat;
+            width: 10px;
+            height: 10px;
+            background-size: contain;
+            background-position: center;
+        }
+
+        .startMenu__innerSingle__title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-style: normal;
+            h2 {
+                font-weight: 400;
+                font-size: 13px;
+                line-height: 12px;
+                color: #000000;
+            }
+            
+            img {
+                width: 36px;
+                height: 36px;
+                object-fit: cover;
+            }
+        }
+        .startSubmenu__inner {
+            display: none;
+            position: absolute;
+            left: 98%;
+            flex-direction: column;
+            align-items: center;
+            padding: 3px;
+            position: absolute;
+            width: 232px;
+            height: auto;
+            background: #b8c0c1;
+            box-shadow:
+                inset -1px -1px 0px #0a0a0a,
+                inset 1px 1px 0px #dfdfdf,
+                inset -2px -2px 0px #808080,
+                inset 2px 2px 0px #ffffff;
+                .startSubmenu__inner{
+                    display: none;
+                }
+            .startSubmenu__innerSingle {
+                padding: 6px;
+                width: 229px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .startSubmenu__innerSingle__title {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    img {
+                        width: 16px;
+                        height: 16px;
+                        object-fit: cover;
+                    }
+                    h3 {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: black;
+                    }
+                    h4 {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: black;
+                    }
+                }
+                &:hover{
+                    background-color: #000A71;
+                    color: white;
+                    .startSubmenu__inner{
+                        display: flex;
+                    }
+                    h3{
+                        color: white;
+                    }
+                }
+              
+            }
+        }
+        &:hover {
+            background-color: #000a71;
+            h2 {
+                color: white;
+            }
+            > .startSubmenu__inner{
+                display: flex;
+            }
+        }
+    }
+}

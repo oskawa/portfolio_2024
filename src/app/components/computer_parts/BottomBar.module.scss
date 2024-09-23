@@ -1,0 +1,124 @@
+.bottomBar {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 3px;
+    gap: 12px;
+    position: absolute;
+    z-index: 11;
+    height: 4.1vh;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #b8c0c1;
+    box-shadow:
+        inset -1px -1px 0px #0a0a0a,
+        inset 1px 1px 0px #dfdfdf,
+        inset -2px -2px 0px #808080,
+        inset 2px 2px 0px #ffffff;
+    .bottomBar__left {
+        display: flex;
+        .bottomBar__start {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3px 4px;
+            height: 23px;
+            width: 62px;
+            background: #b8c0c1;
+            box-shadow:
+                inset -1px -1px 0px #0a0a0a,
+                inset 1px 1px 0px #dfdfdf,
+                inset -2px -2px 0px #808080,
+                inset 2px 2px 0px #ffffff;
+            &:hover, &.active {
+                cursor: pointer;
+                background: #b8c0c1;
+                box-shadow:
+                    inset -1px -1px 0px #ffffff,
+                    inset 1px 1px 0px #0a0a0a,
+                    inset -2px -2px 0px #dfdfdf,
+                    inset 2px 2px 0px #808080;
+            }
+        }
+        .bottomBar__applications {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            &:before {
+                content: "";
+                height: 80%;
+                width: 2px;
+                background-color: #808080;
+                margin: 0 5px;
+                vertical-align: center;
+            }
+            .bottomBar__applicationSingle {
+                width: 160px;
+                height: 100%;
+                background: #b8c0c1;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #ffffff,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #dfdfdf;
+                display: flex;
+                align-items: center;
+                padding: 0 3px;
+                gap: 3px;
+                img {
+                    width: 16px;
+                    height: 16px;
+                    margin-left: 3px;
+                }
+                h5 {
+                    font-weight: 400;
+                    font-size: 11px;
+                    color: #000000;
+                }
+                &.active {
+                    background: #b8c0c1;
+                    /* Window Pressed */
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
+        }
+    }
+    .bottomBar__right {
+        position: absolute;
+        right: 0;
+        display: flex;
+        margin-right: 2px;
+        margin-bottom: 2px;
+        height: 3.1vh;
+        .divider {
+            width: 2px;
+            height: 29px;
+            border-left: 1px solid #808080;
+            border-right: 1px solid #ffffff;
+        }
+        .bottomBar__rightInner{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            width: 86px;
+            height: 100%;
+            /* Window Content/Base Grey 2 */
+            background: #c0c0c0;
+            box-shadow:
+                inset -1px -1px 0px #dfdfdf,
+                inset 1px 1px 0px #808080;
+        }
+
+        .bottomBar__rightInnerHour {
+            padding-right: 3px;
+        }
+    }
+}
