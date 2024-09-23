@@ -79,7 +79,7 @@
                 line-height: 12px;
                 color: #000000;
             }
-            
+
             img {
                 width: 36px;
                 height: 36px;
@@ -89,12 +89,12 @@
         .startSubmenu__inner {
             display: none;
             position: absolute;
-            left: 98%;
+            left: 97%;
             flex-direction: column;
             align-items: center;
             padding: 3px;
             position: absolute;
-            width: 232px;
+            width: auto;
             height: auto;
             background: #b8c0c1;
             box-shadow:
@@ -102,12 +102,12 @@
                 inset 1px 1px 0px #dfdfdf,
                 inset -2px -2px 0px #808080,
                 inset 2px 2px 0px #ffffff;
-                .startSubmenu__inner{
-                    display: none;
-                }
+            .startSubmenu__inner {
+                display: none;
+            }
             .startSubmenu__innerSingle {
                 padding: 6px;
-                width: 229px;
+                width: 110px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -117,7 +117,9 @@
                     gap: 10px;
                     img {
                         width: 16px;
+                        min-width: 16px;
                         height: 16px;
+                        min-height: 16px;
                         object-fit: cover;
                     }
                     h3 {
@@ -131,17 +133,16 @@
                         color: black;
                     }
                 }
-                &:hover{
-                    background-color: #000A71;
+                &:hover {
+                    background-color: #000a71;
                     color: white;
-                    .startSubmenu__inner{
+                    >.startSubmenu__inner {
                         display: flex;
                     }
-                    h3{
+                    h3 {
                         color: white;
                     }
                 }
-              
             }
         }
         &:hover {
@@ -149,7 +150,7 @@
             h2 {
                 color: white;
             }
-            > .startSubmenu__inner{
+            > .startSubmenu__inner {
                 display: flex;
             }
         }

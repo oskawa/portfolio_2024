@@ -1,0 +1,202 @@
+.application {
+    padding: 3px;
+    position: absolute;
+
+    width: 100%;
+    height: 90vh;
+    /* Window Content/Base Grey 2 */
+    background: #c0c0c0;
+    box-shadow:
+        inset -1px -1px 0px #0a0a0a,
+        inset 1px 1px 0px #dfdfdf,
+        inset -2px -2px 0px #808080,
+        inset 2px 2px 0px #ffffff;
+
+    &.upscale {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 97vh;
+    }
+    &.mini {
+        display: none;
+    }
+    &.focus {
+        z-index: 10;
+    }
+
+    .applicationTop {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3px 2px 3px 3px;
+        width: 99%;
+        height: 20px;
+        cursor: pointer;
+        background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+        .applicationName {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            img {
+                width: 12px;
+                height: 12px;
+            }
+            h4 {
+                font-style: normal;
+                font-weight: 400;
+                font-size: 11px;
+                line-height: 12px;
+                color: #ffffff;
+            }
+        }
+        .applicationButtons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            .applicationButtons__inner {
+                border: none;
+                padding: 9px 6px 3px 4px;
+                width: 16px;
+                height: 14px;
+                background: #c0c0c0;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #ffffff,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #dfdfdf;
+                background-repeat: no-repeat;
+                background-size: 9px;
+                background-position: center;
+
+                &.applicationButtons__mini {
+                    background-image: url("/img/window/min.svg");
+                }
+
+                &.applicationButtons__upscale {
+                    background-image: url("/img/window/upscale.svg");
+                }
+
+                &.applicationButtons__close {
+                    background-image: url("/img/window/close.svg");
+                }
+            }
+        }
+    }
+    .applicationInner {
+        width: 100%;
+        height: calc(100% - 28px);
+        overflow-y: auto;
+        background: white;
+        display: flex;
+        box-shadow:
+            inset 2px 2px 0px #ffffff,
+            inset -2px -2px 0px #808080;
+        .applicationInner__left {
+            width: 10%;
+            padding: 1px 3px;
+            gap: 8px;
+            
+            background: #c0c0c0;
+            box-shadow:
+                inset -1px 0px 0px #0a0a0a,
+                inset -2px -2px 0px #808080;
+        }
+        .applicationInner__right {
+            width: 90%;
+            padding: 2px;
+            gap: 8px;
+            background: #888990;
+            overflow: auto;
+            .applicationInner__rightCanvas {
+                display: block; // Remove bottom spacing
+                width: auto; // Ensure canvas width is handled by JS
+                height: auto; // Ensure canvas height is handled by JS
+              }
+            
+        }
+    }
+    .applicationBottom {
+        padding: 8px 3px;
+        gap: 8px;
+        width: 100%;
+        height: 46px;
+        background: #c0c0c0;
+        box-shadow: inset 0px 1px 0px #e6eaea;
+        .applicationBottom__color {
+            display: flex;
+            align-items: center;
+            .applicationBottom__colorSelected {
+                padding: 3px;
+                gap: 3px;
+                isolation: isolate;
+                width: 30px;
+                height: 30px;
+                background: #dfdfdf;
+                /* Window Pressed */
+                box-shadow:
+                    inset -1px -1px 0px #ffffff,
+                    inset 1px 1px 0px #0a0a0a,
+                    inset -2px -2px 0px #dfdfdf,
+                    inset 2px 2px 0px #808080;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                .selected {
+                    width: 13px;
+                    height: 13px;
+                    display: block;
+                    left: 40%;
+                    top: 40%;
+                    transform: translate(-50%, -50%);
+                    position: absolute;
+                    background: #000000;
+                    box-shadow:
+                        inset 1px 1px 0px #ffffff,
+                        inset -1px -1px 0px #808080;
+                    z-index: 1;
+                }
+                .unselected {
+                    position: absolute;
+                    width: 13px;
+                    height: 13px;
+                    display: block;
+                    left: 60%;
+                    top: 60%;
+                    transform: translate(-50%, -50%);
+
+                    background: #ffffff;
+                    box-shadow:
+                        inset 1px 1px 0px #ffffff,
+                        inset -1px -1px 0px #808080;
+                }
+            }
+            .applicationBottom__colorChoice {
+                display: flex;
+                align-items: center;
+                padding: 0px;
+                width: 210px;
+                height: 30px;
+                flex-wrap: wrap;
+                div {
+                    display: block;
+                    width: 15px;
+                    height: 15px;
+
+                    background: #000000;
+                    /* Window Pressed */
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
+        }
+    }
+}

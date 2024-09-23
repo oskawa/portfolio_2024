@@ -15,7 +15,7 @@ async function getMenu() {
   }
 }
 
-export function StartBar({ onProjectSelect, projects }) {
+export function StartBar({ onProjectSelect, projects, onDocumentSelect }) {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,23 +24,18 @@ export function StartBar({ onProjectSelect, projects }) {
     // Define an async function inside useEffect
     const fetchMenu = async () => {
       const data = await getMenu();
-      if (data && Array.isArray(data)) {
-        setMenu(data);
-      } else if (data && typeof data === "object") {
-        // If data is an object with numerical keys, convert it to an array
-        const menuArray = Object.values(data).filter(
-          (item) => typeof item === "object"
-        );
-
-        setMenu(menuArray);
-      } else {
-        setError("Menu data is not in the expected format.");
-      }
+      setMenu(data);
       setLoading(false);
     };
 
     fetchMenu();
   }, []);
+
+  useEffect(() => {
+    if (menu) {
+      console.log(menu);
+    }
+  }, [menu]); // This useEffect will trigger every time `menu` is updated
 
   if (loading) {
     return "";
@@ -57,67 +52,99 @@ export function StartBar({ onProjectSelect, projects }) {
           <img src="logo_white.svg" alt="" />
         </div>
         <div className={styles.startMenu__inner}>
-          {menu.map((menuItem, index) => (
-            <div key={index} className={styles.startMenu__innerSingle}>
-              {/* Render Projects Section */}
-              {menuItem.title === "Les projets" && (
-                <>
-                  <div className={styles.startMenu__innerSingle__title}>
-                    <img src={menuItem.title} alt="" />
-                    <h2>{menuItem.title}</h2>
-                  </div>
+          {menu.projects && (
+            <div className={styles.startMenu__innerSingle}>
+              <div className={styles.startMenu__innerSingle__title}>
+                <img src="path/to/icon.png" alt="" />
+                <h2>Les projets</h2>
+              </div>
+              {/* Iterate through the project taxonomies */}
+              <div className={styles.startSubmenu__inner}>
+                {menu.projects.map((taxonomyItem, taxonomyIndex) => (
+                  <div
+                    key={taxonomyIndex}
+                    className={styles.startSubmenu__innerSingle}
+                  >
+                    <div className={styles.startSubmenu__innerSingle__title}>
+                      <img src="path/to/taxonomy-icon.png" alt="" />
+                      <h3 className={styles.startSubmenu__cat}>
+                        {taxonomyItem.taxonomy}
+                      </h3>
+                    </div>
 
-                  <div className={styles.startSubmenu__inner}>
-                    {Object.values(menuItem)[0].children.map(
-                      (child, childIndex) => (
-                        <div
-                          key={childIndex}
-                          className={styles.startSubmenu__innerSingle}
-                        >
+                    {/* Render the child taxonomies and their projects */}
+                    {taxonomyItem.children && (
+                      <div className={styles.startSubmenu__inner}>
+                        {taxonomyItem.children.map((child, childIndex) => (
                           <div
-                            className={styles.startSubmenu__innerSingle__title}
+                            key={childIndex}
+                            className={styles.startSubmenu__innerSingle}
                           >
-                            <img src="" alt="" />
-                            <h3 className={styles.startSubmenu__cat}>
-                              {child.taxonomy}
-                            </h3>
-                          </div>
-                          {/* Render list of projects */}
-                          {child.projects.map((project, projectIndex) => (
                             <div
-                              style={{ cursor: "pointer" }}
-                              key={projectIndex}
-                              className={styles.startSubmenu__inner}
-                              onClick={() => onProjectSelect(project)}
+                              className={
+                                styles.startSubmenu__innerSingle__title
+                              }
                             >
-                              <div>
-                                <div
-                                  className={
-                                    styles.startSubmenu__innerSingle__title
-                                  }
-                                >
-                                  <img src={project.logo} alt="" />
-                                  <h4>{project.title}</h4>
-                                </div>
-                              </div>
+                              <img src="" alt="" />
+                              <h4>{child.taxonomy}</h4>
                             </div>
-                          ))}
-                        </div>
-                      )
+
+                            {/* Render the list of projects for each child taxonomy */}
+                            {child.projects && (
+                              <div className={styles.startSubmenu__inner}>
+                                {child.projects.map((project, projectIndex) => (
+                                  <div
+                                    key={projectIndex} // Add a key here for the project div
+                                    className={
+                                      styles.startSubmenu__innerSingle__title
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => onProjectSelect(project)}
+                                  >
+                                    <img src={""} alt={""} />
+                                    <h5>{project.title}</h5>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Render the projects directly under the taxonomy (if any) */}
+                    {taxonomyItem.projects && (
+                      <div className={styles.startSubmenu__inner}>
+                        {taxonomyItem.projects.map((project, projectIndex) => (
+                          <div
+                            key={projectIndex}
+                            style={{ cursor: "pointer" }}
+                            className={styles.startSubmenu__innerSingle__title}
+                            onClick={() => onProjectSelect(project)}
+                          >
+                            <img
+                              src={project.logo || "default-logo.png"}
+                              alt=""
+                            />
+                            <h5>{project.title}</h5>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
-                </>
-              )}
-
-              {/* Render CV Section */}
-              {menuItem.title === "CV" && (
-                <div className={styles.startMenu__innerSingle__title}>
-                  <img src={menuItem.title} alt="" />
-                  <h2>{menuItem.title}</h2>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          ))}
+          )}
+          {menu.CV && (
+            <div className={styles.startMenu__innerSingle}
+            onClick={onDocumentSelect}>
+              <div className={styles.startMenu__innerSingle__title}>
+                <img src="path/to/icon.png" alt="" />
+                <h2>{menu.CV.title}</h2>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

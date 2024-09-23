@@ -2,11 +2,13 @@
 import { useState } from "react";
 import { BottomBar } from "./computer_parts/bottomBar";
 import { WindowProject } from "./computer_parts/windowProject";
+import { PaintWindow } from "./computer_parts/paintWindow";
 import styles from "./Computer.module.scss";
 
 export function Computer() {
   const [selectedProjects, setSelectedProjects] = useState([]); // Track the selected project
   const [focusWindow, setFocusWindow] = useState(null); // Track the active window
+  const [document, setDocument] = useState(false); // Track the active window
   const [minimizedProjects, setMinimizedProjects] = useState([]);
 
   const handleProjectSelect = (project) => {
@@ -18,6 +20,9 @@ export function Computer() {
 
   const handleFocusWindow = (slug) => {
     setFocusWindow(slug); // Set the active window
+  };
+  const handleDocument = () => {
+    setDocument(true); // Set the active window
   };
 
   const handleCloseWindow = (slug) => {
@@ -40,12 +45,16 @@ export function Computer() {
 
   return (
     <div className={styles.inner}>
+      {document && (
+        <PaintWindow/>
+      )}
       <BottomBar
         onProjectSelect={handleProjectSelect}
         selectedProjects={selectedProjects}
         minimizedProjects={minimizedProjects}
         onProjectClick={handleClickBottomBarProject}
         focusProject={focusWindow}
+        onDocumentSelect={handleDocument}
       />
 
       {selectedProjects &&

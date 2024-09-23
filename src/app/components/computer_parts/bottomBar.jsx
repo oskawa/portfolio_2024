@@ -7,6 +7,7 @@ export function BottomBar({
   minimizedProjects,
   onProjectClick,
   focusProject,
+  onDocumentSelect
 }) {
   const [isStartMenuVisible, setIsStartMenuVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
@@ -42,6 +43,14 @@ export function BottomBar({
           Menu
         </div>
         <div className={styles.bottomBar__applications}>
+          <div className={styles.bottomBar__applicationLinks}>
+            <ul className={styles.bottomBar__applicationLinks__list}>
+              <li><img src="" alt="" /></li>
+              <li><img src="" alt="" /></li>
+              <li><img src="" alt="" /></li>
+              <li><img src="" alt="" /></li>
+            </ul>
+          </div>
           {selectedProjects &&
             selectedProjects.map((project) => {
               const isActive =
@@ -72,7 +81,7 @@ export function BottomBar({
           <div className={styles.bottomBar__rightInnerHour}>{currentTime}</div>
         </div>
       </div>
-      {isStartMenuVisible && <StartBar onProjectSelect={onProjectSelect} />}
+      {isStartMenuVisible && <StartBar onProjectSelect={onProjectSelect} onDocumentSelect={onDocumentSelect}/>}
     </div>
   );
 }
