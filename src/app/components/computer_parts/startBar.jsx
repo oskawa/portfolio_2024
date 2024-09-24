@@ -66,7 +66,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect }) {
                     className={styles.startSubmenu__innerSingle}
                   >
                     <div className={styles.startSubmenu__innerSingle__title}>
-                      <img src="path/to/taxonomy-icon.png" alt="" />
+                      <img src={taxonomyItem.logo} alt="" />
                       <h3 className={styles.startSubmenu__cat}>
                         {taxonomyItem.taxonomy}
                       </h3>
@@ -85,7 +85,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect }) {
                                 styles.startSubmenu__innerSingle__title
                               }
                             >
-                              <img src="" alt="" />
+                              <img src={child.logo} alt="" />
                               <h4>{child.taxonomy}</h4>
                             </div>
 
@@ -101,7 +101,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect }) {
                                     style={{ cursor: "pointer" }}
                                     onClick={() => onProjectSelect(project)}
                                   >
-                                    <img src={""} alt={""} />
+                                    <img src={project.logo} alt={""} />
                                     <h5>{project.title}</h5>
                                   </div>
                                 ))}
