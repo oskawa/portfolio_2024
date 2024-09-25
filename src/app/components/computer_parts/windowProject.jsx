@@ -50,10 +50,8 @@ export function WindowProject({
     const elmnt = document.getElementById(`application-${data}`);
 
     if (!elmnt) return; // Exit if the element doesn't exist
-
     const header = document.getElementById(`applicationheader-${data}`);
     console.log(header);
-
     const dragMouseDown = (e) => {
       e.preventDefault();
       let pos3 = e.clientX;

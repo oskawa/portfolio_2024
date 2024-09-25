@@ -2,7 +2,7 @@
     padding: 3px;
     position: absolute;
 
-    width: 100%;
+    width: 90%;
     height: 90vh;
     /* Window Content/Base Grey 2 */
     background: #c0c0c0;
@@ -89,7 +89,7 @@
     }
     .applicationInner {
         width: 100%;
-        height: calc(100% - 28px);
+        height: 85%;
         overflow-y: auto;
         background: white;
         display: flex;
@@ -124,7 +124,7 @@
         padding: 8px 3px;
         gap: 8px;
         width: 100%;
-        height: 46px;
+        height: 9%;
         background: #c0c0c0;
         box-shadow: inset 0px 1px 0px #e6eaea;
         .applicationBottom__color {

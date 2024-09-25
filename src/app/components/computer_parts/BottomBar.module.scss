@@ -70,11 +70,15 @@
                     li {
                         width: 16px;
                         height: 16px;
-                        img {
+                        a {
+                            display: block;
                             width: 100%;
                             height: 100%;
-                            object-fit: contain;
-                            background-color: red;
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                            }
                         }
                     }
                 }
@@ -86,7 +90,6 @@
                     margin: 0 5px;
                     vertical-align: center;
                     border-right: 1px solid white;
-
                 }
             }
             .bottomBar__applicationSingle {
@@ -156,6 +159,22 @@
 
         .bottomBar__rightInnerHour {
             padding-right: 3px;
+        }
+        .bottomBar__straight {
+            display: flex;
+            width: 10px;
+            height: 10px;
+            #straight{
+                background-image: url('/img/bottombar/straight.png');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                border: none;
+                width: 10px;
+                height: 10px;
+                background-color: transparent;
+                cursor: pointer;
+            }
         }
     }
 }

@@ -1,0 +1,30 @@
+.loaderContainer {
+    background-color: black;
+    z-index: 1000;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-family: var(--bios);
+    font-size: 16px;
+    color: #808080;
+    .container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+    #progressBar {
+        width: 100%;
+        height: 20px;
+        background-color: #151515;
+        position: relative;
+        #progressFill {
+            height: 100%;
+            background-color: white; // Color of the filled part
+            transition: width 0.1s ease-in-out; // Smooth transition for the width change
+            position: absolute; // Position it absolutely within the outer div
+            top: 0; // Align it to the top
+            left: 0; // Align it to the left
+        }
+    }
+}

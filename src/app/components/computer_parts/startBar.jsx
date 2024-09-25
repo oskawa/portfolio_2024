@@ -5,41 +5,15 @@ import styles from "./StartBar.module.scss";
 import { WindowProject } from "./windowProject";
 
 // Fetch menu data
-async function getMenu() {
-  try {
-    const response = await http.get("menu");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching menu:", error);
-    return null;
-  }
-}
 
-export function StartBar({ onProjectSelect, projects, onDocumentSelect }) {
-  const [menu, setMenu] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+export function StartBar({ onProjectSelect, projects, onDocumentSelect, menu }) {
+ 
+  
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Define an async function inside useEffect
-    const fetchMenu = async () => {
-      const data = await getMenu();
-      setMenu(data);
-      setLoading(false);
-    };
-
-    fetchMenu();
-  }, []);
-
-  useEffect(() => {
-    if (menu) {
-      console.log(menu);
-    }
-  }, [menu]); // This useEffect will trigger every time `menu` is updated
-
-  if (loading) {
-    return "";
-  }
+ 
+  
 
   if (error) {
     return <div className="startMenu">Error: {error}</div>;
@@ -113,7 +87,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect }) {
                     )}
 
                     {/* Render the projects directly under the taxonomy (if any) */}
-                    {taxonomyItem.projects && (
+                    {taxonomyItem.projects && taxonomyItem.projects.length > 0 && (
                       <div className={styles.startSubmenu__inner}>
                         {taxonomyItem.projects.map((project, projectIndex) => (
                           <div

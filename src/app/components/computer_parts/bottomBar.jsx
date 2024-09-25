@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { StartBar } from "./startBar";
 import { useState, useEffect } from "react";
 import styles from "./BottomBar.module.scss";
@@ -7,13 +8,20 @@ export function BottomBar({
   minimizedProjects,
   onProjectClick,
   focusProject,
-  onDocumentSelect
+  onDocumentSelect,
+  menu,
+  links,
+  onStraight
 }) {
   const [isStartMenuVisible, setIsStartMenuVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
 
   const toggleStartMenu = () => {
     setIsStartMenuVisible((prev) => !prev); // Toggle start menu visibility
+  };
+
+  const handleStraightButton = () => {
+    onStraight(); // Call the callback with the variable
   };
 
   useEffect(() => {
@@ -45,10 +53,16 @@ export function BottomBar({
         <div className={styles.bottomBar__applications}>
           <div className={styles.bottomBar__applicationLinks}>
             <ul className={styles.bottomBar__applicationLinks__list}>
-              <li><img src="" alt="" /></li>
-              <li><img src="" alt="" /></li>
-              <li><img src="" alt="" /></li>
-              <li><img src="" alt="" /></li>
+              {links &&
+                links.map((link) => {
+                  return (
+                    <li>
+                        <a target="_blank" href={link.link}>
+                          <img src={link.image} alt="" />
+                        </a>
+                    </li>
+                  );
+                })}
             </ul>
           </div>
           {selectedProjects &&
@@ -63,7 +77,7 @@ export function BottomBar({
                   } ${
                     minimizedProjects.includes(project.slug)
                       ? styles.minimized
-                      : ''
+                      : ""
                   }`}
                   onClick={() => onProjectClick(project.slug)}
                 >
@@ -78,10 +92,17 @@ export function BottomBar({
         <div className={styles.divider}></div>
         <div className={styles.bottomBar__rightInner}>
           <div className={styles.bottomBar__rightInnerLanguage}></div>
+          <div className={styles.bottomBar__straight}><button onClick={handleStraightButton} id={styles.straight}></button></div>
           <div className={styles.bottomBar__rightInnerHour}>{currentTime}</div>
         </div>
       </div>
-      {isStartMenuVisible && <StartBar onProjectSelect={onProjectSelect} onDocumentSelect={onDocumentSelect}/>}
+      {isStartMenuVisible && (
+        <StartBar
+          menu={menu}
+          onProjectSelect={onProjectSelect}
+          onDocumentSelect={onDocumentSelect}
+        />
+      )}
     </div>
   );
 }
