@@ -23,6 +23,11 @@
         box-shadow: inset -2px -6px 51px rgb(38, 38, 38);
     }
 }
+@media screen and(max-width:992px) {
+    .inner{
+        aspect-ratio: unset;
+    }    
+}
 
 
 @keyframes shadow-pulse {
