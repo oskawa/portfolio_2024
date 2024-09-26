@@ -56,7 +56,7 @@ export function BottomBar({
               {links &&
                 links.map((link) => {
                   return (
-                    <li>
+                    <li key={link.link}>
                         <a target="_blank" href={link.link}>
                           <img src={link.image} alt="" />
                         </a>

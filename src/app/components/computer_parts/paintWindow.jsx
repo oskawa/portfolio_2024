@@ -1,19 +1,27 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./PaintWindow.module.scss";
-export function PaintWindow({isFocus, onClick, isMinimized, onMinimize, onClose}) {
+import http from "./../../axios/http";
+
+export function PaintWindow({
+  isFocus,
+  onClick,
+  isMinimized,
+  onMinimize,
+  onClose,
+}) {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
   const isDrawing = useRef(false);
   const [canvasHeight, setCanvasHeight] = useState(0);
   const imageSrc = "img/cv.jpg"; // Path to your image
-  const [image, setImage] = useState(null);
- 
+  const [image, setImage] = useState([]);
+
   const [strokeColor, setStrokeColor] = useState("red"); // Default color
   const [details, setDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [upscale, setUpscale] = useState(false);
   const [mini, setMini] = useState(false);
-  
+
   const colors = [
     "#FF0000",
     "#00FF00",
@@ -42,24 +50,45 @@ export function PaintWindow({isFocus, onClick, isMinimized, onMinimize, onClose}
     "#FF4500",
   ];
 
+  async function getCv() {
+    try {
+      const response = await http.get("cv");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching menu:", error);
+      return null;
+    }
+  }
+
   useEffect(() => {
-    const img = new Image();
-    img.src = imageSrc;
-    img.onload = () => {
-      setImage(img);
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      contextRef.current = context;
+    const fetchApi = async () => {
+      try {
+        const data = await getCv();
+        setImage(data);
+        console.log(data);
 
-      // Set canvas dimensions to match image dimensions
-      const aspectRatio = img.height / img.width;
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.width * aspectRatio;
+        const img = new Image();
+        img.src = data[0].image; // Use data.cv_image here, not image.cv_image
+        img.onload = () => {
+          const canvas = canvasRef.current;
+          const context = canvas.getContext("2d");
+          contextRef.current = context;
 
-      // Draw the image on the canvas
-      context.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // Set canvas dimensions to match image dimensions
+          const aspectRatio = img.height / img.width;
+          canvas.width = canvas.parentElement.clientWidth;
+          canvas.height = canvas.width * aspectRatio;
+
+          // Draw the image on the canvas
+          context.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
-  }, [imageSrc]);
+
+    fetchApi();
+  }, []);
 
   const startDrawing = (event) => {
     isDrawing.current = true;
@@ -90,13 +119,13 @@ export function PaintWindow({isFocus, onClick, isMinimized, onMinimize, onClose}
   };
 
   useEffect(() => {
-    console.log('coucou')
-    console.log(document.getElementById('application-cv'))
-    console.log(loading)
+    console.log("coucou");
+    console.log(document.getElementById("application-cv"));
+    console.log(loading);
     if (loading) return;
-    const elmnt = document.getElementById('application-cv');
+    const elmnt = document.getElementById("application-cv");
     if (!elmnt) return; // Exit if the element doesn't exist
-    const header = document.getElementById('applicationheader-cv');
+    const header = document.getElementById("applicationheader-cv");
     console.log(header);
     const dragMouseDown = (e) => {
       e.preventDefault();
@@ -163,8 +192,11 @@ export function PaintWindow({isFocus, onClick, isMinimized, onMinimize, onClose}
       id={`application-cv`}
       onClick={onClick}
     >
-      <div className={styles.applicationTop} id={`applicationheader-cv`}
-        draggable="true">
+      <div
+        className={styles.applicationTop}
+        id={`applicationheader-cv`}
+        draggable="true"
+      >
         <div className={styles.applicationName}>
           <img src="" alt="" />
           <h4>Paint</h4>
@@ -190,6 +222,11 @@ export function PaintWindow({isFocus, onClick, isMinimized, onMinimize, onClose}
             <li></li>
             <li></li>
           </ul>
+          {image[0].pdf && (
+            <div className={styles.applicationInner__leftTools_download}>
+              <a href={image[0].pdf}>Télécharger</a>
+            </div>
+          )}
         </div>
         <div className={styles.applicationInner__right}>
           <div className={styles.test}>

@@ -100,11 +100,40 @@
             width: 10%;
             padding: 1px 3px;
             gap: 8px;
-            
+
             background: #c0c0c0;
             box-shadow:
                 inset -1px 0px 0px #0a0a0a,
                 inset -2px -2px 0px #808080;
+            position: relative;
+            .applicationInner__leftTools_download {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                font-size: 12px;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 4px;
+                margin: 0 2px 0 0;
+                color: #000000;
+                background: #b8c0c1;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #dfdfdf,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #ffffff;
+                &:hover {
+                    cursor: pointer;
+                    background: #b8c0c1;
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
         }
         .applicationInner__right {
             width: 90%;
@@ -116,8 +145,7 @@
                 display: block; // Remove bottom spacing
                 width: auto; // Ensure canvas width is handled by JS
                 height: auto; // Ensure canvas height is handled by JS
-              }
-            
+            }
         }
     }
     .applicationBottom {

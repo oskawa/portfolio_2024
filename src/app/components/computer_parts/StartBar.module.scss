@@ -98,6 +98,7 @@
             width: auto;
             height: auto;
             background: #b8c0c1;
+            cursor: pointer;
             box-shadow:
                 inset -1px -1px 0px #0a0a0a,
                 inset 1px 1px 0px #dfdfdf,
@@ -105,6 +106,16 @@
                 inset 2px 2px 0px #ffffff;
             .startSubmenu__inner {
                 display: none;
+                &:hover{
+                    background-color: #000a71;
+                    h5{
+                        color: white;
+                                                
+                    }
+                    h4{
+                        color: white;
+                    }
+                }
             }
             .startSubmenu__innerSingle {
                 padding: 6px;
@@ -115,6 +126,8 @@
                     display: flex;
                     align-items: center;
                     gap: 10px;
+                    padding: 3px;
+                    color: black;
                     img {
                         width: 16px;
                         min-width: 16px;
@@ -146,16 +159,17 @@
                     color: white;
                     >.startSubmenu__inner {
                         display: flex;
+                        &:hover{
+
+                            h5{
+                                color: white;
+                            }
+                        }
                     }
                     h3 {
                         color: white;
                     }
-                    h4{
-                        color: white;
-                    }
-                    h5{
-                        color: white;
-                    }
+                    
                 }
             }
         }
