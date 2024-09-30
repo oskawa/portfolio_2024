@@ -222,11 +222,11 @@ export function PaintWindow({
             <li></li>
             <li></li>
           </ul>
-          {image[0].pdf && (
+          {/* {image[0].pdf && (
             <div className={styles.applicationInner__leftTools_download}>
               <a href={image[0].pdf}>Télécharger</a>
             </div>
-          )}
+          )} */}
         </div>
         <div className={styles.applicationInner__right}>
           <div className={styles.test}>
