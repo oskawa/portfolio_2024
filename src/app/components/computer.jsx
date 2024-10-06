@@ -4,8 +4,12 @@ import http from "./../axios/http";
 import { BottomBar } from "./computer_parts/bottomBar";
 import { WindowProject } from "./computer_parts/windowProject";
 import { PaintWindow } from "./computer_parts/paintWindow";
+import {ContactForm} from "./computer_parts/contact"
 import { Loader } from "./loader";
+import { useRouter } from 'next/router';
+
 import styles from "./Computer.module.scss";
+
 export function Computer() {
   const [selectedProjects, setSelectedProjects] = useState([]); // Track the selected project
   const [focusWindow, setFocusWindow] = useState(null); // Track the active window
@@ -120,6 +124,7 @@ export function Computer() {
           onClick={() => handleFocusWindow("cv")} // Handle click to activate
         />
       )}
+      <ContactForm/>
       <BottomBar
         onProjectSelect={handleProjectSelect}
         selectedProjects={selectedProjects}

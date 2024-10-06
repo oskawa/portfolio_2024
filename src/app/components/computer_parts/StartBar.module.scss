@@ -33,7 +33,7 @@
     position: relative;
     img {
         position: absolute;
-        transform: rotate(-90deg) translate(-108px, -108px);
+        transform: rotate(-90deg) translate(-106px, -106px);
         top: 0;
         left: 0;
         width: 247px;
@@ -58,6 +58,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        cursor: pointer;
         &::after {
             content: "";
 
@@ -73,6 +74,7 @@
             align-items: center;
             gap: 10px;
             font-style: normal;
+
             h2 {
                 font-weight: 400;
                 font-size: 13px;
@@ -106,15 +108,93 @@
                 inset 2px 2px 0px #ffffff;
             .startSubmenu__inner {
                 display: none;
-                &:hover{
+                &:hover {
                     background-color: #000a71;
-                    h5{
-                        color: white;
-                                                
-                    }
-                    h4{
+                    h5 {
                         color: white;
                     }
+                    h4 {
+                        color: white;
+                    }
+                }
+            }
+            .startSubmenu__innerSubSubSub {
+                display: none;
+                padding: 6px;
+                width: 100%;
+                align-items: center;
+                display: none;
+                position: absolute;
+                left: 97%;
+                flex-direction: column;
+                align-items: center;
+                padding: 3px;
+                position: absolute;
+                width: auto;
+                height: auto;
+                background: #b8c0c1;
+                cursor: pointer;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #dfdfdf,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #ffffff;
+                .startSubmenu__innerSingleSubSubSub {
+                    padding: 6px;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    &:hover {
+                        background-color: #000a71;
+                        .startSubmenu__innerSubSub {
+                            display: flex;
+                            &:hover{
+                                background-color: #b8c0c1;
+                                h5{
+                                    color: black;
+                                }
+
+                            }
+                            .startSubmenu__innerSingle__title{
+                                &:hover{
+                                    background-color: #000a71;
+                                    h5{
+                                        color:white
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .startSubmenu__innerSubSub {
+                display: none;
+                padding: 6px;
+                width: 100%;
+                align-items: center;
+                display: none;
+                position: absolute;
+                left: 97%;
+                flex-direction: column;
+                align-items: center;
+                padding: 3px;
+                position: absolute;
+                width: auto;
+                height: auto;
+                background: #b8c0c1;
+                cursor: pointer;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #dfdfdf,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #ffffff;
+                &:hover {
+                    .startSubmenu__innerSingle__title {
+                        h5 {
+                            color: white;
+                        }
+                    }
+                    background-color: #000a71;
                 }
             }
             .startSubmenu__innerSingle {
@@ -156,21 +236,27 @@
                 }
                 &:hover {
                     background-color: #000a71;
-                    color: white;
-                    >.startSubmenu__inner {
-                        display: flex;
-                        &:hover{
-
-                            h5{
-                                color: white;
-                            }
-                        }
-                    }
                     h3 {
                         color: white;
                     }
-                    
+                    > .startSubmenu__innerSubSub {
+                        display: flex;
+                    }
+                    > .startSubmenu__innerSubSubSub {
+                        display: flex;
+                    }
+                    //     &:hover {
+                    //         h5 {
+                    //             color: white;
+                    //         }
+                    //     }
+                    // }
                 }
+                //     h3 {
+                //         color: white;
+                //     }
+
+                // }
             }
         }
         &:hover {

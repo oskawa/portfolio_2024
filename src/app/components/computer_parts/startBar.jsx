@@ -23,13 +23,13 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect, menu }) 
     <>
       <div className={styles.startMenu} id="start-menu">
         <div className={styles.startMenu__logo}>
-          <img src="logo_white.svg" alt="" />
+          <img src="/img/logo_white.png" alt="" />
         </div>
         <div className={styles.startMenu__inner}>
           {menu.projects && (
             <div className={styles.startMenu__innerSingle}>
               <div className={styles.startMenu__innerSingle__title}>
-                <img src="path/to/icon.png" alt="" />
+                <img src="/img/icons/projects.png" alt="" />
                 <h2>Les projets</h2>
               </div>
               {/* Iterate through the project taxonomies */}
@@ -48,11 +48,11 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect, menu }) 
 
                     {/* Render the child taxonomies and their projects */}
                     {taxonomyItem.children && (
-                      <div className={styles.startSubmenu__inner}>
+                      <div className={styles.startSubmenu__innerSubSubSub}>
                         {taxonomyItem.children.map((child, childIndex) => (
                           <div
                             key={childIndex}
-                            className={styles.startSubmenu__innerSingle}
+                            className={styles.startSubmenu__innerSingleSubSubSub}
                           >
                             <div
                               className={
@@ -65,7 +65,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect, menu }) 
 
                             {/* Render the list of projects for each child taxonomy */}
                             {child.projects && (
-                              <div className={styles.startSubmenu__inner}>
+                              <div className={styles.startSubmenu__innerSubSub}>
                                 {child.projects.map((project, projectIndex) => (
                                   <div
                                     key={projectIndex} // Add a key here for the project div
@@ -88,7 +88,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect, menu }) 
 
                     {/* Render the projects directly under the taxonomy (if any) */}
                     {taxonomyItem.projects && taxonomyItem.projects.length > 0 && (
-                      <div className={styles.startSubmenu__inner}>
+                      <div className={styles.startSubmenu__innerSubSub}>
                         {taxonomyItem.projects.map((project, projectIndex) => (
                           <div
                             key={projectIndex}
@@ -114,7 +114,7 @@ export function StartBar({ onProjectSelect, projects, onDocumentSelect, menu }) 
             <div className={styles.startMenu__innerSingle}
             onClick={onDocumentSelect}>
               <div className={styles.startMenu__innerSingle__title}>
-                <img src="path/to/icon.png" alt="" />
+                <img src="/img/icons/cv.png" alt="" />
                 <h2>{menu.CV.title}</h2>
               </div>
             </div>

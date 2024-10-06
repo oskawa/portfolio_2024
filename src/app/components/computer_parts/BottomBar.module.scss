@@ -20,7 +20,6 @@
         display: flex;
         .bottomBar__start {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 3px 4px;
@@ -41,6 +40,17 @@
                     inset 1px 1px 0px #0a0a0a,
                     inset -2px -2px 0px #dfdfdf,
                     inset 2px 2px 0px #808080;
+            }
+            &:before{
+                content: '';
+                background-image: url('/img/favicon.png');
+                width: 12px;
+                height: 12px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: block;
+                margin-right: 5px;
             }
         }
         .bottomBar__applications {

@@ -12,12 +12,8 @@ export function PaintWindow({
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
   const isDrawing = useRef(false);
-  const [canvasHeight, setCanvasHeight] = useState(0);
-  const imageSrc = "img/cv.jpg"; // Path to your image
   const [image, setImage] = useState([]);
-
   const [strokeColor, setStrokeColor] = useState("red"); // Default color
-  const [details, setDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   const [upscale, setUpscale] = useState(false);
   const [mini, setMini] = useState(false);
@@ -66,7 +62,6 @@ export function PaintWindow({
         const data = await getCv();
         setImage(data);
         console.log(data);
-
         const img = new Image();
         img.src = data[0].image; // Use data.cv_image here, not image.cv_image
         img.onload = () => {
@@ -89,7 +84,7 @@ export function PaintWindow({
 
     fetchApi();
   }, []);
-
+  console.log(image);
   const startDrawing = (event) => {
     isDrawing.current = true;
     contextRef.current.beginPath();
@@ -222,11 +217,11 @@ export function PaintWindow({
             <li></li>
             <li></li>
           </ul>
-          {/* {image[0].pdf && (
+          {image && image.length > 0 && image[0].pdf && (
             <div className={styles.applicationInner__leftTools_download}>
               <a href={image[0].pdf}>Télécharger</a>
             </div>
-          )} */}
+          )}
         </div>
         <div className={styles.applicationInner__right}>
           <div className={styles.test}>

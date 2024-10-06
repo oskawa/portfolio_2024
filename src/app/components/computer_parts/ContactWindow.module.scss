@@ -1,0 +1,329 @@
+.application {
+    padding: 3px;
+    position: absolute;
+
+    width: 50%;
+    height: auto;
+    /* Window Content/Base Grey 2 */
+    background: #c0c0c0;
+    box-shadow:
+        inset -1px -1px 0px #0a0a0a,
+        inset 1px 1px 0px #dfdfdf,
+        inset -2px -2px 0px #808080,
+        inset 2px 2px 0px #ffffff;
+
+    &.upscale {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 97vh;
+    }
+    &.mini {
+        display: none;
+    }
+    &.focus {
+        z-index: 10;
+    }
+
+    .applicationTop {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3px 2px 3px 3px;
+        width: 99%;
+        height: 20px;
+        cursor: pointer;
+        background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+        .applicationName {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            img {
+                width: 12px;
+                height: 12px;
+            }
+            h4 {
+                font-style: normal;
+                font-weight: 400;
+                font-size: 11px;
+                line-height: 12px;
+                color: #ffffff;
+            }
+        }
+        .applicationButtons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            .applicationButtons__inner {
+                border: none;
+                padding: 9px 6px 3px 4px;
+                width: 16px;
+                height: 14px;
+                background: #c0c0c0;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #ffffff,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #dfdfdf;
+                background-repeat: no-repeat;
+                background-size: 9px;
+                background-position: center;
+
+                &.applicationButtons__mini {
+                    background-image: url("/img/window/min.svg");
+                }
+
+                &.applicationButtons__upscale {
+                    background-image: url("/img/window/upscale.svg");
+                }
+
+                &.applicationButtons__close {
+                    background-image: url("/img/window/close.svg");
+                }
+            }
+        }
+    }
+    .applicationInner {
+        width: 100%;
+        overflow-y: auto;
+        padding: 1rem 0;
+        background: #c0c0c0;
+        display: flex;
+        box-shadow:
+            inset 2px 2px 0px #ffffff,
+            inset -2px -2px 0px #808080;
+        .applicationInner__left {
+            width: 10%;
+            padding: 1px 3px;
+            gap: 8px;
+
+            background: #c0c0c0;
+            box-shadow:
+                inset -1px 0px 0px #0a0a0a,
+                inset -2px -2px 0px #808080;
+            position: relative;
+            .applicationInner__leftTools_download {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                font-size: 12px;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 4px;
+                margin: 0 2px 0 0;
+                color: #000000;
+                background: #b8c0c1;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #dfdfdf,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #ffffff;
+                &:hover {
+                    cursor: pointer;
+                    background: #b8c0c1;
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
+        }
+        .applicationInner__right {
+            width: 90%;
+            padding: 2px;
+            gap: 8px;
+            background: #888990;
+            overflow: auto;
+        }
+    }
+    .applicationBottom {
+        padding: 8px 3px;
+        gap: 8px;
+        width: 100%;
+        height: 9%;
+        background: #c0c0c0;
+        box-shadow: inset 0px 1px 0px #e6eaea;
+        .applicationBottom__color {
+            display: flex;
+            align-items: center;
+            .applicationBottom__colorSelected {
+                padding: 3px;
+                gap: 3px;
+                isolation: isolate;
+                width: 30px;
+                height: 30px;
+                background: #dfdfdf;
+                /* Window Pressed */
+                box-shadow:
+                    inset -1px -1px 0px #ffffff,
+                    inset 1px 1px 0px #0a0a0a,
+                    inset -2px -2px 0px #dfdfdf,
+                    inset 2px 2px 0px #808080;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                .selected {
+                    width: 13px;
+                    height: 13px;
+                    display: block;
+                    left: 40%;
+                    top: 40%;
+                    transform: translate(-50%, -50%);
+                    position: absolute;
+                    background: #000000;
+                    box-shadow:
+                        inset 1px 1px 0px #ffffff,
+                        inset -1px -1px 0px #808080;
+                    z-index: 1;
+                }
+                .unselected {
+                    position: absolute;
+                    width: 13px;
+                    height: 13px;
+                    display: block;
+                    left: 60%;
+                    top: 60%;
+                    transform: translate(-50%, -50%);
+
+                    background: #ffffff;
+                    box-shadow:
+                        inset 1px 1px 0px #ffffff,
+                        inset -1px -1px 0px #808080;
+                }
+            }
+            .applicationBottom__colorChoice {
+                display: flex;
+                align-items: center;
+                padding: 0px;
+                width: 210px;
+                height: 30px;
+                flex-wrap: wrap;
+                div {
+                    display: block;
+                    width: 15px;
+                    height: 15px;
+
+                    background: #000000;
+                    /* Window Pressed */
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
+        }
+    }
+    form {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        .applicationInner__fifty {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            padding: 6px;
+        }
+        .applicationInner__full {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            line-height: 16px;
+            color: #222222;
+        }
+        input,
+        textarea {
+            padding: 4px 4px;
+            border: none;
+            background: #ffffff;
+            box-shadow:
+                inset -1px -1px 0px #ffffff,
+                inset 1px 1px 0px #808080,
+                inset -2px -2px 0px #dfdfdf,
+                inset 2px 2px 0px #0a0a0a;
+            color: black;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 22px;
+            color: #000000;
+            width: 100%;
+        }
+        textarea {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .applicationInner__fullCheckbox {
+            display: flex;
+            align-items: center;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            line-height: 12px;
+
+            /* Text/Copy */
+            color: #222222;
+
+
+            input {
+                width: 13px;
+                height: 13px;
+
+                /* B&W/White */
+                background: #ffffff;
+                box-shadow:
+                    inset -1px -1px 0px #ffffff,
+                    inset 1px 1px 0px #808080,
+                    inset -2px -2px 0px #dfdfdf,
+                    inset 2px 2px 0px #0a0a0a;
+            }
+        }
+        button {
+            border: none;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 10px;
+            background: #c0c0c0;
+            &:disabled {
+                color: #808080;
+            }
+            color: black;
+            box-shadow:
+                inset -1px -1px 0px #0a0a0a,
+                inset 1px 1px 0px #ffffff,
+                inset -2px -2px 0px #808080,
+                inset 2px 2px 0px #dfdfdf;
+
+            font-family: "MS Sans Serif";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            margin: auto;
+            &:hover {
+                /* Window Content/Base Grey 2 */
+                background: #c0c0c0;
+                /* Window Pressed */
+                box-shadow:
+                    inset -1px -1px 0px #ffffff,
+                    inset 1px 1px 0px #0a0a0a,
+                    inset -2px -2px 0px #dfdfdf,
+                    inset 2px 2px 0px #808080;
+            }
+        }
+    }
+}
