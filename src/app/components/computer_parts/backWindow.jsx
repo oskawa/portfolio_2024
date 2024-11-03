@@ -1,56 +1,25 @@
-import styles from "./WindowProject.module.scss";
-import React, { useState, useEffect } from "react";
-import http from "./../../axios/http";
-import LayoutsFactory from "../layoutsFactory";
+import { useRef, useEffect, useState } from "react";
+import styles from "./BackWindow.module.scss";
+import http from "../../axios/http";
 
-async function getPortfolioDetails(slug) {
-  try {
-    const response = await http.get(`portfolio/${slug}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching menu:", error);
-    return null;
-  }
-}
-
-export function WindowProject({
+export function BackWindow({
   data,
-  onClose,
   isFocus,
   onClick,
   isMinimized,
   onMinimize,
+  onClose,
 }) {
-  const [details, setDetails] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [upscale, setUpscale] = useState(false);
   const [mini, setMini] = useState(false);
 
   useEffect(() => {
-    // Apply the minimized state based on the prop
-    setMini(isMinimized);
-  }, [isMinimized]);
-
-  const handleMini = () => {
-    onMinimize(); // Call the minimize function from parent
-  };
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      const detailsAsync = await getPortfolioDetails(data);
-
-      setDetails(detailsAsync);
-      setLoading(false);
-    };
-    fetchDetails();
-  }, []);
-  useEffect(() => {
-    if (loading || !details.title) return;
-
-    const elmnt = document.getElementById(`application-${data}`);
-
+  
+    if (loading) return;
+    const elmnt = document.getElementById(`application-${data.slug}`);
     if (!elmnt) return; // Exit if the element doesn't exist
-    const header = document.getElementById(`applicationheader-${data}`);
+    const header = document.getElementById(`applicationheader-${data.slug}`);
    
     const dragMouseDown = (e) => {
       e.preventDefault();
@@ -90,15 +59,19 @@ export function WindowProject({
         elmnt.onmousedown = null;
       }
     };
-  }, [data, loading, details]);
-  if (loading) {
-    return "";
-  }
+  }, [loading]);
 
   const handleUpscale = () => {
     setUpscale(!upscale);
     setMini(false); // Ensure the window is not minimized when upscaled
   };
+  const handleMini = () => {
+    onMinimize(); // Call the minimize function from parent
+  };
+  useEffect(() => {
+    // Apply the minimized state based on the prop
+    setMini(isMinimized);
+  }, [isMinimized]);
 
   return (
     <div
@@ -107,17 +80,17 @@ export function WindowProject({
       } ${isFocus ? styles.focus : styles.unfocus}
       ${isMinimized ? styles.mini : styles.unmini}
       `}
-      id={`application-${data}`}
+      id={`application-${data.slug}`}
       onClick={onClick}
     >
       <div
         className={styles.applicationTop}
-        id={`applicationheader-${data}`}
+        id={`applicationheader-${data.slug}`}
         draggable="true"
       >
         <div className={styles.applicationName}>
-          <img src={details.logo} alt="" />
-          <h4>{details.title}</h4>
+          <img src={`/img/icons/${data.slug}.png`} alt="" />
+          <h4>{data.title}</h4>
         </div>
         <div className={styles.applicationButtons}>
           <button
@@ -134,19 +107,11 @@ export function WindowProject({
           ></button>
         </div>
       </div>
-      <div className={styles.applicationInner}>
-        <h5>{details.title}</h5>
-        <h6>{details.subtitle}</h6>
-        <div className={styles.applicationInnerContent}>
-          {details.repeatable_content.map((layout, index) => (
-            <LayoutsFactory
-              key={index}
-              name={layout.acf_fc_layout}
-              {...layout}
-            />
-          ))}
-        </div>
-      </div>
+      
+        {data.slug == "cv" ? <CvWindow /> : 
+        data.slug == "rubiks" ? <RubiksWindow /> :
+        <div></div>}
+      
     </div>
   );
 }

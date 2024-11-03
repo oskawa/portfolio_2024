@@ -1,0 +1,147 @@
+.applicationInner {
+    background: #c0c0c0;
+    /* Window Borders */
+    isolation: isolate;
+    margin: 8px;
+
+    .applicationButtons {
+        background: #c0c0c0;
+        color: #222222;
+        border: none;
+        box-shadow:
+            inset -2px 0px 0px rgba(38, 38, 38, 0.5),
+            inset -1px 0px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset 2px 2px 0px #dfdfdf;
+        padding: 10px;
+        position: relative;
+        border-radius: 3px 3px 0 0;
+        z-index: -1;
+        &.active {
+            z-index: 2;
+        }
+    }
+    .panel {
+        background: #c0c0c0;
+        margin-top: -2px;
+        padding-bottom: 16px;
+        box-shadow:
+            inset -1px -1px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset -2px -2px 0px #808080,
+            inset 2px 2px 0px #dfdfdf;
+            display: none;
+            &.active{
+                display: block;
+            }
+        .panelScreen {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            img {
+                width: 190px;
+                height: 167px;
+            }
+            .panelScreenBackgroundChange{
+                width: 139px;
+                height: 103px;
+                background-color: #008080;
+                position: absolute;
+                top: 45%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+    .panelScreenChoice {
+        position: relative;
+        margin: 0 16px;
+        padding: 16px 8px 8px 8px;
+        box-shadow:
+            inset -1px -1px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset -2px -2px 0px #808080,
+            inset 2px 2px 0px #dfdfdf;
+        .panelScreenChoiceTitle {
+            color: #0a0a0a;
+            position: absolute;
+            top: -7px;
+            left: 4px;
+            font-size: 15px;
+            background-color: #c0c0c0;
+        }
+        .panelScreenChoiceParagraph {
+            color: #0a0a0a;
+            font-size: 15px;
+        }
+        .applicationsBackground {
+            margin-top: 10px;
+            background: #ffffff;
+            /* Window Pressed */
+            box-shadow:
+                inset -1px -1px 0px #ffffff,
+                inset 1px 1px 0px #0a0a0a,
+                inset -2px -2px 0px #dfdfdf,
+                inset 2px 2px 0px #808080;
+            display: flex;
+            flex-direction: column;
+            padding-left: 4px;
+            button {
+                display: block;
+                width: fit-content;
+                background-color: unset;
+                border: none;
+                color: #222222;
+                cursor: pointer;
+                &.active {
+                    color: white;
+                    box-sizing: border-box;
+                    padding: 2px 2px 2px 3px;
+                    background: #0000a3;
+                    border: 1px dashed #fffe54;
+                }
+            }
+        }
+    }
+}
+.applicationInnerBottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+    button {
+        background-color: unset;
+        border: none;
+        &:focus {
+            background: #c0c0c0;
+            box-shadow:
+                inset -1px -1px 0px #ffffff,
+                inset 1px 1px 0px #0a0a0a,
+                inset -2px -2px 0px #dfdfdf,
+                inset 2px 2px 0px #808080;
+        }
+        padding: 5.5px 18px;
+        background: #c0c0c0;
+        color: black;
+        box-shadow:
+            inset -1px -1px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset -2px -2px 0px #808080,
+            inset 2px 2px 0px #dfdfdf;
+       
+        &.inactive {
+            background: #c0c0c0;
+            box-shadow:
+                inset -1px -1px 0px #0a0a0a,
+                inset 1px 1px 0px #ffffff,
+                inset -2px -2px 0px #808080,
+                inset 2px 2px 0px #dfdfdf;
+            font-style: normal;
+            font-weight: 400;
+            color: #808080;
+        }
+    }
+}

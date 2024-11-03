@@ -26,6 +26,7 @@
             height: 23px;
             width: 62px;
             background: #b8c0c1;
+            color: #0a0a0a;
             box-shadow:
                 inset -1px -1px 0px #0a0a0a,
                 inset 1px 1px 0px #dfdfdf,
@@ -44,7 +45,7 @@
             &:before{
                 content: '';
                 background-image: url('/img/favicon.png');
-                width: 12px;
+                min-width: 12px;
                 height: 12px;
                 background-position: center;
                 background-size: cover;
@@ -169,6 +170,7 @@
 
         .bottomBar__rightInnerHour {
             padding-right: 3px;
+            color: #0a0a0a;
         }
         .bottomBar__straight {
             display: flex;

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import styles from "./BottomBar.module.scss";
 export function BottomBar({
   onProjectSelect,
+  onWindowSelect,
   selectedProjects,
   minimizedProjects,
   onProjectClick,
@@ -109,6 +110,7 @@ export function BottomBar({
           menu={menu}
           onProjectSelect={onProjectSelect}
           onDocumentSelect={onDocumentSelect}
+          onWindowSelect={onWindowSelect}
         />
       )}
     </div>

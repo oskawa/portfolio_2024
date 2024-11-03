@@ -4,9 +4,9 @@ import http from "./../axios/http";
 import { BottomBar } from "./computer_parts/bottomBar";
 import { WindowProject } from "./computer_parts/windowProject";
 import { PaintWindow } from "./computer_parts/paintWindow";
-import {ContactForm} from "./computer_parts/contact"
+import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 import styles from "./Computer.module.scss";
 
@@ -20,6 +20,7 @@ export function Computer() {
   const [menu, setMenu] = useState([]);
   const [links, setLinks] = useState([]);
   const [straight, setStraight] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState("");
 
   const handleStraight = () => {
     setStraight(!straight);
@@ -30,6 +31,12 @@ export function Computer() {
       setSelectedProjects([...selectedProjects, project]); // Add project to selected projects
     }
     setFocusWindow(project.slug); // Set focus to the selected project
+  };
+  const handleWindowSelect = (name) => {
+    if (!selectedProjects.find((p) => p.slug === name.slug)) {
+      setSelectedProjects([...selectedProjects, name]); // Add project to selected projects
+    }
+    setFocusWindow(name.slug); // Set focus to the selected project
   };
 
   const handleFocusWindow = (slug) => {
@@ -57,6 +64,10 @@ export function Computer() {
     setMinimizedProjects(minimizedProjects.filter((p) => p !== slug)); // Restore if minimized
   };
 
+  const handleBackgroundChange = (url) => {
+    setBackgroundImage(url); 
+  };
+
   async function getMenu() {
     try {
       const response = await http.get("menu");
@@ -75,15 +86,6 @@ export function Computer() {
       return null;
     }
   }
-
-  // useEffect(() => {
-  //   // Simulating the loading process
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000); // Simulates a 2-second loading delay (adjust as needed)
-
-  //   return () => clearTimeout(timer); // Cleanup timer on component unmount
-  // }, []);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -119,14 +121,28 @@ export function Computer() {
   return (
     <div className={`${styles.inner} ${straight ? styles.straight : ""}`}>
       {loading && <Loader progress={progress} />}
-      {document && (
-        <PaintWindow
-          onClick={() => handleFocusWindow("cv")} // Handle click to activate
-        />
-      )}
-      <ContactForm/>
+      <div
+        className={styles.desktop}
+        style={{ backgroundImage: backgroundImage, backgroundSize: "cover" }}
+      >
+        <button
+          onClick={() =>
+            handleWindowSelect({
+              type: "windowClassic",
+              title: "Fond d'écran",
+              slug: "back",
+              logo: "/img/icons/cv.png",
+            })
+          }
+        >
+          <img src="/img/icons/back.png" alt="" />
+          <span>Fond d'écran</span>
+        </button>
+      </div>
+
       <BottomBar
         onProjectSelect={handleProjectSelect}
+        onWindowSelect={handleWindowSelect}
         selectedProjects={selectedProjects}
         minimizedProjects={minimizedProjects}
         onProjectClick={handleClickBottomBarProject}
@@ -138,18 +154,51 @@ export function Computer() {
       />
 
       {selectedProjects &&
-        selectedProjects.map((project) => (
-          <div key={project.slug}>
-            <WindowProject
-              data={project.slug}
-              onClose={() => handleCloseWindow(project.slug)}
-              isFocus={focusWindow === project.slug} // Pass active state to WindowProject
-              onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
-              isMinimized={minimizedProjects.includes(project.slug)} // Pass minimized state
-              onMinimize={() => handleMinimizeWindow(project.slug)}
-            />
-          </div>
-        ))}
+        selectedProjects.map((project) => {
+          // Check if project.slug is "contact"
+          if (project.type == "windowClassic") {
+            return (
+              <div key={project.slug}>
+                <PaintWindow
+                  data={project}
+                  onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
+                  onClose={() => handleCloseWindow(project.slug)}
+                  isFocus={focusWindow === project.slug}
+                  isMinimized={minimizedProjects.includes(project.slug)}
+                  onMinimize={() => handleMinimizeWindow(project.slug)}
+                  onBackgroundChange={(data) => handleBackgroundChange(data)}
+                />
+              </div>
+            );
+          }
+          if (project.type == "windowContact") {
+            return (
+              <div key={project.slug}>
+                <ContactForm
+                  onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
+                  onMinimize={() => handleMinimizeWindow(project.slug)}
+                  onClose={() => handleCloseWindow(project.slug)}
+                  isFocus={focusWindow === project.slug}
+                  isMinimized={minimizedProjects.includes(project.slug)}
+                />
+              </div>
+            );
+          }
+
+          // Default rendering for other projects
+          return (
+            <div key={project.slug}>
+              <WindowProject
+                data={project.slug}
+                onClose={() => handleCloseWindow(project.slug)}
+                isFocus={focusWindow === project.slug}
+                onClick={() => handleFocusWindow(project.slug)}
+                isMinimized={minimizedProjects.includes(project.slug)}
+                onMinimize={() => handleMinimizeWindow(project.slug)}
+              />
+            </div>
+          );
+        })}
     </div>
   );
 }

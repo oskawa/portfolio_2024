@@ -7,9 +7,7 @@ const LanguageSwitcher = () => {
   // const locale = useLocale();
   // const pathname = usePathname();
   const locales = ['fr', 'en'];
-  console.log("Locale:", locale);
-  console.log("Locales:", locales);
-  console.log("Current Path:", asPath);
+ 
   if (!locales) {
     return null; // Or some fallback UI
   }

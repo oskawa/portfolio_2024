@@ -28,6 +28,38 @@ export function ContactForm({
     onMinimize(); // Call the minimize function from parent
   };
   useEffect(() => {
+    const header = document.getElementById("applicationheader-contact");
+    const elmnt = document.getElementById("application-contact");
+
+    const dragMouseDown = (e) => {
+      e.preventDefault();
+      let pos3 = e.clientX;
+      let pos4 = e.clientY;
+
+      const elementDrag = (e) => {
+        e.preventDefault();
+        const pos1 = pos3 - e.clientX;
+        const pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+        elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+      };
+
+      const closeDragElement = () => {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      };
+
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+    };
+    if (header) {
+      header.onmousedown = dragMouseDown; // Bind drag function to header
+    } else {
+      elmnt.onmousedown = dragMouseDown; // Bind drag function to the element itself
+    }
+
     // Apply the minimized state based on the prop
     setMini(isMinimized);
   }, [isMinimized]);
@@ -63,16 +95,16 @@ export function ContactForm({
       } ${isFocus ? styles.focus : styles.unfocus}
     ${isMinimized ? styles.mini : styles.unmini}
     `}
-      id={`application-cv`}
+      id={`application-contact`}
       onClick={onClick}
     >
       <div
         className={styles.applicationTop}
-        id={`applicationheader-cv`}
+        id={`applicationheader-contact`}
         draggable="true"
       >
         <div className={styles.applicationName}>
-          <img src="" alt="" />
+          <img src="/img/icons/contact.png" alt="" />
           <h4>Contactez-moi</h4>
         </div>
         <div className={styles.applicationButtons}>
@@ -88,107 +120,116 @@ export function ContactForm({
         </div>
       </div>
       <div className={styles.applicationInner}>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.applicationInner__fifty}>
-            <label htmlFor="name">Nom</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Nom"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              required
-            />
+        {responseMessage ? (
+          <div class={styles.applicationsInner__response}>
+            <img src="img/icons/check.png" alt="" />
+            <p>Merci pour votre message</p>
+            <p>Je reviens vers vous dès que possible.</p>
+            <p>Maxime</p>
           </div>
-          <div className={styles.applicationInner__fifty}>
-            <label htmlFor="fullname">Prénom</label>
-            <input
-              type="text"
-              id="fullname"
-              name="fullname"
-              placeholder="Prénom"
-              value={formData.fullname}
-              onChange={(e) =>
-                setFormData({ ...formData, fullname: e.target.value })
-              }
-              required
-            />
-          </div>
-
-          <div className={styles.applicationInner__fifty}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              required
-            />
-          </div>
-          <div className={styles.applicationInner__fifty}>
-            <label htmlFor="phone">Téléphone</label>
-            <input
-              type="phone"
-              id="phone"
-              name="phone"
-              placeholder="Téléphone"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-              required
-            />
-          </div>
-          <div className={styles.applicationInner__full}>
-            <label htmlFor="message">Votre message</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              placeholder="Votre message"
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-              required
-            />
-          </div>
-          <div className={styles.applicationInner__full}>
-            <label className={styles.applicationInner__fullCheckbox}>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className={styles.applicationInner__fifty}>
+              <label htmlFor="name">Nom</label>
               <input
-                type="checkbox"
-                checked={formData.accepted}
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Nom"
+                value={formData.name}
                 onChange={(e) =>
-                  setFormData({ ...formData, accepted: e.target.checked })
+                  setFormData({ ...formData, name: e.target.value })
                 }
                 required
               />
-              J'accepte d'être recontacté afin de répondre à ma demande
-            </label>
-          </div>
-          <button
-            type="submit"
-            disabled={
-              loading ||
-              !formData.name ||
-              !formData.fullname ||
-              !formData.email ||
-              !formData.message ||
-              !formData.accepted
-            }
-          >
-            {loading ? "Envoi en cours..." : "Envoyer mon message"}
-          </button>
+            </div>
+            <div className={styles.applicationInner__fifty}>
+              <label htmlFor="fullname">Prénom</label>
+              <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                placeholder="Prénom"
+                value={formData.fullname}
+                onChange={(e) =>
+                  setFormData({ ...formData, fullname: e.target.value })
+                }
+                required
+              />
+            </div>
 
-          {responseMessage && <p>{responseMessage}</p>}
-        </form>
+            <div className={styles.applicationInner__fifty}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
+            </div>
+            <div className={styles.applicationInner__fifty}>
+              <label htmlFor="phone">Téléphone</label>
+              <input
+                type="phone"
+                id="phone"
+                name="phone"
+                placeholder="Téléphone"
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+                required
+              />
+            </div>
+            <div className={styles.applicationInner__full}>
+              <label htmlFor="message">Votre message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                placeholder="Votre message"
+                value={formData.message}
+                onChange={(e) =>
+                  setFormData({ ...formData, message: e.target.value })
+                }
+                required
+              />
+            </div>
+            <div className={styles.applicationInner__full}>
+              <label className={styles.applicationInner__fullCheckbox}>
+                <input
+                  type="checkbox"
+                  checked={formData.accepted}
+                  onChange={(e) =>
+                    setFormData({ ...formData, accepted: e.target.checked })
+                  }
+                  required
+                />
+                J'accepte d'être recontacté afin de répondre à ma demande
+              </label>
+            </div>
+            <button
+              type="submit"
+              disabled={
+                loading ||
+                !formData.name ||
+                !formData.fullname ||
+                !formData.email ||
+                !formData.message ||
+                !formData.accepted
+              }
+            >
+              {loading ? "Envoi en cours..." : "Envoyer mon message"}
+            </button>
+
+            {responseMessage && <p>{responseMessage}</p>}
+          </form>
+        )}
       </div>
     </div>
   );

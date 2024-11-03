@@ -1,8 +1,10 @@
 .application {
     padding: 3px;
     position: absolute;
-
     width: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     height: auto;
     /* Window Content/Base Grey 2 */
     background: #c0c0c0;
@@ -236,6 +238,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
+            padding: 6px;
         }
         label {
             font-style: normal;
@@ -263,8 +266,8 @@
             width: 100%;
         }
         textarea {
-            margin-bottom: 10px;
             width: 100%;
+            resize: none;
         }
         .applicationInner__fullCheckbox {
             display: flex;
@@ -276,19 +279,19 @@
 
             /* Text/Copy */
             color: #222222;
-
+            text-align: center;
+            justify-content: center;
 
             input {
                 width: 13px;
                 height: 13px;
-
-                /* B&W/White */
                 background: #ffffff;
                 box-shadow:
                     inset -1px -1px 0px #ffffff,
                     inset 1px 1px 0px #808080,
                     inset -2px -2px 0px #dfdfdf,
                     inset 2px 2px 0px #0a0a0a;
+                margin-right: 5px;
             }
         }
         button {
@@ -325,5 +328,15 @@
                     inset 2px 2px 0px #808080;
             }
         }
+    }
+}
+
+.applicationsInner__response {
+    width: 100%;
+    text-align: center;
+    color: black;
+    p {
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
 }
