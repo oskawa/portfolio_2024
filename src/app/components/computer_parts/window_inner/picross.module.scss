@@ -1,0 +1,84 @@
+.clues {
+    display: flex;
+    flex-direction: column;
+
+    width: fit-content;
+}
+
+.rowClues {
+    display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+.rowClue{
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
+.clueCell {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    font-size: 12px;
+    color: black;
+}
+
+.columnClues {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    height: fit-content;
+    margin-left: 80px;
+}
+
+.columnClue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.gridContainer{
+    display: flex;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(10, 20px);
+    grid-template-rows: repeat(10, 20px);
+
+}
+
+.tile {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: background-color 0.2s, border 0.2s;
+    &.filled {
+        background-color: black;
+    }
+    &.marked {
+        background-color: yellow;
+    }
+}
+
+
+
+
+.tile.incorrect {
+    border: 2px solid red;
+}
+
+/* Buttons */
+.buttons {
+    margin-top: 10px;
+}

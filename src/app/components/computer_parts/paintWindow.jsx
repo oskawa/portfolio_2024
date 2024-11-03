@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
 import { BackWindow } from "./window_inner/back";
+import { PicrossWindow } from "./window_inner/picross";
 import styles from "./PaintWindow.module.scss";
 import http from "./../../axios/http";
 
@@ -124,7 +125,9 @@ export function PaintWindow({
         <CvWindow />
       ) : data.slug == "rubiks" ? (
         <RubiksWindow />
-      ) : data.slug == "back" ? (
+      ) : data.slug == "picross" ? (
+        <PicrossWindow />
+      ): data.slug == "back" ? (
         <BackWindow onBackgroundChange={handleBackgroundChange} onClose={onClose} />
       ) : (
         <BackWindow />

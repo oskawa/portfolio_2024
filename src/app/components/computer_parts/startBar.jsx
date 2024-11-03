@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import http from "./../../axios/http";
 import styles from "./StartBar.module.scss";
 import { WindowProject } from "./windowProject";
-
+import { translate } from "../../../utils/translate";
 // Fetch menu data
 
 export function StartBar({
@@ -12,8 +12,14 @@ export function StartBar({
   onDocumentSelect,
   onWindowSelect,
   menu,
+  lang,
 }) {
   const [error, setError] = useState(null);
+
+  const [content, setContent] = useState(null);
+  useEffect(() => {
+    // Fetch content or initialize state if needed
+  }, [lang]);
 
   if (error) {
     return <div className="startMenu">Error: {error}</div>;
@@ -30,7 +36,7 @@ export function StartBar({
             <div className={styles.startMenu__innerSingle}>
               <div className={styles.startMenu__innerSingle__title}>
                 <img src="/img/icons/projects.png" alt="" />
-                <h2>Les projets</h2>
+                <h2>{translate("projects", lang)}</h2>
               </div>
               {/* Iterate through the project taxonomies */}
               <div className={styles.startSubmenu__inner}>
@@ -123,7 +129,7 @@ export function StartBar({
               // onClick={onDocumentSelect}
               onClick={() =>
                 onWindowSelect({
-                  type:'windowClassic',
+                  type: "windowClassic",
                   title: "Curriculum",
                   slug: "cv",
                   logo: "/img/icons/cv.png",
@@ -141,7 +147,7 @@ export function StartBar({
               className={styles.startMenu__innerSingle}
               onClick={() =>
                 onWindowSelect({
-                  type:'windowContact',
+                  type: "windowContact",
                   title: "Contact",
                   slug: "contact",
                   logo: "/img/icons/contact.png",
@@ -169,7 +175,7 @@ export function StartBar({
                   className={styles.startSubmenu__innerSingle}
                   onClick={() =>
                     onWindowSelect({
-                      type:'windowClassic',
+                      type: "windowClassic",
                       title: "Rubiks",
                       slug: "rubiks",
                       logo: "/img/icons/rubiks.png",
@@ -179,6 +185,23 @@ export function StartBar({
                   <div className={styles.startSubmenu__innerSingle__title}>
                     <img src="/img/icons/rubiks.png" alt="" />
                     <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
+                  </div>
+                </div>
+                <div
+                  key="picross"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Picross",
+                      slug: "picross",
+                      logo: "/img/icons/picross.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/picross.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Picross</h3>
                   </div>
                 </div>
               </div>

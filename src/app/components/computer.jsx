@@ -7,10 +7,12 @@ import { PaintWindow } from "./computer_parts/paintWindow";
 import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
 import { useRouter } from "next/router";
+import { translate } from "../../utils/translate";
+
 
 import styles from "./Computer.module.scss";
 
-export function Computer() {
+export function Computer({lang}) {
   const [selectedProjects, setSelectedProjects] = useState([]); // Track the selected project
   const [focusWindow, setFocusWindow] = useState(null); // Track the active window
   const [document, setDocument] = useState(false); // Track the active window
@@ -25,6 +27,9 @@ export function Computer() {
   const handleStraight = () => {
     setStraight(!straight);
   };
+  useEffect(() => {
+    // Fetch content or initialize state if needed
+  }, [lang]);
 
   const handleProjectSelect = (project) => {
     if (!selectedProjects.find((p) => p.slug === project.slug)) {
@@ -136,7 +141,7 @@ export function Computer() {
           }
         >
           <img src="/img/icons/back.png" alt="" />
-          <span>Fond d'écran</span>
+          <span>{translate('personnalisation', lang)}</span>
         </button>
       </div>
 
@@ -151,6 +156,7 @@ export function Computer() {
         menu={menu}
         links={links}
         onStraight={handleStraight}
+        lang={lang}
       />
 
       {selectedProjects &&

@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import { StartBar } from "./startBar";
-import LanguageSwitcher from "./LanguageSwitcher";
+import LanguageSwitcher from "./../languageSwitcher";
 import { useState, useEffect } from "react";
+
 import styles from "./BottomBar.module.scss";
 export function BottomBar({
   onProjectSelect,
@@ -15,6 +16,7 @@ export function BottomBar({
   menu,
   links,
   onStraight,
+  lang
 }) {
   const [isStartMenuVisible, setIsStartMenuVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
@@ -94,14 +96,16 @@ export function BottomBar({
       <div className={styles.bottomBar__right}>
         <div className={styles.divider}></div>
         <div className={styles.bottomBar__rightInner}>
-          <div className={styles.bottomBar__rightInnerLanguage}></div>
+          <div className={styles.bottomBar__rightInnerLanguage}>
+
+          </div>
           <div className={styles.bottomBar__straight}>
             <button
               onClick={handleStraightButton}
               id={styles.straight}
             ></button>
           </div>
-          {/* <div className={styles.bottomBar__rightInnerHour}><LanguageSwitcher/></div> */}
+          <div className={styles.bottomBar__rightInnerHour}><LanguageSwitcher/></div>
           <div className={styles.bottomBar__rightInnerHour}>{currentTime}</div>
         </div>
       </div>
@@ -111,6 +115,7 @@ export function BottomBar({
           onProjectSelect={onProjectSelect}
           onDocumentSelect={onDocumentSelect}
           onWindowSelect={onWindowSelect}
+          lang = {lang}
         />
       )}
     </div>
