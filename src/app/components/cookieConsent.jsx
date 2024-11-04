@@ -28,7 +28,7 @@ export default function CookieConsent() {
   const handleConsent = (state) => {
     Cookies.set("cookie-consent-state", state, {
       // Set to your domain; omit for the current domain only
-      domain: process.env.NODE_ENV === 'production' ? 'https://portfolio-2024-delta-beryl.vercel.app' : undefined,
+      domain: process.env.NODE_ENV === 'production' ? 'portfolio-2024-delta-beryl.vercel.app' : undefined,
       path: '/',
       sameSite: 'Lax',  // Adjust based on your needs
       secure: process.env.NODE_ENV === 'production', // Secure cookies only on HTTPS
