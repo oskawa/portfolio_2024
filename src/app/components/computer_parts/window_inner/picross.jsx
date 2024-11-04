@@ -103,16 +103,18 @@ export function PicrossWindow() {
 
   return (
     <div className={styles.gameContainer}>
-      <div className={styles.columnClues}>
-        {columnClues.map((clue, index) => (
-          <div key={index} className={styles.columnClue}>
-            {clue.map((num, i) => (
-              <div className={styles.clueCell} key={i}>
-                {num}
-              </div>
-            ))}
-          </div>
-        ))}
+      <div className={styles.gameContainer__center}>
+        <div className={styles.columnClues}>
+          {columnClues.map((clue, index) => (
+            <div key={index} className={styles.columnClue}>
+              {clue.map((num, i) => (
+                <div className={styles.clueCell} key={i}>
+                  {num}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       {renderGrid()}

@@ -90,7 +90,7 @@ export function PaintWindow({
         upscale ? styles.upscale : styles.inactive
       } ${isFocus ? styles.focus : styles.unfocus}
       ${isMinimized ? styles.mini : styles.unmini}
-      ${data.slug == "back" ? styles.small : ""}
+      ${data.slug == "back" || data.slug == "picross" ? styles.small : ""}
       `}
       id={`application-${data.slug}`}
       onClick={onClick}
@@ -109,7 +109,7 @@ export function PaintWindow({
             className={`${styles.applicationButtons__inner} ${styles.applicationButtons__mini}`}
             onClick={handleMini}
           ></button>
-          {data.slug !== "back" && (
+          {(data.slug !== "back" && data.slug !== "picross") && (
             <button
               className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
               onClick={() => handleUpscale()}

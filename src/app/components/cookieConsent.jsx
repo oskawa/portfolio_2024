@@ -1,42 +1,75 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { GoogleTagManager } from '@next/third-parties/google';
-import Cookies from 'js-cookie';
+import { useState, useEffect } from "react";
+import { GoogleTagManager } from "@next/third-parties/google";
+import Cookies from "js-cookie";
+import styles from "./cookie.module.scss";
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export default function CookieConsent() {
-  const [cookieState, setCookieState] = useState('not-answered');
+  const [cookieState, setCookieState] = useState("not-answered");
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const state = Cookies.get('cookie-consent-state');
+    const state = Cookies.get("cookie-consent-state");
     if (state) setCookieState(state);
   }, []);
 
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 6000); // 2-second delay
+
+    return () => clearTimeout(timer); // Clean up the timer on component unmount
+  }, []);
+
   const handleConsent = (state) => {
-    Cookies.set('cookie-consent-state', state);
+    Cookies.set("cookie-consent-state", state);
     setCookieState(state);
   };
 
-  if (cookieState === 'not-answered') {
+  if (cookieState === "not-answered") {
     return (
-      <div className="fixed bottom-0 right-0 p-4 bg-gray-100 rounded-tl-lg">
-        <p>We use cookies to improve your experience. Do you accept?</p>
-        <button onClick={() => handleConsent('accepted')}>Accept</button>
-        <button onClick={() => handleConsent('rejected')}>Reject</button>
+      <div className={`${styles.cookieConsent} ${isVisible ? styles.visible : ""}`}>
+        <div className={styles.cookieConsentHeader}>
+          <div className={styles.applicationName}>
+            <img src="/img/icons/msn.png" alt="" />
+            <h4>Cookies - Vous avez un nouveau message !</h4>
+          </div>
+        </div>
+        <div className={styles.cookieConsent__inner}>
+          <div className={styles.cookieConsent__img} src="" alt="">
+            <img src="/img/msn.jpg" alt="" />
+          </div>
+          <div className={styles.cookieConsent__innerText}>
+            <p>
+              <span>Maxime<img src="/img/icons/16.png"></img> dit :</span>
+             
+              Kk, j'utilise des cookies, tu acceptes ?{" "}
+             
+            </p>
+            <div className={styles.cookieContent__buttons}>
+              <button onClick={() => handleConsent("accepted")}>
+                Carrément !
+              </button>
+              <button onClick={() => handleConsent("rejected")}>Ignorer</button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
-  if (cookieState === 'accepted') {
+  if (cookieState === "accepted") {
     return <GoogleTagManager gtmId={GTM_ID} />;
   }
 
   return (
     <button
       className="fixed bottom-4 right-4 p-2 bg-gray-200 rounded-full"
-      onClick={() => setCookieState('not-answered')}
+      onClick={() => setCookieState("not-answered")}
     >
       🍪
     </button>
