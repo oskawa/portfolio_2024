@@ -3,6 +3,7 @@ import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
 import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
+import { WebBrowser } from "./window_inner/webbrowser";
 import styles from "./PaintWindow.module.scss";
 import http from "./../../axios/http";
 
@@ -13,7 +14,7 @@ export function PaintWindow({
   isMinimized,
   onMinimize,
   onClose,
-  onBackgroundChange
+  onBackgroundChange,
 }) {
   const [loading, setLoading] = useState(false);
   const [upscale, setUpscale] = useState(false);
@@ -22,7 +23,7 @@ export function PaintWindow({
 
   const handleBackgroundChange = (data) => {
     setBackgroundData(data);
-    onBackgroundChange(data)
+    onBackgroundChange(data);
   };
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export function PaintWindow({
         upscale ? styles.upscale : styles.inactive
       } ${isFocus ? styles.focus : styles.unfocus}
       ${isMinimized ? styles.mini : styles.unmini}
-      ${data.slug == "back" ? styles.small : ''}
+      ${data.slug == "back" ? styles.small : ""}
       `}
       id={`application-${data.slug}`}
       onClick={onClick}
@@ -110,8 +111,8 @@ export function PaintWindow({
           ></button>
           {data.slug !== "back" && (
             <button
-            className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
-            onClick={() => handleUpscale()}
+              className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
+              onClick={() => handleUpscale()}
             ></button>
           )}
           <button
@@ -127,8 +128,13 @@ export function PaintWindow({
         <RubiksWindow />
       ) : data.slug == "picross" ? (
         <PicrossWindow />
-      ): data.slug == "back" ? (
-        <BackWindow onBackgroundChange={handleBackgroundChange} onClose={onClose} />
+      ) : data.slug == "back" ? (
+        <BackWindow
+          onBackgroundChange={handleBackgroundChange}
+          onClose={onClose}
+        />
+      ) : data.slug == "webbrowser" ? (
+        <WebBrowser href={data.href} />
       ) : (
         <BackWindow />
       )}

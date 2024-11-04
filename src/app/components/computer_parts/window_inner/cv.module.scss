@@ -140,3 +140,25 @@
         }
     }
 }
+
+
+@media screen and (max-width:568px) {
+    .applicationInner {
+        flex-direction: row-reverse;
+        .applicationInner__left{
+            width: 100%;
+            height: auto;
+            order: 2;
+            padding: 0;
+            box-shadow: unset;
+        }
+        .applicationInner__right{
+            width: 100%;
+            height: 94%;
+            order: 1;
+            .applicationInner__rightCanvas{
+                width: 100%;
+            }
+        }
+    }    
+}

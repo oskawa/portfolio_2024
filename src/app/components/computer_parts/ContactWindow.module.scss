@@ -340,3 +340,16 @@
         padding-bottom: 0;
     }
 }
+
+
+@media screen and (max-width: 568px) {
+    .application{
+        width: 95%;
+        
+        form{
+            .applicationInner__fifty {
+                width: 100%;
+            }
+        }
+    }
+}

@@ -8,6 +8,7 @@ import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
 import { useRouter } from "next/router";
 import { translate } from "../../utils/translate";
+import CookieConsent from './cookieConsent';
 
 
 import styles from "./Computer.module.scss";
@@ -205,6 +206,7 @@ export function Computer({lang}) {
             </div>
           );
         })}
+        <CookieConsent/>
     </div>
   );
 }
