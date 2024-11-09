@@ -204,6 +204,23 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Picross</h3>
                   </div>
                 </div>
+                <div
+                  key="minesweeper"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Démineur",
+                      slug: "minesweeper",
+                      logo: "/img/icons/minesweeper.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/minesweeper.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Démineur</h3>
+                  </div>
+                </div>
               </div>
             </div>
           )}

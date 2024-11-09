@@ -3,6 +3,7 @@ import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
 import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
+import { MinesweeperWindow } from "./window_inner/minesweeper";
 import { WebBrowser } from "./window_inner/webbrowser";
 import styles from "./PaintWindow.module.scss";
 import http from "./../../axios/http";
@@ -90,7 +91,9 @@ export function PaintWindow({
         upscale ? styles.upscale : styles.inactive
       } ${isFocus ? styles.focus : styles.unfocus}
       ${isMinimized ? styles.mini : styles.unmini}
-      ${data.slug == "back" || data.slug == "picross" ? styles.small : ""}
+      ${data.slug == "back" ? styles.small : ""}
+      ${data.slug == "picross" ? styles.auto : ""}
+      ${data.slug == "minesweeper" ? styles.auto : ""}
       `}
       id={`application-${data.slug}`}
       onClick={onClick}
@@ -109,7 +112,7 @@ export function PaintWindow({
             className={`${styles.applicationButtons__inner} ${styles.applicationButtons__mini}`}
             onClick={handleMini}
           ></button>
-          {(data.slug !== "back" && data.slug !== "picross") && (
+          {data.slug !== "back" && data.slug !== "picross" && (
             <button
               className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
               onClick={() => handleUpscale()}
@@ -128,6 +131,8 @@ export function PaintWindow({
         <RubiksWindow />
       ) : data.slug == "picross" ? (
         <PicrossWindow />
+      ) : data.slug == "minesweeper" ? (
+        <MinesweeperWindow />
       ) : data.slug == "back" ? (
         <BackWindow
           onBackgroundChange={handleBackgroundChange}

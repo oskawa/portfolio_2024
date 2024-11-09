@@ -1,0 +1,54 @@
+.board {
+    display: inline-grid;
+    padding: 10px;
+    grid-template-columns: repeat(10, 20px);
+    grid-template-rows: repeat(10, 20px);
+
+    background-color: #777;
+
+    .tile {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        user-select: none;
+        background: #c0c0c0;
+        box-shadow:
+            inset -1px -1px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset -2px -2px 0px #808080;
+
+        &.hidden {
+            background-color: #bbb;
+            cursor: pointer;
+        }
+        &.mine {
+            background-image: url("/img/minesweeper/mine.png");
+            background-color: red;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        &.number {
+            background-color: none;
+            /* Interactive Pieces */
+
+            
+
+            /* Window Content/Base Grey 2 */
+            background: #c0c0c0;
+            box-shadow:
+                inset -1px -1px 0px #ffffff,
+                inset 1px 1px 0px #0a0a0a,
+                inset -2px -2px 0px #dfdfdf;
+
+          
+        }
+        &.marked {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url("/img/minesweeper/flag.png");
+        }
+    }
+}

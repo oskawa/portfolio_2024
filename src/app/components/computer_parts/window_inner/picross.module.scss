@@ -1,3 +1,60 @@
+.title {
+    height: 96%;
+
+    color: black;
+    text-align: center;
+    .title__Inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+        padding: 1.5rem;
+        h2 {
+            margin-bottom: 1rem;
+        }
+        .picrossList {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            justify-content: space-between;
+            width: 100%;
+            gap: 1rem;
+            margin-top: 1rem;
+            li {
+                width: 47%;
+                button {
+                    width: 100%;
+                    border: none;
+                    padding: 5.5px 18px;
+                    background: #c0c0c0;
+                    color: black;
+                    box-shadow:
+                        inset -1px -1px 0px #0a0a0a,
+                        inset 1px 1px 0px #ffffff,
+                        inset -2px -2px 0px #808080,
+                        inset 2px 2px 0px #dfdfdf;
+                    display: block;
+                    cursor: pointer;
+                    &:focus {
+                        background: #c0c0c0;
+                        box-shadow:
+                            inset -1px -1px 0px #ffffff,
+                            inset 1px 1px 0px #0a0a0a,
+                            inset -2px -2px 0px #dfdfdf,
+                            inset 2px 2px 0px #808080;
+                    }
+                }
+            }
+        }
+        .howToPlay {
+            font-size: 11px;
+            max-width: 290px;
+            margin-top: 15px;
+        }
+    }
+}
+
 .clues {
     display: flex;
     flex-direction: column;
@@ -7,10 +64,10 @@
 
 .rowClues {
     display: flex;
-  flex-direction: column;
-  width: fit-content;
+    flex-direction: column;
+    width: fit-content;
 }
-.rowClue{
+.rowClue {
     display: flex;
     justify-content: flex-end;
     flex-direction: row;
@@ -29,9 +86,9 @@
 .columnClues {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
+    
     height: fit-content;
-    margin-left: 80px;
+    
 }
 
 .columnClue {
@@ -39,24 +96,40 @@
     flex-direction: column;
     align-items: center;
 }
-
+.gameReturn {
+    border: none;
+    padding: 5.5px 18px;
+    margin: 15px;
+    background: #c0c0c0;
+    color: black;
+    box-shadow:
+        inset -1px -1px 0px #0a0a0a,
+        inset 1px 1px 0px #ffffff,
+        inset -2px -2px 0px #808080,
+        inset 2px 2px 0px #dfdfdf;
+    display: block;
+    cursor: pointer;
+    &:focus {
+        background: #c0c0c0;
+        box-shadow:
+            inset -1px -1px 0px #ffffff,
+            inset 1px 1px 0px #0a0a0a,
+            inset -2px -2px 0px #dfdfdf,
+            inset 2px 2px 0px #808080;
+    }
+}
 .gameContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
+    align-items: flex-end;
     height: 100%;
+    padding: 15px;
     width: 100%;
 }
 
-.gridContainer{
+.gridContainer {
     display: flex;
-}
-.grid {
-    display: grid;
-    grid-template-columns: repeat(10, 20px);
-    grid-template-rows: repeat(10, 20px);
-
 }
 
 .tile {
@@ -66,7 +139,9 @@
     cursor: pointer;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    transition: background-color 0.2s, border 0.2s;
+    transition:
+        background-color 0.2s,
+        border 0.2s;
     &.filled {
         background-color: black;
     }
@@ -74,9 +149,6 @@
         background-color: yellow;
     }
 }
-
-
-
 
 .tile.incorrect {
     border: 2px solid red;

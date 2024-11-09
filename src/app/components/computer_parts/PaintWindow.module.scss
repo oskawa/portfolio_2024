@@ -15,6 +15,10 @@
         width: 450px;
         height: 448px;
     }
+    &.auto{
+        width: auto;
+        height: auto;
+    }
     &.upscale {
         top: 0 !important;
         left: 0 !important;

@@ -2,13 +2,77 @@ import { useEffect, useState } from "react";
 import styles from "./picross.module.scss";
 
 export function PicrossWindow() {
-  const gridSize = 10;
-  const imageArray = [
+  const [gridSize, setGridSize] = useState(10);
+  const [gridStyle, setGridStyle] = useState(null);
+  const [triggerButton, setTriggerButton] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(false);
+  const [tiles, setTiles] = useState(Array(gridSize * gridSize).fill(null));
+  const [imageArray, setImageArray] = useState([
     0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0,
     1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+  ]);
+
+  const puzzles = [
+    {
+      name: "Puzzle 1",
+      size: 10,
+      array: [
+        0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0,
+        0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1,
+        1, 1, 1, 0,
+      ],
+      // Add more 10x10 puzzles here
+    },
+    {
+      name: "Puzzle 2",
+      size: 10,
+      array: [
+        1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0,
+        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1,
+        1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0,
+        0, 0, 0, 1,
+      ],
+    },
+    {
+      name: "Puzzle 3",
+      size: 15,
+      array: [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1,
+        1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0,
+        1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+        0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1,
+        1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1,
+        1, 1, 1, 0, 1, 1, 1, 1, 1,
+      ],
+    },
+
+    // Add more grid sizes and puzzles as needed
   ];
+
+  const handleGridSizeChange = (index) => {
+    setGridSize(puzzles[index]["size"]);
+    setImageArray(puzzles[index]["array"]); // Default to the first puzzle for the chosen size
+    setTriggerButton(true);
+    setTiles(Array(puzzles[index]["size"] * puzzles[index]["size"]).fill(null));
+    setGridStyle({
+      display: "grid",
+      gridTemplateColumns: `repeat(${puzzles[index]["size"]}, 20px)`,
+      gridTemplateRows: `repeat(${puzzles[index]["size"]}, 20px)`,
+    });
+  };
+
+  const handleReturn = () => {
+    setTriggerButton(false);
+  };
 
   const convertTo2DArray = (flatArray, size) => {
     const twoDArray = [];
@@ -44,20 +108,28 @@ export function PicrossWindow() {
   );
   const columnClues = transposedGrid.map((col) => generateClues(col));
 
-  const [tiles, setTiles] = useState(Array(gridSize * gridSize).fill(null));
+  const toggleTileState = (index, click=false) => {
+    if (hoveredIndex || click) {
+      setTiles((prevTiles) => {
+        const newTiles = [...prevTiles];
+        if (newTiles[index] === "filled") {
+          newTiles[index] = "marked";
+        } else if (newTiles[index] === "marked") {
+          newTiles[index] = null;
+        } else {
+          newTiles[index] = "filled";
+        }
+        return newTiles;
+      });
+    }
+  };
+  const handleMouseEnter = () => {
+    setHoveredIndex(true);
+  };
 
-  const toggleTileState = (index) => {
-    setTiles((prevTiles) => {
-      const newTiles = [...prevTiles];
-      if (newTiles[index] === "filled") {
-        newTiles[index] = "marked";
-      } else if (newTiles[index] === "marked") {
-        newTiles[index] = null;
-      } else {
-        newTiles[index] = "filled";
-      }
-      return newTiles;
-    });
+  // Reset the hovered index when the mouse leaves
+  const handleMouseLeave = () => {
+    setHoveredIndex(false);
   };
 
   const checkSolution = () => {
@@ -74,50 +146,88 @@ export function PicrossWindow() {
       alert("Some tiles are incorrect. Keep trying!");
     }
   };
-  const renderGrid = () => (
-    <div className={styles.gridContainer}>
-      <div className={styles.rowClues}>
-        {rowClues.map((clue, rowIndex) => (
-          <div key={rowIndex} className={styles.rowClue}>
-            {clue.map((num, clueIndex) => (
-              <div key={clueIndex} className={styles.clueCell}>
-                <span>{num}</span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className={styles.grid}>
-        {tiles.map((tileState, index) => (
-          <div
-            key={index}
-            className={`${styles.tile} ${
-              tileState === "filled" ? styles.filled : ""
-            } ${tileState === "marked" ? styles.marked : ""}`}
-            onClick={() => toggleTileState(index)}
-          ></div>
-        ))}
-      </div>
-    </div>
-  );
 
   return (
-    <div className={styles.gameContainer}>
-      <div className={styles.gameContainer__center}>
-        <div className={styles.columnClues}>
-          {columnClues.map((clue, index) => (
-            <div key={index} className={styles.columnClue}>
-              {clue.map((num, i) => (
-                <div className={styles.clueCell} key={i}>
-                  {num}
-                </div>
+    <>
+      {!triggerButton && (
+        <div className={styles.title}>
+          <div className={styles.title__Inner}>
+            <h2>Picross</h2>
+            <h3>Sélection du puzzle:</h3>
+            <ul className={styles.picrossList}>
+              {puzzles.map((puzzle, index) => (
+                <li key={index}>
+                  <button onClick={() => handleGridSizeChange(index)}>
+                    {puzzle.name}
+                  </button>
+                </li>
               ))}
-            </div>
-          ))}
+            </ul>
+            <p className={styles.howToPlay}>
+              Comment jouer : Le Picross est un jeu de logique où le but est de
+              révéler une image cachée en remplissant une grille de cases.
+              Chaque ligne et colonne est accompagnée de chiffres indiquant
+              combien de cases successives doivent être remplies. En analysant
+              ces indices, on déduit quelles cases colorier pour compléter le
+              motif. C'est un mélange de déduction et de patience pour obtenir
+              une illustration finale.
+            </p>
+          </div>
         </div>
-      </div>
-
-      {renderGrid()}
-    </div>
+      )}
+      {triggerButton && (
+        <>
+          <button className={styles.gameReturn} onClick={handleReturn}>
+            Retour
+          </button>
+          <div className={styles.gameContainer}>
+            <div>
+              <div className={styles.columnClues}>
+                {columnClues.map((clue, index) => (
+                  <div key={index} className={styles.columnClue}>
+                    {clue.map((num, i) => (
+                      <div className={styles.clueCell} key={i}>
+                        {num}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={styles.gridContainer}>
+              <div className={styles.rowClues}>
+                {rowClues.map((clue, rowIndex) => (
+                  <div key={rowIndex} className={styles.rowClue}>
+                    {clue.map((num, clueIndex) => (
+                      <div key={clueIndex} className={styles.clueCell}>
+                        <span>{num}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <div
+                style={gridStyle}
+                onMouseDown={handleMouseEnter}
+                onMouseUp={handleMouseLeave}
+              >
+                {tiles.map((tileState, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.tile} ${
+                      tileState === "filled" ? styles.filled : ""
+                    } ${tileState === "marked" ? styles.marked : ""}`}
+                    onMouseEnter={() => toggleTileState(index)}
+                    onMouseUp={handleMouseLeave}
+                    onMouseDown={() => toggleTileState(index, true)}
+                    onClick={() => toggleTileState(index, true)}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }
