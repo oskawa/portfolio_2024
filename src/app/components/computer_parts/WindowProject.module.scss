@@ -91,11 +91,19 @@
         width: 100%;
         height: calc(100% - 28px);
         overflow-y: auto;
-        background: white;
+        background: grey;
+        padding: 40px;
         /* Minesweeper */
         box-shadow:
             inset 2px 2px 0px #ffffff,
             inset -2px -2px 0px #808080;
+
+        .applicationContent{
+            background-color: white;
+            box-shadow:
+            
+             -2px -2px 0px #808080;
+        }
         h5 {
             font-size: 20px;
             text-align: center;

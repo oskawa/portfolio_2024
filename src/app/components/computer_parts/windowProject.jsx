@@ -51,7 +51,7 @@ export function WindowProject({
 
     if (!elmnt) return; // Exit if the element doesn't exist
     const header = document.getElementById(`applicationheader-${data}`);
-   
+
     const dragMouseDown = (e) => {
       e.preventDefault();
       let pos3 = e.clientX;
@@ -135,16 +135,18 @@ export function WindowProject({
         </div>
       </div>
       <div className={styles.applicationInner}>
-        <h5>{details.title}</h5>
-        <h6>{details.subtitle}</h6>
-        <div className={styles.applicationInnerContent}>
-          {details.repeatable_content.map((layout, index) => (
-            <LayoutsFactory
-              key={index}
-              name={layout.acf_fc_layout}
-              {...layout}
-            />
-          ))}
+        <div className={styles.applicationContent}>
+          <h5>{details.title}</h5>
+          <h6>{details.subtitle}</h6>
+          <div className={styles.applicationInnerContent}>
+            {details.repeatable_content.map((layout, index) => (
+              <LayoutsFactory
+                key={index}
+                name={layout.acf_fc_layout}
+                {...layout}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

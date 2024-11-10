@@ -127,7 +127,7 @@ export function Computer({lang}) {
   return (
     <div className={`${styles.inner} ${straight ? styles.straight : ""}`}>
       {loading && <Loader progress={progress} />}
-      <CookieConsent/>
+      {!loading && <CookieConsent/>}
       <div
         className={styles.desktop}
         style={{ backgroundImage: backgroundImage, backgroundSize: "cover" }}

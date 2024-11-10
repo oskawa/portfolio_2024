@@ -221,6 +221,23 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Démineur</h3>
                   </div>
                 </div>
+                <div
+                  key="virtualvisit"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Visite virtuelle",
+                      slug: "virtualvisit",
+                      logo: "/img/icons/virtualvisit.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/virtualvisit.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Visite virtuelle</h3>
+                  </div>
+                </div>
               </div>
             </div>
           )}

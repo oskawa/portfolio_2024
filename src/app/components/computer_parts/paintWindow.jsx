@@ -4,6 +4,7 @@ import { RubiksWindow } from "./window_inner/rubiks";
 import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
 import { MinesweeperWindow } from "./window_inner/minesweeper";
+import { VirtualVisitWindow } from "./window_inner/virtualvisit";
 import { WebBrowser } from "./window_inner/webbrowser";
 import styles from "./PaintWindow.module.scss";
 import http from "./../../axios/http";
@@ -133,6 +134,8 @@ export function PaintWindow({
         <PicrossWindow />
       ) : data.slug == "minesweeper" ? (
         <MinesweeperWindow />
+      ) : data.slug == "virtualvisit" ? (
+        <VirtualVisitWindow />
       ) : data.slug == "back" ? (
         <BackWindow
           onBackgroundChange={handleBackgroundChange}
