@@ -1,6 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ref, push, set, onValue, onDisconnect, remove } from "firebase/database";
+import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
+import {
+  ref,
+  push,
+  set,
+  onValue,
+  onDisconnect,
+  remove,
+} from "firebase/database";
 
 import { database } from "../../../firebase";
 import { OrbitControls, PointerLockControls, useGLTF } from "@react-three/drei";
@@ -213,7 +220,7 @@ function Scene({ playerId }) {
   );
   const [otherPlayers, setOtherPlayers] = useState([]);
 
-  const { scene: modelScene } = useGLTF("gltf/scenetwo.glb");
+  const { scene: modelScene } = useGLTF("gltf/scenethree.glb");
   useEffect(() => {
     modelScene.traverse((child) => {
       if (child.material) child.material.metalness = 0;
@@ -221,10 +228,10 @@ function Scene({ playerId }) {
         child.geometry.computeBoundingBox();
         if (child.name.includes("wall") || child.name.includes("stair")) {
           collisionObjects.current.push(child);
+        } else if (child.name == "floor") {
         }
       }
     });
-    console.log(collisionObjects);
   }, [modelScene]);
 
   // Retrieve all players' positions except the current player
@@ -269,7 +276,7 @@ function Scene({ playerId }) {
     const userRef = ref(database, `players/${playerId}`);
     // Set up removal on disconnect
     onDisconnect(userRef).remove();
-  
+
     return () => {
       // Optionally remove player manually if you want to ensure they are removed immediately on unmount
       remove(userRef);
@@ -320,12 +327,32 @@ export function VirtualVisitWindow() {
   const max = 100; // Replace with any max value
   const randomInt = Math.floor(Math.random() * max);
   let playerId = "player" + randomInt;
+  const texture = useLoader(THREE.TextureLoader, "img/textures/wood-dif.jpg");
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(16,16); // Adjust as needed
+
+
+  const displacementMap = useLoader(
+    THREE.TextureLoader,
+    "img/textures/wood-displacement.png"
+  );
   return (
     <Canvas>
       <FPSMonitor />
       <ambientLight position={[10, 10, 5]} intensity={1} />
       <directionalLight position={[10, 10, 5]} intensity={2} />
       <Scene playerId={playerId} />
+      <mesh rotation={[-Math.PI / 2,0,0]}>
+        <planeGeometry args={[30, 30, 64, 64]} />
+        <meshStandardMaterial
+          map={texture}
+          displacementMap={displacementMap}
+          displacementScale={0.1}
+          transparent={true}
+        
+        />
+      </mesh>
     </Canvas>
   );
 }
