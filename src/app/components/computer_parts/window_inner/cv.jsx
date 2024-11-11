@@ -161,7 +161,11 @@ export function CvWindow() {
       <div className={styles.applicationBottom}>
         <div className={styles.applicationBottom__color}>
           <div className={styles.applicationBottom__colorSelected}>
-            <div className={styles.selected}></div>
+            <div
+              className={styles.selected}
+              style={{ backgroundColor: strokeColor }}
+            ></div>
+
             <div className={styles.unselected}></div>
           </div>
           <div className={styles.applicationBottom__colorChoice}>
