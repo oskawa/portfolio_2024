@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
+import http from "../../../axios/http";
+
 import {
   ref,
   push,
@@ -323,15 +325,37 @@ function FPSMonitor() {
   return null;
 }
 
+async function getPaintings() {
+  try {
+    const response = await http.get("paintListing");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching menu:", error);
+    return null;
+  }
+}
+
 export function VirtualVisitWindow() {
+  const [paints, setPaints] = useState([]);
+  const [loading, setLoading] = useState([]);
+
+  useEffect(() => {
+    const fetchPaints = async () => {
+      const PaintsAsync = await getPaintings();
+      console.log(PaintsAsync);
+      setPaints(PaintsAsync);
+      setLoading(false);
+    };
+    fetchPaints();
+  }, []);
+
   const max = 100; // Replace with any max value
   const randomInt = Math.floor(Math.random() * max);
   let playerId = "player" + randomInt;
   const texture = useLoader(THREE.TextureLoader, "img/textures/wood-dif.jpg");
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(16,16); // Adjust as needed
-
+  texture.repeat.set(16, 16); // Adjust as needed
 
   const displacementMap = useLoader(
     THREE.TextureLoader,
@@ -339,20 +363,42 @@ export function VirtualVisitWindow() {
   );
   return (
     <Canvas>
-      <FPSMonitor />
-      <ambientLight position={[10, 10, 5]} intensity={1} />
-      <directionalLight position={[10, 10, 5]} intensity={2} />
-      <Scene playerId={playerId} />
-      <mesh rotation={[-Math.PI / 2,0,0]}>
-        <planeGeometry args={[30, 30, 64, 64]} />
-        <meshStandardMaterial
-          map={texture}
-          displacementMap={displacementMap}
-          displacementScale={0.1}
-          transparent={true}
-        
-        />
-      </mesh>
+      {!loading && (
+        <>
+          <FPSMonitor />
+          <ambientLight position={[10, 10, 5]} intensity={1} />
+          <directionalLight position={[10, 10, 5]} intensity={2} />
+          <Scene playerId={playerId} />
+          <mesh rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[30, 30, 64, 64]} />
+            <meshStandardMaterial
+              map={texture}
+              displacementMap={displacementMap}
+              displacementScale={0.1}
+              transparent={true}
+            />
+          </mesh>
+          {paints.map((painting, index) => {
+            // Load texture from the image URL
+            console.log(painting.paint_x)
+            console.log(painting.paint_y)
+            let img = painting.image['url']
+            const texture = useLoader(THREE.TextureLoader, img);
+
+            // Set default values for position
+            const x = painting.paint_x || 0;
+            const z = painting.paint_y || 0;
+            const y = 1; // Default Z position
+
+            return (
+              <mesh key={index} position={[x, y, z]}>
+                <planeGeometry args={[painting.image['sizes']['large-width']/1000, painting.image['sizes']['large-height']/1000]} /> {/* Adjust size as needed */}
+                <meshStandardMaterial  />
+              </mesh>
+            );
+          })}
+        </>
+      )}
     </Canvas>
   );
 }
