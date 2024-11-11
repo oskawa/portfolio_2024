@@ -7,6 +7,9 @@
     font-family: var(--bios);
     font-size: 16px;
     color: #808080;
+    background: hsl(154 50% 5%);
+    color: hsl(154 84% 70%);
+    text-shadow: 0 0 5px hsl(154 84% 70%);
     .container {
         height: 100%;
         display: flex;

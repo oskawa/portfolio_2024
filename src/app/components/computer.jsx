@@ -132,6 +132,8 @@ export function Computer({lang}) {
         className={styles.desktop}
         style={{ backgroundImage: backgroundImage, backgroundSize: "cover" }}
       >
+      <div className={styles.line}></div>
+      <div className={styles.scanline}></div>
         <button
           onClick={() =>
             handleWindowSelect({
