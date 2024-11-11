@@ -1,16 +1,25 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN;
+const DATABASE_URL = process.env.NEXT_PUBLIC_DATABASE_URL;
+const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
+const STORAGE_BUCKET = process.env.NEXT_PUBLIC_STORAGE;
+const MESSAGING = process.env.NEXT_PUBLIC_MESSAGING;
+const APP_ID = process.env.NEXT_PUBLIC_APP_ID;
+
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBsUc8FkQDblTNr-X1GWPHXHjQMBMCKHbc",
-  authDomain: "visite-virtuelle-aea85.firebaseapp.com",
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
   databaseURL:
-    "https://visite-virtuelle-aea85-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "visite-virtuelle-aea85",
-  storageBucket: "visite-virtuelle-aea85.firebasestorage.app",
-  messagingSenderId: "740577465881",
-  appId: "1:740577465881:web:7f273b8a07ba2ee36bbc88",
+  DATABASE_URL,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING,
+  appId: APP_ID,
 };
 
 // Initialize Firebase
