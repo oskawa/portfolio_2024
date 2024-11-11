@@ -382,8 +382,13 @@ export function VirtualVisitWindow() {
             // Load texture from the image URL
             console.log(painting.paint_x)
             console.log(painting.paint_y)
-            let img = painting.image['url']
-            const texture = useLoader(THREE.TextureLoader, img);
+            let img = painting.image['url'];
+
+            // Load the texture and set the crossOrigin property
+            const texture = useLoader(THREE.TextureLoader, img, (texture) => {
+              texture.crossOrigin = null;  // This enables CORS handling
+            });
+            
 
             // Set default values for position
             const x = painting.paint_x || 0;
@@ -393,7 +398,7 @@ export function VirtualVisitWindow() {
             return (
               <mesh key={index} position={[x, y, z]}>
                 <planeGeometry args={[painting.image['sizes']['large-width']/1000, painting.image['sizes']['large-height']/1000]} /> {/* Adjust size as needed */}
-                <meshStandardMaterial  />
+                <meshStandardMaterial map={texture}   />
               </mesh>
             );
           })}
