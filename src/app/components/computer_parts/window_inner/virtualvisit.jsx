@@ -15,9 +15,17 @@ import { database } from "../../../firebase";
 import { OrbitControls, PointerLockControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import Stats from "stats.js"; // Import the stats.js library
-function Player({ collisionObjects, position, updatePosition }) {
+import styles from "./virtualvisit.module.scss";
+function Player({
+  collisionObjects,
+  position,
+  updatePosition,
+  disableControls,
+  onUnlock,
+}) {
   const { camera } = useThree();
   const playerRef = useRef(null);
+  const controlsRef = useRef();
   const cubeBoundingCamera = useRef(new THREE.Vector3(0, 0, 0));
   const velocity = new THREE.Vector3();
   const direction = new THREE.Vector3();
@@ -35,19 +43,6 @@ function Player({ collisionObjects, position, updatePosition }) {
   useEffect(() => {
     camera.position.set(0, 1.5, -2);
   }, [camera]);
-
-  useFrame(() => {
-    if (cubeBoundingCamera.current) {
-      // Update the bounding cube position based on the camera's position
-      cubeBoundingCamera.current.position.set(
-        camera.position.x,
-        camera.position.y,
-        camera.position.z
-      );
-      position = cubeBoundingCamera.current.position;
-      updatePosition(position);
-    }
-  });
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -109,12 +104,32 @@ function Player({ collisionObjects, position, updatePosition }) {
     };
   }, []);
 
+  useEffect(() => {
+    const controls = controlsRef.current;
+    if (controls) {
+      const handleUnlock = () => {
+        onUnlock(); // Call the provided function when unlocked
+      };
+
+      controls.addEventListener("unlock", handleUnlock);
+      return () => controls.removeEventListener("unlock", handleUnlock);
+    }
+  }, [onUnlock]);
+
   // Movement and collision detection with cube bounding camera
   useFrame((state, delta) => {
-    if (playerRef.current) {
-      playerRef.current.position.set(position.x, position.y, position.z);
-    }
+    if (cubeBoundingCamera.current) {
+      // Update the bounding cube position based on the camera's position
+      cubeBoundingCamera.current.position.set(
+        camera.position.x,
+        camera.position.y,
+        camera.position.z
+      );
 
+      position = cubeBoundingCamera.current.position;
+
+      updatePosition(position);
+    }
     direction.set(0, 0, 0);
     if (move.forward) direction.z -= 1;
     if (move.backward) direction.z += 1;
@@ -205,7 +220,7 @@ function Player({ collisionObjects, position, updatePosition }) {
 
   return (
     <>
-      <PointerLockControls />
+      {!disableControls && <PointerLockControls ref={controlsRef} />}
       {/* Invisible cube surrounding the camera for collision detection */}
       <mesh ref={cubeBoundingCamera}>
         <boxGeometry args={[0.4, 0.4, 0.4]} />
@@ -215,7 +230,7 @@ function Player({ collisionObjects, position, updatePosition }) {
   );
 }
 
-function Scene({ playerId }) {
+function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
   const collisionObjects = useRef([]);
   const [playerPosition, setPlayerPosition] = useState(
     new THREE.Vector3(0, 1.5, -2)
@@ -250,9 +265,11 @@ function Scene({ playerId }) {
         if (id !== playerId) {
           // Exclude current player
           const pos = playersData[id];
+
           updatedPlayers.push({
             id,
             position: new THREE.Vector3(pos.x, pos.y, pos.z),
+            color: pos.color,
           });
         }
       }
@@ -271,7 +288,12 @@ function Scene({ playerId }) {
 
   const updatePlayerPositionInFirebase = (position) => {
     const playerRef = ref(database, "players/" + playerId);
-    set(playerRef, { x: position.x, y: position.y, z: position.z });
+    set(playerRef, {
+      x: position.x,
+      y: position.y,
+      z: position.z,
+      color: selectedColor,
+    });
   };
 
   useEffect(() => {
@@ -299,11 +321,13 @@ function Scene({ playerId }) {
         collisionObjects={collisionObjects}
         position={playerPosition}
         updatePosition={updatePosition}
+        disableControls={disableControls}
+        onUnlock={onUnlock}
       />
       {otherPlayers.map((player) => (
         <mesh key={player.id} position={player.position}>
           <boxGeometry args={[0.5, 0.5, 0.5]} />
-          <meshStandardMaterial color="blue" />
+          <meshStandardMaterial color={player.color} />
         </mesh>
       ))}
     </>
@@ -338,16 +362,30 @@ async function getPaintings() {
 export function VirtualVisitWindow() {
   const [paints, setPaints] = useState([]);
   const [loading, setLoading] = useState([]);
+  const [nolock, setNolock] = useState(true);
+  const [selectedColor, setSelectedColor] = useState("#ffffff");
+
+  const [showEscapeMenu, setShowEscapeMenu] = useState(false);
 
   useEffect(() => {
     const fetchPaints = async () => {
       const PaintsAsync = await getPaintings();
-      console.log(PaintsAsync);
+
       setPaints(PaintsAsync);
       setLoading(false);
     };
     fetchPaints();
   }, []);
+
+  const handleNoLock = () => {
+    setNolock(!nolock);
+  };
+  const handleDisableControls = () => {
+    setShowEscapeMenu(true);
+  };
+  const handleColorChange = (event) => {
+    setSelectedColor(event.target.value); // Update the color state
+  };
 
   const max = 100; // Replace with any max value
   const randomInt = Math.floor(Math.random() * max);
@@ -362,48 +400,118 @@ export function VirtualVisitWindow() {
     "img/textures/wood-displacement.png"
   );
   return (
-    <Canvas>
-      {!loading && (
+    <div className={styles.inner}>
+      {nolock && (
         <>
-          <FPSMonitor />
-          <ambientLight position={[10, 10, 5]} intensity={1} />
-          <directionalLight position={[10, 10, 5]} intensity={2} />
-          <Scene playerId={playerId} />
-          <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[30, 30, 64, 64]} />
-            <meshStandardMaterial
-              map={texture}
-              displacementMap={displacementMap}
-              displacementScale={0.1}
-              transparent={true}
-            />
-          </mesh>
-          {paints.map((painting, index) => {
-            // Load texture from the image URL
-            console.log(painting.paint_x)
-            console.log(painting.paint_y)
-            let img = painting.image['url'];
-
-            // Load the texture and set the crossOrigin property
-            const texture = useLoader(THREE.TextureLoader, img, (texture) => {
-              texture.crossOrigin = null;  // This enables CORS handling
-            });
-            
-
-            // Set default values for position
-            const x = painting.paint_x || 0;
-            const z = painting.paint_y || 0;
-            const y = 1; // Default Z position
-
-            return (
-              <mesh key={index} position={[x, y, z]}>
-                <planeGeometry args={[painting.image['sizes']['large-width']/1000, painting.image['sizes']['large-height']/1000]} /> {/* Adjust size as needed */}
-                <meshStandardMaterial map={texture}   />
-              </mesh>
-            );
-          })}
+          <div className={styles.home}>
+            <h2>Visite virtuelle</h2>
+            <p>
+              Invitez vos amis à découvrir une salle d'exposition où vous pouvez
+              vous déplacer librement pour découvrir des oeuvres créées avec
+              passion.
+            </p>
+            <div className={styles.color}>
+              <label htmlFor="colorPicker">Choisissez une couleur:</label>
+              <input
+                id="colorPicker"
+                type="color"
+                value={selectedColor}
+                onChange={handleColorChange}
+              />
+            </div>
+            <button onClick={handleNoLock}>Découvrir l'exposition</button>
+            <div className={styles.howToPlay}>
+              <img src="./img/virtual/howtoplay.png" alt="" />
+            </div>
+          </div>
         </>
       )}
-    </Canvas>
+      {showEscapeMenu && (
+        <div className={styles.escapeMenu}>
+          {/* Displayed when Escape is pressed */}
+          <div className={styles.escapeMenu__Inner}>
+            <p>Pause</p>
+            <button onClick={() => setShowEscapeMenu(false)}>Resume</button>
+          </div>
+        </div>
+      )}
+      {!nolock && (
+        <Canvas>
+          {!loading && (
+            <>
+             
+              <ambientLight position={[10, 10, 5]} intensity={1} />
+              <directionalLight position={[10, 10, 5]} intensity={2} />
+              <Scene
+                playerId={playerId}
+                disableControls={showEscapeMenu}
+                onUnlock={handleDisableControls}
+                selectedColor={selectedColor}
+              />
+              <mesh rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[30, 30, 64, 64]} />
+                <meshStandardMaterial
+                  map={texture}
+                  displacementMap={displacementMap}
+                  displacementScale={0.1}
+                  transparent={true}
+                />
+              </mesh>
+              {paints.map((painting, index) => {
+                // Load texture from the image URL
+
+                let img = painting.image["url"];
+
+                // Load the texture and set the crossOrigin property
+                const texture = useLoader(
+                  THREE.TextureLoader,
+                  img,
+                  (texture) => {
+                    texture.crossOrigin = "anonymous"; // This enables CORS handling
+                  }
+                );
+
+                // Set default values for position
+                const x = painting.paint_x || 0;
+                const z = painting.paint_y || 0;
+                const y = 1.9; // Default Z position
+                let rotationY = 0; // No rotation needed for "north"
+                switch (painting.face) {
+                  case "south":
+                    rotationY = Math.PI; // 180 degrees
+                    break;
+                  case "east":
+                    rotationY = Math.PI / 2; // 90 degrees
+                    break;
+                  case "west":
+                    rotationY = -Math.PI / 2; // -90 degrees
+                    break;
+                  // "north" is the default case, so no need for rotation
+                  default:
+                    break;
+                }
+
+                return (
+                  <mesh
+                    key={index}
+                    position={[x, y, z]}
+                    rotation={[0, rotationY, 0]}
+                  >
+                    <planeGeometry
+                      args={[
+                        painting.image["sizes"]["large-width"] / 500,
+                        painting.image["sizes"]["large-height"] / 500,
+                      ]}
+                    />{" "}
+                    {/* Adjust size as needed */}
+                    <meshStandardMaterial map={texture} />
+                  </mesh>
+                );
+              })}
+            </>
+          )}
+        </Canvas>
+      )}
+    </div>
   );
 }

@@ -107,16 +107,33 @@ export function PicrossWindow() {
     grid.map((row) => row[colIndex])
   );
   const columnClues = transposedGrid.map((col) => generateClues(col));
-
-  const toggleTileState = (index, click=false) => {
-    if (hoveredIndex || click) {
+  const handleContextMenu = (event, index) => {
+    // Prevent the default context menu (right-click menu)
+    event.preventDefault();
+    toggleTileState(event, index);
+    console.log("Right click detected, context menu prevented");
+  };
+  const toggleTileState = (event, index, click = false) => {
+    if (event.button === 2) {
+      setTiles((prevTiles) => {
+        const newTiles = [...prevTiles];
+        if (newTiles[index] === "marked") {
+          newTiles[index] = null;
+        } else if (newTiles[index] === "filled") {
+          newTiles[index] = "marked";
+        } else if (newTiles[index] === null) {
+          newTiles[index] = "marked";
+        }
+        return newTiles;
+      });
+    } else if (hoveredIndex || click) {
       setTiles((prevTiles) => {
         const newTiles = [...prevTiles];
         if (newTiles[index] === "filled") {
-          newTiles[index] = "marked";
-        } else if (newTiles[index] === "marked") {
           newTiles[index] = null;
-        } else {
+        } else if (newTiles[index] === null) {
+          newTiles[index] = "filled";
+        }else if (newTiles[index] === "marked") {
           newTiles[index] = "filled";
         }
         return newTiles;
@@ -206,21 +223,15 @@ export function PicrossWindow() {
                   </div>
                 ))}
               </div>
-              <div
-                style={gridStyle}
-                onMouseDown={handleMouseEnter}
-                onMouseUp={handleMouseLeave}
-              >
+              <div style={gridStyle}>
                 {tiles.map((tileState, index) => (
                   <div
                     key={index}
                     className={`${styles.tile} ${
                       tileState === "filled" ? styles.filled : ""
                     } ${tileState === "marked" ? styles.marked : ""}`}
-                    onMouseEnter={() => toggleTileState(index)}
-                    onMouseUp={handleMouseLeave}
-                    onMouseDown={() => toggleTileState(index, true)}
-                    onClick={() => toggleTileState(index, true)}
+                    onClick={(event) => toggleTileState(event, index, true)}
+                    onContextMenu={(event) => handleContextMenu(event, index)}
                   ></div>
                 ))}
               </div>

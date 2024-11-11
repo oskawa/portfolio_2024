@@ -126,6 +126,7 @@
     height: 100%;
     padding: 15px;
     width: 100%;
+    user-select: none;
 }
 
 .gridContainer {
@@ -135,6 +136,7 @@
 .tile {
     width: 20px;
     height: 20px;
+    user-select: none;
     background-color: white;
     cursor: pointer;
     border: 1px solid #ccc;

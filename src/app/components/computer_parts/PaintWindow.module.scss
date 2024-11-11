@@ -1,9 +1,13 @@
 .application {
     padding: 3px;
     position: absolute;
-    top: 10%;
+    
     width: 90%;
     height: 90vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    
     /* Window Content/Base Grey 2 */
     background: #c0c0c0;
     box-shadow:
@@ -25,6 +29,7 @@
         right: 0;
         bottom: 0;
         width: 100%;
+        transform: unset;
         height: 97vh;
     }
     &.mini {

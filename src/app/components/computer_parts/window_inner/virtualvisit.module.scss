@@ -1,49 +1,100 @@
-.board {
-    display: inline-grid;
-    padding: 10px;
-    grid-template-columns: repeat(10, 20px);
-    grid-template-rows: repeat(10, 20px);
-
-    background-color: #777;
-
-    .tile {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        user-select: none;
+.home {
+    display: flex;
+    flex-direction: column;
+    height: 98%;
+    justify-content: center;
+    width: 60%;
+    margin: auto;
+    text-align: center;
+    color: black;
+    h2 {
+        margin-bottom: 1rem;
+    }
+    p {
+        margin-bottom: 1rem;
+    }
+    button {
+        width: fit-content;
+        border: none;
+        padding: 5.5px 18px;
         background: #c0c0c0;
+        color: black;
         box-shadow:
             inset -1px -1px 0px #0a0a0a,
             inset 1px 1px 0px #ffffff,
-            inset -2px -2px 0px #808080;
-
-        &.hidden {
-            background-color: #bbb;
-            cursor: pointer;
-        }
-        &.mine {
-            background-image: url("/img/minesweeper/mine.png");
-            background-color: red;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        &.number {
-            background-color: none;
-            /* Interactive Pieces */
-            /* Window Content/Base Grey 2 */
+            inset -2px -2px 0px #808080,
+            inset 2px 2px 0px #dfdfdf;
+        display: block;
+        cursor: pointer;
+        margin: 0 auto;
+        
+        &:focus {
             background: #c0c0c0;
             box-shadow:
                 inset -1px -1px 0px #ffffff,
                 inset 1px 1px 0px #0a0a0a,
-                inset -2px -2px 0px #dfdfdf;
+                inset -2px -2px 0px #dfdfdf,
+                inset 2px 2px 0px #808080;
         }
-        &.marked {
-            background-repeat: no-repeat;
-            background-position: center;
-            background-image: url("/img/minesweeper/flag.png");
+    }
+}
+.inner{
+    position: relative;
+    height: calc(100% - 20px);
+    .escapeMenu{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background-color: rgba(1,1,1,0.6);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        .escapeMenu__Inner{
+            p{
+                margin-bottom: 1rem;
+            }
+            button {
+                width: fit-content;
+                border: none;
+                padding: 5.5px 18px;
+                background: #c0c0c0;
+                color: black;
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #ffffff,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #dfdfdf;
+                display: block;
+                cursor: pointer;
+                margin: 0 auto;
+                
+                &:focus {
+                    background: #c0c0c0;
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
         }
+    }
+}
+.howToPlay{
+    margin-top: 2rem;
+}
+.color{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    label{
+        margin-right: 1rem;
     }
 }

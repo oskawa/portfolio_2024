@@ -9,6 +9,25 @@ export function CvWindow() {
   const [image, setImage] = useState([]);
   const [strokeColor, setStrokeColor] = useState("red"); // Default color
 
+  const icons = [
+    "brush",
+    "circle",
+    "curved-line",
+    "eraser",
+    "fill-with-color",
+    "free-form-select",
+    "line",
+    "magnifier",
+    "pencil",
+    "pick-color",
+    "polygon",
+    "rectangle",
+    "rounded-rectangle",
+    "select",
+    "spray",
+    "text",
+  ];
+
   const colors = [
     "#FF0000",
     "#00FF00",
@@ -52,7 +71,7 @@ export function CvWindow() {
       try {
         const data = await getCv();
         setImage(data);
-     
+
         const img = new Image();
         img.src = data[0].image; // Use data.cv_image here, not image.cv_image
         img.onload = () => {
@@ -112,8 +131,14 @@ export function CvWindow() {
       <div className={styles.applicationInner}>
         <div className={styles.applicationInner__left}>
           <ul className={styles.applicationInner__leftTools}>
-            <li></li>
-            <li></li>
+            {icons.map((icon, index) => (
+              <li
+                key={index}
+                className={icon == "pencil" ? styles.active : ""} // Apply 'active' class conditionally
+              >
+                <img src={`./img/paint/${icon}.png`} alt={icon} />
+              </li>
+            ))}
           </ul>
           {image && image.length > 0 && image[0].pdf && (
             <div className={styles.applicationInner__leftTools_download}>

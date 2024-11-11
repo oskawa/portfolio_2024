@@ -16,7 +16,7 @@ export function BottomBar({
   menu,
   links,
   onStraight,
-  lang
+  lang,
 }) {
   const [isStartMenuVisible, setIsStartMenuVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
@@ -24,9 +24,27 @@ export function BottomBar({
   const toggleStartMenu = () => {
     setIsStartMenuVisible((prev) => !prev); // Toggle start menu visibility
   };
+  const hideStartMenu = () => {
+    console.log("HIDE");
+    setIsStartMenuVisible(false); // Toggle start menu visibility
+  };
+
+  const handleProjectSelect = (project) => {
+    onProjectSelect(project);  // Call the function passed from the parent
+    hideStartMenu();        // Hide the start menu after project selection
+  };
+  const handleWindowSelect = (window) => {
+    onWindowSelect(window);  // Call the function passed from the parent
+    hideStartMenu();        // Hide the start menu after project selection
+  };
+  const handleDocSelect = (project) => {
+    onDocumentSelect();  // Call the function passed from the parent
+    hideStartMenu();        // Hide the start menu after project selection
+  };
 
   const handleStraightButton = () => {
     onStraight(); // Call the callback with the variable
+    setIsStartMenuVisible(false);
   };
 
   useEffect(() => {
@@ -63,7 +81,6 @@ export function BottomBar({
                   return (
                     <li key={link.link}>
                       <a href={link.link} target="_blank">
-
                         <img src={link.image} alt="" />
                       </a>
                     </li>
@@ -85,7 +102,10 @@ export function BottomBar({
                       ? styles.minimized
                       : ""
                   }`}
-                  onClick={() => onProjectClick(project.slug)}
+                  onClick={() => {
+                    onProjectClick(project.slug); // Call the function passed as prop
+                    hideStartMenu(); // Directly call the hideStartMenu function here
+                  }}
                 >
                   <img src={project.logo} alt="" />
                   <h5>{project.title}</h5>
@@ -97,26 +117,26 @@ export function BottomBar({
       <div className={styles.bottomBar__right}>
         <div className={styles.divider}></div>
         <div className={styles.bottomBar__rightInner}>
-          <div className={styles.bottomBar__rightInnerLanguage}>
-
-          </div>
+          <div className={styles.bottomBar__rightInnerLanguage}></div>
           <div className={styles.bottomBar__straight}>
             <button
               onClick={handleStraightButton}
               id={styles.straight}
             ></button>
           </div>
-          <div className={styles.bottomBar__rightInnerHour}><LanguageSwitcher/></div>
+          <div className={styles.bottomBar__rightInnerHour}>
+            <LanguageSwitcher />
+          </div>
           <div className={styles.bottomBar__rightInnerHour}>{currentTime}</div>
         </div>
       </div>
       {isStartMenuVisible && (
         <StartBar
           menu={menu}
-          onProjectSelect={onProjectSelect}
-          onDocumentSelect={onDocumentSelect}
-          onWindowSelect={onWindowSelect}
-          lang = {lang}
+          onProjectSelect={handleProjectSelect}
+          onDocumentSelect={handleDocSelect}
+          onWindowSelect={handleWindowSelect}
+          lang={lang}
         />
       )}
     </div>

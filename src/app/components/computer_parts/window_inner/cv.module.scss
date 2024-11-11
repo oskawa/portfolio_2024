@@ -12,12 +12,43 @@
         padding: 1px 3px;
         gap: 8px;
         height: 100%;
-    
+
         background: #c0c0c0;
         box-shadow:
             inset -1px 0px 0px #0a0a0a,
             inset -2px -2px 0px #808080;
         position: relative;
+        .applicationInner__leftTools {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            li {
+                width: 50%;
+                padding: 8px;
+                aspect-ratio: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                /* Window Content/Base Grey 2 */
+                background: #c0c0c0;
+                /* Window Borders */
+                box-shadow:
+                    inset -1px -1px 0px #0a0a0a,
+                    inset 1px 1px 0px #ffffff,
+                    inset -2px -2px 0px #808080,
+                    inset 2px 2px 0px #dfdfdf;
+                &.active {
+                    background: #dfdfdf;
+                    /* Window Pressed */
+                    box-shadow:
+                        inset -1px -1px 0px #ffffff,
+                        inset 1px 1px 0px #0a0a0a,
+                        inset -2px -2px 0px #dfdfdf,
+                        inset 2px 2px 0px #808080;
+                }
+            }
+        }
         .applicationInner__leftTools_download {
             position: absolute;
             bottom: 0;
@@ -27,6 +58,7 @@
             font-size: 12px;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             padding: 3px 4px;
             margin: 0 2px 0 0;
             color: #000000;
@@ -141,24 +173,23 @@
     }
 }
 
-
-@media screen and (max-width:568px) {
+@media screen and (max-width: 568px) {
     .applicationInner {
         flex-direction: row-reverse;
-        .applicationInner__left{
+        .applicationInner__left {
             width: 100%;
             height: auto;
             order: 2;
             padding: 0;
             box-shadow: unset;
         }
-        .applicationInner__right{
+        .applicationInner__right {
             width: 100%;
             height: 94%;
             order: 1;
-            .applicationInner__rightCanvas{
+            .applicationInner__rightCanvas {
                 width: 100%;
             }
         }
-    }    
+    }
 }
