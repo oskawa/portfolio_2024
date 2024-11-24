@@ -95,17 +95,19 @@ export function CvWindow() {
     fetchApi();
   }, []);
   const startDrawing = (event) => {
+    event.preventDefault(); // Prevent page scrolling
     isDrawing.current = true;
   
     // Check if it's a touch event or mouse event
     const offsetX = event.nativeEvent?.offsetX || event.touches[0].clientX - event.target.getBoundingClientRect().left;
     const offsetY = event.nativeEvent?.offsetY || event.touches[0].clientY - event.target.getBoundingClientRect().top;
-  
+
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
   };
   
-  const finishDrawing = () => {
+  const finishDrawing = (event) => {
+    event.preventDefault(); // Prevent page scrolling
     isDrawing.current = false;
     contextRef.current.closePath();
   };
