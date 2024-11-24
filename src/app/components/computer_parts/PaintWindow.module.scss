@@ -1,13 +1,13 @@
 .application {
     padding: 3px;
     position: absolute;
-    
+
     width: 90%;
     height: 90vh;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
-    
+    transform: translate(-50%, -50%);
+
     /* Window Content/Base Grey 2 */
     background: #c0c0c0;
     box-shadow:
@@ -19,7 +19,7 @@
         width: 450px;
         height: 448px;
     }
-    &.auto{
+    &.auto {
         width: auto;
         height: auto;
     }
@@ -101,15 +101,16 @@
     }
 }
 
-@media screen and (max-width:568px) {
-    .application{
+@media screen and (max-width: 768px) {
+    .application {
         width: 100%;
         height: 100%;
         top: 0;
-       
-        &.small{
+        left: 0;
+        transform: unset;
+        &.small {
             width: 100%;
             height: auto;
         }
-    }    
+    }
 }

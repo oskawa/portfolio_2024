@@ -173,22 +173,60 @@
     }
 }
 
-@media screen and (max-width: 568px) {
+@media screen and (max-width: 768px) {
     .applicationInner {
         flex-direction: row-reverse;
+        height: auto;
         .applicationInner__left {
             width: 100%;
             height: auto;
             order: 2;
             padding: 0;
             box-shadow: unset;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: flex-end;
+            .applicationInner__leftTools{
+                li{
+                    width: 10%;
+                }
+            }
+            .applicationInner__leftTools_download{
+                position: relative;
+            }
         }
         .applicationInner__right {
             width: 100%;
-            height: 94%;
+            height: auto;
             order: 1;
             .applicationInner__rightCanvas {
                 width: 100%;
+            }
+        }
+    }
+    .applicationBottom{
+        .applicationBottom__color{
+            align-items: flex-start;
+            gap: 8px;
+            .applicationBottom__colorSelected{
+                width: 46px;
+                height: 46px;
+                .selected{
+                    width: 24px;
+                    height: 24px;
+                }
+                .unselected{
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+            .applicationBottom__colorChoice{
+                width: 100%;
+                height: unset;
+                div{
+                    width: 23px;
+                    height: 23px;
+                }
             }
         }
     }
