@@ -14,12 +14,12 @@ export function StartBar({
   menu,
   lang,
 }) {
-  const [isSubmenuActive, setSubmenuActive] = useState(false); // State to track if submenu is active
-  const toggleSubmenu = () => {
-    setSubmenuActive(true); // Toggle active state
-  };
-
   const [error, setError] = useState(null);
+
+  const [content, setContent] = useState(null);
+  useEffect(() => {
+    // Fetch content or initialize state if needed
+  }, [lang]);
 
   if (error) {
     return <div className="startMenu">Error: {error}</div>;
@@ -34,20 +34,12 @@ export function StartBar({
         <div className={styles.startMenu__inner}>
           {menu.projects && (
             <div className={styles.startMenu__innerSingle}>
-              <div
-                className={styles.startMenu__innerSingle__title}
-                onClick={toggleSubmenu} // Attach the toggle function to the click event
-                onTouchStart={toggleSubmenu} // Handle touchstart for mobile
-              >
+              <div className={styles.startMenu__innerSingle__title}>
                 <img src="/img/icons/projects.png" alt="" />
                 <h2>{translate("projects", lang)}</h2>
               </div>
               {/* Iterate through the project taxonomies */}
-              <div
-                className={`${styles.startSubmenu__inner} ${
-                  isSubmenuActive ? styles.active : ""
-                }`}
-              >
+              <div className={styles.startSubmenu__inner}>
                 {menu.projects.map((taxonomyItem, taxonomyIndex) => (
                   <div
                     key={taxonomyIndex}
@@ -260,9 +252,7 @@ export function StartBar({
                 >
                   <div className={styles.startSubmenu__innerSingle__title}>
                     <img src="/img/icons/virtualvisit.png" alt="" />
-                    <h3 className={styles.startSubmenu__cat}>
-                      Visite virtuelle
-                    </h3>
+                    <h3 className={styles.startSubmenu__cat}>Visite virtuelle</h3>
                   </div>
                 </div>
               </div>
