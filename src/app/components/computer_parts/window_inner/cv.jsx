@@ -153,6 +153,9 @@ export function CvWindow() {
               onMouseDown={startDrawing}
               onMouseUp={finishDrawing}
               onMouseMove={draw}
+              onTouchStart={startDrawing}
+              onTouchEnd={finishDrawing}
+              onTouchMove={draw}
               className={styles.applicationInner__rightCanvas}
             />
           </div>
