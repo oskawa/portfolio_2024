@@ -16,7 +16,7 @@ export function StartBar({
 }) {
   const [isSubmenuActive, setSubmenuActive] = useState(false); // State to track if submenu is active
   const toggleSubmenu = () => {
-    setSubmenuActive((prevState) => !prevState); // Toggle active state
+    setSubmenuActive(true); // Toggle active state
   };
 
   const [error, setError] = useState(null);
