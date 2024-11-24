@@ -94,32 +94,33 @@ export function CvWindow() {
 
     fetchApi();
   }, []);
-
   const startDrawing = (event) => {
     isDrawing.current = true;
+  
+    // Check if it's a touch event or mouse event
+    const offsetX = event.nativeEvent?.offsetX || event.touches[0].clientX - event.target.getBoundingClientRect().left;
+    const offsetY = event.nativeEvent?.offsetY || event.touches[0].clientY - event.target.getBoundingClientRect().top;
+  
     contextRef.current.beginPath();
-    contextRef.current.moveTo(
-      event.nativeEvent.offsetX,
-      event.nativeEvent.offsetY
-    );
+    contextRef.current.moveTo(offsetX, offsetY);
   };
-
+  
   const finishDrawing = () => {
     isDrawing.current = false;
     contextRef.current.closePath();
   };
-
+  
   const draw = (event) => {
     if (!isDrawing.current) return;
-
+  
+    const offsetX = event.nativeEvent?.offsetX || event.touches[0].clientX - event.target.getBoundingClientRect().left;
+    const offsetY = event.nativeEvent?.offsetY || event.touches[0].clientY - event.target.getBoundingClientRect().top;
+  
     contextRef.current.lineWidth = 5; // Set line width
     contextRef.current.lineCap = "round"; // Round line cap
     contextRef.current.strokeStyle = strokeColor; // Set stroke color
-
-    contextRef.current.lineTo(
-      event.nativeEvent.offsetX,
-      event.nativeEvent.offsetY
-    );
+  
+    contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
   };
   const changeColor = (color) => {
