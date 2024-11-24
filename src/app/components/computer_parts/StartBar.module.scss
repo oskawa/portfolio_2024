@@ -281,6 +281,9 @@
 @media screen and (max-width: 768px) {
     .startMenu {
         width: 100%;
+        *:hover {
+            pointer-events: none; /* Disables hover interaction */
+        }
         .startMenu__inner {
             width: 100%;
             .startMenu__innerSingle {
@@ -302,12 +305,14 @@
                             height: 100%;
 
                             .startSubmenu__innerSingleSubSubSub {
-                                &:hover {
+                                &.active {
                                     & > .startSubmenu__innerSubSub {
-                                        top: 0;
-                                        left: 0;
-                                        width: 100%;
-                                        height: 100%;
+                                        &.active {
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                        }
                                     }
                                 }
                             }
