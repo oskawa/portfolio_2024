@@ -14,8 +14,9 @@
     inset 2.15663px 2.15663px 0px #dfdfdf,
     inset -4.31325px -4.31325px 0px #808080,
     inset 4.31325px 4.31325px 0px #ffffff;
-transition: all 600ms;
-  &.visible{
+  transition: all 600ms;
+  z-index: 11;
+  &.visible {
     bottom: 4%;
   }
   .cookieConsentHeader {
@@ -107,29 +108,43 @@ transition: all 600ms;
         object-fit: cover;
       }
     }
-    .cookieConsent__innerText{
+    .cookieConsent__innerText {
       padding: 5px;
       color: #383838;
-      font-size: 15px;     
-      img{
+      font-size: 15px;
+      img {
         width: 20px;
         height: 20px;
-      } 
-      span{
+      }
+      span {
         font-weight: 700;
         display: flex;
         align-items: center;
       }
-      .cookieContent__buttons{
+      .cookieContent__buttons {
         display: flex;
         gap: 10px;
         justify-content: flex-end;
       }
-      button{
+      button {
         background-color: transparent;
         border: none;
-        color: #0066CC;
+        color: #0066cc;
         cursor: pointer;
+      }
+    }
+  }
+}
+
+@media screen and (max-width:768px){
+  .cookieConsent {
+    width: 100%;
+    right: 0;
+    left: 0;
+    .cookieConsent__inner{
+      width: 100%;
+      .cookieConsent__innerText{
+        width: 100%;
       }
     }
   }

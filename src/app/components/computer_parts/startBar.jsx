@@ -188,6 +188,23 @@ export function StartBar({
                   </div>
                 </div>
                 <div
+                  key="tetris"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Tetris",
+                      slug: "tetris",
+                      logo: "/img/icons/rubiks.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/rubiks.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
+                  </div>
+                </div>
+                <div
                   key="picross"
                   className={styles.startSubmenu__innerSingle}
                   onClick={() =>

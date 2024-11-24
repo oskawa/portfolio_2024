@@ -5,6 +5,7 @@ import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
 import { MinesweeperWindow } from "./window_inner/minesweeper";
 import { VirtualVisitWindow } from "./window_inner/virtualvisit";
+import { TetrisWindow } from "./window_inner/tetris";
 import { WebBrowser } from "./window_inner/webbrowser";
 import styles from "./PaintWindow.module.scss";
 import http from "./../../axios/http";
@@ -136,6 +137,8 @@ export function PaintWindow({
         <MinesweeperWindow />
       ) : data.slug == "virtualvisit" ? (
         <VirtualVisitWindow />
+      ): data.slug == "tetris" ? (
+        <TetrisWindow />
       ) : data.slug == "back" ? (
         <BackWindow
           onBackgroundChange={handleBackgroundChange}

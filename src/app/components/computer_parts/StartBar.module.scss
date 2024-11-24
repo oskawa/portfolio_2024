@@ -148,18 +148,17 @@
                         background-color: #000a71;
                         .startSubmenu__innerSubSub {
                             display: flex;
-                            &:hover{
+                            &:hover {
                                 background-color: #b8c0c1;
-                                h5{
+                                h5 {
                                     color: black;
                                 }
-
                             }
-                            .startSubmenu__innerSingle__title{
-                                &:hover{
+                            .startSubmenu__innerSingle__title {
+                                &:hover {
                                     background-color: #000a71;
-                                    h5{
-                                        color:white
+                                    h5 {
+                                        color: white;
                                     }
                                 }
                             }
@@ -267,6 +266,71 @@
             > .startSubmenu__inner {
                 display: flex;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .startMenu {
+        width: 100%;
+        .startMenu__inner {
+            width: 100%;
+            .startMenu__innerSingle {
+                width: 91%;
+                .startMenu__innerSingle__title {
+                    width: 100%;
+                }
+                .startSubmenu__inner {
+                    top: 0;
+                    left: 0;
+                    width: 91%;
+                    height: 100%;
+                    .startSubmenu__innerSingle {
+                        width: 100%;
+                        & > .startSubmenu__innerSubSubSub {
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+
+                            .startSubmenu__innerSingleSubSubSub {
+                                &:hover {
+                                    & > .startSubmenu__innerSubSub {
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                    }
+                                }
+                            }
+                        }
+                        .startSubmenu__innerSingle__title {
+                            width: 100%;
+                            img {
+                                width: 30px;
+                                min-width: 30px;
+                                height: 30px;
+                                min-height: 30px;
+                                object-fit: cover;
+                            }
+                            h3 {
+                                font-size: 15px;
+                            }
+                        }
+                        & > .startSubmenu__innerSingleSubSubSub {
+                            top: 0;
+                            left: 0;
+                            width: 91%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .startSubmenu__innerSingle__title {
+        &:hover {
+            display: none;
         }
     }
 }
