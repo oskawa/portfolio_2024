@@ -147,8 +147,11 @@
                     > .startSubmenu__innerSubSub {
                         pointer-events: none;
                     }
-                    &:hover {
+                    &:hover, &.active {
                         background-color: #000a71;
+                        h4{
+                            color: white;
+                        }
                         > .startSubmenu__innerSubSub {
                             display: flex;
                             pointer-events: all;
@@ -191,13 +194,22 @@
                     inset 1px 1px 0px #dfdfdf,
                     inset -2px -2px 0px #808080,
                     inset 2px 2px 0px #ffffff;
-                &:hover {
-                    & > .startSubmenu__innerSingle__title {
+                // &> :hover {
+                //     & > .startSubmenu__innerSingle__title {
+                //         h5 {
+                //             color: white;
+                //         }
+                //     }
+                //     background-color: #000a71;
+                // }
+                .startSubmenu__innerSingle__title {
+                    width: 100%;
+                    &:hover {
                         h5 {
                             color: white;
                         }
+                        background-color: #000a71;
                     }
-                    background-color: #000a71;
                 }
             }
             .startSubmenu__innerSingle {
@@ -262,13 +274,13 @@
                 // }
             }
         }
-        
+
         &:hover {
             background-color: #000a71;
             h2 {
                 color: white;
             }
-            &> .startSubmenu__inner {
+            & > .startSubmenu__inner {
                 display: flex;
             }
         }
@@ -278,18 +290,26 @@
 @media screen and (max-width: 768px) {
     .startMenu {
         width: 100%;
+        pointer-events: none;
         .startMenu__inner {
             width: 100%;
+            pointer-events: none;
             .startMenu__innerSingle {
                 width: 91%;
+                pointer-events: none;
+                *:hover{
+                    pointer-events: none;
+                }
                 .startMenu__innerSingle__title {
                     width: 100%;
+                    pointer-events: none;
                 }
                 .startSubmenu__inner {
                     top: 0;
                     left: 0;
                     width: 91%;
                     height: 100%;
+                    pointer-events: none;
                     .startSubmenu__innerSingle {
                         width: 100%;
                         & > .startSubmenu__innerSubSubSub {
@@ -297,14 +317,16 @@
                             left: 0;
                             width: 100%;
                             height: 100%;
-
+                            pointer-events: none;
                             .startSubmenu__innerSingleSubSubSub {
                                 &:hover {
+                                    pointer-events: none;
                                     & > .startSubmenu__innerSubSub {
                                         top: 0;
                                         left: 0;
                                         width: 100%;
                                         height: 100%;
+                                        pointer-events: none;
                                     }
                                 }
                             }
