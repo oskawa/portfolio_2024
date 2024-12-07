@@ -1,6 +1,13 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
 import http from "../../../axios/http";
+import { OrbitControls, PointerLockControls, useGLTF, useAnimations } from "@react-three/drei";
+import * as THREE from "three";
+import Stats from "stats.js"; // Import the stats.js library
+import styles from "./virtualvisit.module.scss";
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'; // Import FBXLoader
+import { AnimationMixer, Euler, MathUtils } from 'three';
+
 
 import {
   ref,
@@ -12,14 +19,11 @@ import {
 } from "firebase/database";
 
 import { database } from "../../../firebase";
-import { OrbitControls, PointerLockControls, useGLTF } from "@react-three/drei";
-import * as THREE from "three";
-import Stats from "stats.js"; // Import the stats.js library
-import styles from "./virtualvisit.module.scss";
 function Player({
   collisionObjects,
   position,
   updatePosition,
+
   disableControls,
   onUnlock,
 }) {
@@ -40,8 +44,10 @@ function Player({
     down: false,
   });
 
+
+
   useEffect(() => {
-    camera.position.set(0, 1.5, -2);
+    camera.position.set(0, 1.8, -2);
   }, [camera]);
 
   useEffect(() => {
@@ -128,7 +134,19 @@ function Player({
 
       position = cubeBoundingCamera.current.position;
 
-      updatePosition(position);
+      // Extract rotation from quaternion
+      const euler = new Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+
+      // Convert radians to degrees
+      const rotationX = THREE.MathUtils.radToDeg(euler.x); // Pitch
+      const rotationY = THREE.MathUtils.radToDeg(euler.y); // Yaw
+      const rotationZ = THREE.MathUtils.radToDeg(euler.z); // Roll
+
+
+
+
+      const rotation = { x: rotationX, y: rotationY, z: rotationZ };
+      updatePosition(position, rotation);
     }
     direction.set(0, 0, 0);
     if (move.forward) direction.z -= 1;
@@ -218,6 +236,7 @@ function Player({
     }
   });
 
+
   return (
     <>
       {!disableControls && <PointerLockControls ref={controlsRef} />}
@@ -237,16 +256,25 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
   );
   const [otherPlayers, setOtherPlayers] = useState([]);
 
+  const { scene: modelScene1 } = useGLTF("gltf/scenethree_fusion.glb");
   const { scene: modelScene } = useGLTF("gltf/scenethree.glb");
+
+
+
   useEffect(() => {
     modelScene.traverse((child) => {
-      if (child.material) child.material.metalness = 0;
+      if (child.material) {
+        child.material.metalness = 0;
+        child.material.opacity = 0; // Set opacity to 0 to make it invisible
+        child.material.transparent = true; // Ensure transparency is applied
+      }
       if (child.isMesh) {
         child.geometry.computeBoundingBox();
         if (child.name.includes("wall") || child.name.includes("stair")) {
           collisionObjects.current.push(child);
         } else if (child.name == "floor") {
         }
+
       }
     });
   }, [modelScene]);
@@ -265,10 +293,10 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
         if (id !== playerId) {
           // Exclude current player
           const pos = playersData[id];
-
           updatedPlayers.push({
             id,
             position: new THREE.Vector3(pos.x, pos.y, pos.z),
+            rotation: new THREE.Vector3(pos.rotx, pos.roty, pos.rotz),
             color: pos.color,
           });
         }
@@ -286,15 +314,17 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
     return () => unsubscribe();
   }, [playerId]);
 
-  const updatePlayerPositionInFirebase = (position) => {
+  const updatePlayerPositionInFirebase = (position, rotation) => {
     const playerRef = ref(database, "players/" + playerId);
     set(playerRef, {
       x: position.x,
       y: position.y,
       z: position.z,
+      roty: rotation.y,
       color: selectedColor,
     });
   };
+
 
   useEffect(() => {
     const userRef = ref(database, `players/${playerId}`);
@@ -307,13 +337,262 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
     };
   }, [playerId]);
 
-  const updatePosition = (newPosition) => {
+  const updatePosition = (newPosition, newRotation) => {
     setPlayerPosition(newPosition);
-    updatePlayerPositionInFirebase(newPosition);
+    updatePlayerPositionInFirebase(newPosition, newRotation);
   };
 
+
+  // const Character = ({ animation, position, color }) => {
+  //   const { scene } = useGLTF("gltf/character/man.glb");
+  //   console.log(scene)
+  //   scene.scale.set(0.93, 0.93,0.93)
+  //   // Set the position of the scene directly in useEffect
+  //   useEffect(() => {
+  //     if (scene) {
+  //       scene.position.set(position.x, 0.4, position.z);
+  //     }
+  //   }, [position, scene]);
+
+  //   useEffect(() => {
+  //     if (scene && position) {
+  //       scene.visible = true;  // Ensure visibility
+  //     }
+  //   }, [scene, position]);
+
+  //   return (
+  //     <primitive object={scene} />
+  //   );
+  // };
+
+  // const Character = ({ rotation, position, color }) => {
+  //   // Load the FBX files for idle and walking animations
+  //   const idleModel = useLoader(FBXLoader, 'gltf/character/idle.fbx');
+  //   const walkingModel = useLoader(FBXLoader, 'gltf/character/walk.fbx');
+
+  //   const group = useRef();
+  //   const [isMoving, setIsMoving] = useState(false); // Track if the character is moving
+  //   const currentAnimation = useRef('idle'); // Use ref to track current animation state
+
+
+  //   const prevPosition = useRef(new THREE.Vector3(0, 0, 0)); // Initialize the reference
+  //   const lastMoveTime = useRef(Date.now()); // Track when the position last changed
+  //   const idleTimeout = 1000; // 1 second without movement to switch to idleAction
+
+
+  //   const idleMixer = useRef(null);
+  //   const walkMixer = useRef(null);
+  //   const idleAction = useRef(null);
+  //   const walkAction = useRef(null);
+
+
+  //   const rotationYInRadians = MathUtils.degToRad(rotation.y);
+  //   const eulerRotation = new Euler(0, rotationYInRadians, 0);
+
+
+
+  //   // Initialize mixers and actions on model load
+  //   useEffect(() => {
+
+  //     if (idleModel && idleModel.animations.length > 0) {
+  //       idleMixer.current = new THREE.AnimationMixer(idleModel);
+  //       idleAction.current = idleMixer.current.clipAction(idleModel.animations[0]);
+  //     }
+
+  //     if (walkingModel && walkingModel.animations.length > 0) {
+  //       walkMixer.current = new THREE.AnimationMixer(walkingModel);
+  //       walkAction.current = walkMixer.current.clipAction(walkingModel.animations[0]);
+  //     }
+  //   }, [idleModel, walkingModel]);
+
+
+
+  //   // UseEffect to handle position change (trigger animation switch)
+  //   useEffect(() => {
+  //     const currentPosition = new THREE.Vector3(...position); // Assuming position is an array [x, y, z]
+  //     // Check if position has changed significantly
+  //     if (!prevPosition.current.equals(currentPosition)) {
+  //       setIsMoving(true); // Player is moving
+  //       lastMoveTime.current = Date.now(); // Reset the timer when position changes
+  //     }
+  //     // Update previous position for next comparison
+  //     prevPosition.current.copy(currentPosition);
+  //   }, [position]); // Trigger when position changes
+
+
+  //   // Update the mixers each frame
+
+  //   useFrame(() => {
+  //     if (walkMixer.current) {
+  //       walkMixer.current.update(0.01); // Update walking animation
+  //     }
+  //     if (idleMixer.current) {
+  //       idleMixer.current.update(0.01); // Update idle animation
+  //     }
+
+  //     const timeElapsed = Date.now() - lastMoveTime.current;
+  //     if (timeElapsed > idleTimeout && currentAnimation.current !== 'idle') {
+  //       setIsMoving(false); // Switch to idle if no movement
+  //     }
+
+  //     // Handle animation transitions
+  //     if (isMoving) {
+  //       if (currentAnimation.current !== 'walk') {
+  //         currentAnimation.current = 'walk'; // Directly modify the ref value
+  //         if (idleAction.current && idleAction.current.isRunning()) {
+  //           idleAction.current.stop();
+  //         }
+  //         walkAction.current.reset().play(); // Reset and start walking animation
+  //       }
+  //     } else {
+  //       if (currentAnimation.current !== 'idle') {
+  //         currentAnimation.current = 'idle'; // Directly modify the ref value
+  //         if (walkAction.current && walkAction.current.isRunning()) {
+  //           walkAction.current.stop();
+  //         }
+  //         idleAction.current.reset().play(); // Reset and start idle animation
+  //       }
+  //     }
+
+  //     console.log(currentAnimation.current); // Log the animation state
+  //   });
+
+
+  //   return (
+  //     <group ref={group} rotation={eulerRotation} position={position}>
+  //       {/* Render the appropriate model based on current animation */}
+  //       {currentAnimation === 'idle' && <primitive object={idleModel} rotation={[0, Math.PI, 0]} />}
+  //       {currentAnimation === 'walk' && <primitive object={walkingModel} rotation={[0, Math.PI, 0]} />}
+
+  //       {/* Optional: Add a box to visualize the group movement */}
+  //       <mesh position={[0, 1, 0]}>
+  //         <boxGeometry args={[0.2, 0.2, 0.2]} />
+  //         <meshStandardMaterial color={color || 'red'} />
+  //       </mesh>
+  //     </group>
+  //   );
+  // };
+  const Character = ({ id, position, rotation, color }) => {
+    // Load the FBX files for idle and walking animations
+    const idleModel = useLoader(FBXLoader, 'gltf/character/idle.fbx');
+    const walkingModel = useLoader(FBXLoader, 'gltf/character/walk.fbx');
+
+    const group = useRef();
+    const [isMoving, setIsMoving] = useState(false); // Track if the character is moving
+    const currentAnimationRef = useRef('idle'); // Use a ref for current animation
+
+    const idleMixer = useRef(null);
+    const walkMixer = useRef(null);
+
+    const prevPosition = useRef(new THREE.Vector3()); // Initialize the reference
+    const lastMoveTime = useRef(Date.now()); // Track when the position last changed
+    const idleTimeout = 1000; // 1 second without movement to switch to idle
+
+    const rotationYInRadians = MathUtils.degToRad(rotation.y);
+    const eulerRotation = new Euler(0, rotationYInRadians, 0);
+
+    const idleAction = useRef(null);
+    const walkAction = useRef(null);
+
+    // Initialize mixers and actions on model load
+    useEffect(() => {
+      if (idleModel && idleModel.animations.length > 0) {
+        idleMixer.current = new THREE.AnimationMixer(idleModel);
+        idleAction.current = idleMixer.current.clipAction(idleModel.animations[0]);
+      }
+
+      if (walkingModel && walkingModel.animations.length > 0) {
+        walkMixer.current = new THREE.AnimationMixer(walkingModel);
+        walkAction.current = walkMixer.current.clipAction(walkingModel.animations[0]);
+      }
+    }, [idleModel, walkingModel]);
+
+    // UseEffect to handle position change (trigger animation switch)
+
+    useEffect(() => {
+      // Create a new THREE.Vector3 based on the incoming position
+      const currentPosition = new THREE.Vector3(position[0], position[1], position[2]); // Assuming position is an object {x, y, z}
+
+      // Debug the positions
+      // console.log("Current position:", currentPosition);
+      // console.log("Previous position:", prevPosition.current);
+      const distance = prevPosition.current.distanceTo(currentPosition);
+
+      // Check if the position has changed by a significant amount
+      if (distance > 0.01) { // Adjust the threshold as needed
+        setIsMoving(true); // Player is moving
+        lastMoveTime.current = Date.now(); // Reset the timer when position changes
+      } else {
+        setIsMoving(false); // Player is not moving
+      }
+      // console.log(isMoving)
+      // Update the previous position for the next comparison
+      prevPosition.current.copy(currentPosition);
+    }, [position]); // Trigger when position changes
+
+
+
+    useFrame(() => {
+      // Update the animation mixers
+      walkMixer.current.update(0.01);
+      idleMixer.current.update(0.01);
+
+      // Handle the idle timeout
+      const timeElapsed = Date.now() - lastMoveTime.current;
+      if (timeElapsed > 500 && isMoving) { // 500ms delay before switching to idle
+        setIsMoving(false); // Transition to idle after a delay
+      }
+
+      // Handle animation transitions
+      if (isMoving && currentAnimationRef.current !== "walk") {
+        // Switch to walking animation if moving
+
+
+        currentAnimationRef.current = "walk"; // Update the current animation
+
+      } else if (!isMoving && currentAnimationRef.current !== "idle") {
+        // Switch to idle animation if not moving
+
+        currentAnimationRef.current = "idle"
+
+      }
+
+      if (currentAnimationRef.current == "walk") {
+        console.log('allez on bouge')
+        walkAction.current.reset().play(); // Start walking animation
+        idleAction.current.stop(); // Stop idle animation
+      } else {
+
+        if (!isMoving) {
+          console.log('on bouge plus')
+          idleAction.current.reset().play();
+          walkAction.current.stop(); // Stop walking animation
+        }
+      }
+
+    });
+
+
+
+
+
+    return (
+      <group ref={group} rotation={eulerRotation} position={position}>
+        {/* Render the appropriate model based on current animation */}
+        {currentAnimationRef.current === 'idle' && <primitive object={idleModel} rotation={[0, Math.PI, 0]} />}
+        {currentAnimationRef.current === 'walk' && <primitive object={walkingModel} rotation={[0, Math.PI, 0]} />}
+
+        {/* Optional: Add a box to visualize the group movement */}
+        <mesh position={[0, 1, 0]}>
+          <boxGeometry args={[0.2, 0.2, 0.2]} />
+          <meshStandardMaterial color={color || 'red'} />
+        </mesh>
+      </group>
+    );
+  };
   return (
     <>
+      <primitive object={modelScene1} />
       <primitive object={modelScene} />
 
       {/* Player */}
@@ -321,14 +600,18 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
         collisionObjects={collisionObjects}
         position={playerPosition}
         updatePosition={updatePosition}
+
+
         disableControls={disableControls}
         onUnlock={onUnlock}
       />
       {otherPlayers.map((player) => (
-        <mesh key={player.id} position={player.position}>
-          <boxGeometry args={[0.5, 0.5, 0.5]} />
-          <meshStandardMaterial color={player.color} />
-        </mesh>
+        <Character
+          key={player.id}
+          rotation={player.rotation}
+          position={[player.position.x, 0.5, player.position.z]}
+          color={player.color}
+        />
       ))}
     </>
   );
@@ -394,6 +677,18 @@ export function VirtualVisitWindow() {
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(16, 16); // Adjust as needed
+  const skyboxImages = [
+    "gltf/skybox/clouds1_east.jpg",
+    "gltf/skybox/clouds1_west.jpg",
+    "gltf/skybox/clouds1_up.jpg",
+    "gltf/skybox/clouds1_down.jpg", // OK
+    "gltf/skybox/clouds1_north.jpg",
+    "gltf/skybox/clouds1_south.jpg",
+
+  ];
+
+  const cubeTexture = new THREE.CubeTextureLoader().load(skyboxImages);
+
 
   const displacementMap = useLoader(
     THREE.TextureLoader,
@@ -439,7 +734,7 @@ export function VirtualVisitWindow() {
         <Canvas>
           {!loading && (
             <>
-             
+              <primitive object={cubeTexture} attach="background" />
               <ambientLight position={[10, 10, 5]} intensity={1} />
               <directionalLight position={[10, 10, 5]} intensity={2} />
               <Scene
@@ -448,15 +743,7 @@ export function VirtualVisitWindow() {
                 onUnlock={handleDisableControls}
                 selectedColor={selectedColor}
               />
-              <mesh rotation={[-Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[30, 30, 64, 64]} />
-                <meshStandardMaterial
-                  map={texture}
-                  displacementMap={displacementMap}
-                  displacementScale={0.1}
-                  transparent={true}
-                />
-              </mesh>
+
               {paints.map((painting, index) => {
                 // Load texture from the image URL
 
