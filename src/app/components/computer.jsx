@@ -147,6 +147,19 @@ export function Computer({lang}) {
           <img src="/img/icons/back.png" alt="" />
           <span>{translate('personnalisation', lang)}</span>
         </button>
+        <button
+          onClick={() =>
+            handleWindowSelect({
+              type: "windowClassic",
+              title: "Travaillons ensemble",
+              slug: "work",
+              logo: "/img/icons/cv.png",
+            })
+          }
+        >
+          <img src="/img/icons/back.png" alt="" />
+          <span>{translate('Travaillons_ensemble.doc', lang)}</span>
+        </button>
       </div>
 
       <BottomBar
