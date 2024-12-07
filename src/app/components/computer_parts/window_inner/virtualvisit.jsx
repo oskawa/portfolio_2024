@@ -263,21 +263,25 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
 
   useEffect(() => {
     modelScene.traverse((child) => {
-      if (child.material) {
+      if (child.material){
         child.material.metalness = 0;
-        child.material.opacity = 0; // Set opacity to 0 to make it invisible
-        child.material.transparent = true; // Ensure transparency is applied
+      
       }
       if (child.isMesh) {
+        child.visible = false; // Alternatively, hide the entire object
+ 
         child.geometry.computeBoundingBox();
         if (child.name.includes("wall") || child.name.includes("stair")) {
           collisionObjects.current.push(child);
         } else if (child.name == "floor") {
         }
-
+        
       }
     });
-  }, [modelScene]);
+    modelScene1.traverse((child1) => {
+      if (child1.material) child1.material.metalness = 0;
+    })
+  }, [modelScene1, modelScene]);
 
   // Retrieve all players' positions except the current player
   useEffect(() => {
@@ -534,8 +538,8 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
 
     useFrame(() => {
       // Update the animation mixers
-      walkMixer.current.update(0.01);
-      idleMixer.current.update(0.01);
+       walkMixer.current.update(0.01);
+       idleMixer.current.update(0.01);
 
       // Handle the idle timeout
       const timeElapsed = Date.now() - lastMoveTime.current;
@@ -546,24 +550,24 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
       // Handle animation transitions
       if (isMoving && currentAnimationRef.current !== "walk") {
         // Switch to walking animation if moving
-
-
+      
+       
         currentAnimationRef.current = "walk"; // Update the current animation
-
+       
       } else if (!isMoving && currentAnimationRef.current !== "idle") {
         // Switch to idle animation if not moving
-
+       
         currentAnimationRef.current = "idle"
-
+      
       }
 
-      if (currentAnimationRef.current == "walk") {
+      if(currentAnimationRef.current == "walk"){
         console.log('allez on bouge')
         walkAction.current.reset().play(); // Start walking animation
         idleAction.current.stop(); // Stop idle animation
-      } else {
-
-        if (!isMoving) {
+      }else{
+        
+        if(!isMoving){
           console.log('on bouge plus')
           idleAction.current.reset().play();
           walkAction.current.stop(); // Stop walking animation
