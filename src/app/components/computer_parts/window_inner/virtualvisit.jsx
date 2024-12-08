@@ -16,6 +16,7 @@ import {
   onValue,
   onDisconnect,
   remove,
+  update,
 } from "firebase/database";
 
 import { database } from "../../../firebase";
@@ -249,6 +250,124 @@ function Player({
   );
 }
 
+function ChatInput(playerId) {
+
+  const [isInputVisible, setIsInputVisible] = useState(false); // Show/hide input
+  const [message, setMessage] = useState(""); // Current message text
+  const inputRef = useRef(null); // Reference to the input element
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "t" || e.key === "T") {
+        setIsInputVisible(true);
+
+
+      }
+    }
+
+    // Add event listener for keypress
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    // Focus the input field when it becomes visible
+    if (isInputVisible && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isInputVisible]);
+
+  function handleKeyPress(e) {
+    if (e.key === "Enter") {
+      console.log('test')
+      console.log(playerId)
+      // Send message to Firebase
+      const playerMessageRef = ref(database, `messages/`);
+      update(playerMessageRef, {
+        player: playerId.playerId,
+        message: message
+      });
+      // Clear the input and hide it
+      setMessage("");
+      setIsInputVisible(false);
+    }
+  }
+
+  return (
+    <div className={styles.chatInnerText}>
+      {isInputVisible && (
+        <input
+          ref={inputRef}
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="Type your message..."
+          style={{
+            zIndex: "10000",
+            display: "block",
+            position: "absolute", // Position the input (you can customize)
+            bottom: "30px",
+            width: "300px",
+            height: "30px",
+            padding: "10px",
+            left: "25px",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+
+function Chat() {
+  const [messages, setMessages] = useState([]); // Array to store messages
+
+  useEffect(() => {
+    const playerMessageRef = ref(database, `messages`);
+
+    const unsubscribe = onValue(playerMessageRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val(); // Get the current message and player
+        const newMessage = { player: data.player, message: data.message };
+
+        // Add the new message to the array, ensuring no duplicates
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          newMessage,
+        ]);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on component unmount
+  }, [database]);
+
+  return (
+    <div
+      className={styles.chatInner}
+      style={{
+        position: "absolute",
+        bottom: "60px",
+        left: "25px",
+        padding: "10px",
+        width: "300px",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        color: "white",
+        borderRadius: "5px",
+        zIndex: 100
+      }}
+    >
+      {/* Display all messages as a list */}
+      {messages.map((msg, index) => (
+        <div key={index} style={{ marginBottom: "5px" }}>
+          <strong>{msg.player}:</strong> <p>{msg.message}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function Character({ id, position, rotation, color }) {
   console.log(id)
@@ -425,12 +544,12 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
 
   const updatePlayerPositionInFirebase = (position, rotation) => {
     const playerRef = ref(database, "players/" + playerId);
-    set(playerRef, {
+    update(playerRef, {
       x: position.x,
       y: position.y,
       z: position.z,
       roty: rotation.y,
-      color: selectedColor,
+      color: selectedColor, // Ensure color is preserved
     });
   };
 
@@ -532,9 +651,12 @@ export function VirtualVisitWindow() {
     setSelectedColor(event.target.value); // Update the color state
   };
 
-  const max = 100; // Replace with any max value
-  const randomInt = Math.floor(Math.random() * max);
-  let playerId = "player" + randomInt;
+  const [playerId] = useState(() => {
+    const max = 100; // Replace with any max value
+    const randomInt = Math.floor(Math.random() * max);
+    return "player" + randomInt;
+  });
+
   const texture = useLoader(THREE.TextureLoader, "img/textures/wood-dif.jpg");
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -576,7 +698,7 @@ export function VirtualVisitWindow() {
                 onChange={handleColorChange}
               />
             </div>
-            <button onClick={handleNoLock}>Découvrir l'exposition</button>
+            <button className={`${loading ? styles.disabled : ''}`} onClick={handleNoLock}>Découvrir l'exposition</button>
             <div className={styles.howToPlay}>
               <img src="./img/virtual/howtoplay.png" alt="" />
             </div>
@@ -592,7 +714,11 @@ export function VirtualVisitWindow() {
           </div>
         </div>
       )}
-      {!nolock && (
+
+      <div className={`${styles.canvasWrapper} ${nolock ? "" : styles.active}`}>
+        <ChatInput playerId={playerId} />
+        <Chat />
+
         <Canvas>
           {!loading && (
             <>
@@ -641,26 +767,37 @@ export function VirtualVisitWindow() {
                 }
 
                 return (
-                  <mesh
-                    key={index}
-                    position={[x, y, z]}
-                    rotation={[0, rotationY, 0]}
-                  >
-                    <planeGeometry
-                      args={[
-                        painting.image["sizes"]["large-width"] / 500,
-                        painting.image["sizes"]["large-height"] / 500,
-                      ]}
-                    />{" "}
-                    {/* Adjust size as needed */}
-                    <meshStandardMaterial map={texture} />
-                  </mesh>
+                  <>
+
+                    <mesh
+                      key={index}
+                      position={[x, y, z]}
+                      rotation={[0, rotationY, 0]}
+                    >
+                      <planeGeometry
+                        args={[
+                          painting.image["sizes"]["large-width"] / 500,
+                          painting.image["sizes"]["large-height"] / 500,
+                        ]}
+                      />{" "}
+                      {/* Adjust size as needed */}
+                      <meshStandardMaterial map={texture} />
+                    </mesh>
+                    <mesh
+                     
+                      position={[x, y, z]} // Match the position of your painting
+                    >
+                      <boxGeometry args={[1, 1, 1]} /> {/* Adjust size as needed */}
+                      <meshBasicMaterial color="red" transparent opacity={0} />
+                    </mesh>
+                  </>
                 );
               })}
             </>
           )}
         </Canvas>
-      )}
+      </div>
+
     </div>
   );
 }
