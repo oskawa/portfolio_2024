@@ -1,16 +1,15 @@
-'use client'
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useParams } from 'next/navigation';
-import {Computer} from '../components/computer';
-
+import { useParams } from "next/navigation";
+import { Computer } from "../components/computer";
 
 export default function Home() {
   const { lang } = useParams(); //
-  console.log(lang)
-  
+  console.log(lang);
+
   return (
-    <Computer lang={lang}/>
     
+      <Computer lang={lang} />
   );
 }

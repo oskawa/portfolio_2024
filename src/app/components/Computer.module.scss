@@ -39,13 +39,44 @@
 
 #interlaced {
 }
-
+.innerBack {
+    height: 100vh;
+    aspect-ratio: 4/3;
+    animation: shadow-pulse 2s infinite;
+    position: relative;
+    margin: auto;
+    isolation: isolate;
+    &:before {
+        content: "";
+        background-image: url("/global/left.png");
+        position: absolute;
+        height: 100%;
+        width: 26%; /* Maintain aspect ratio */
+        left: -26%; /* Offset by its own width */
+        top: 0;
+        background-size: contain;
+        background-repeat: no-repeat;
+        pointer-events: none;
+        opacity: 0.2;
+    }
+    &:after {
+        content: "";
+        background-image: url("/global/right.png");
+        position: absolute;
+        height: 100%;
+        width: 17%; /* Maintain aspect ratio */
+        right: -17%; /* Offset by its own width */
+        top: 0;
+        background-size: contain;
+        background-repeat: no-repeat;
+        pointer-events: none;
+    }
+}
 .inner {
     opacity: 0.8;
     height: 100vh;
     aspect-ratio: 4/3;
     background-color: #008080;
-
     position: relative;
     margin: auto;
     overflow: hidden;

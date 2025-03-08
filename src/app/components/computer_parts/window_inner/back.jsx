@@ -128,23 +128,72 @@ export function BackWindow({ onBackgroundChange, onClose }) {
       </div>
       <div
         data-panel="mentions"
-        className={`${styles.panel} ${
+        className={`${styles.panel} ${styles.mentions} ${
           activePanel === "mentions" ? styles.active : ""
         }`}
       >
-        <h2>Mentions</h2>
-
+        <div className={styles.mentionsInner}>
+          <h2>Mentions</h2>
+          <h3>Éditeur du site</h3>
+          <p>Nom : Eloir Maxime</p>
+          <p>NUMERO SIRET : 97852128400015</p>
+          <p>E-mail : maxime.eloir@gmail.com</p>
+          <h3>Éditeur du site</h3>
+          <p>Le site est hébergé par : O2switch</p>
+          <h3>Propriété intellectuelle</h3>
+          <p>
+            L’ensemble des contenus (textes, images, vidéos, graphiques, logo,
+            etc.) présents sur ce site sont la propriété exclusive de Eloir
+            Maxime, sauf mention contraire.
+          </p>
+          <p>
+            Toute reproduction, distribution, modification ou utilisation sans
+            autorisation préalable est interdite et peut faire l’objet de
+            poursuites. Sauf si ça me fait rire.
+          </p>
+          <h3>Données personnelles</h3>
+          <p>
+            Les données personnelles collectées via le formulaire de contact
+            (nom, email, message) sont uniquement destinées à Eloir Maxime pour
+            répondre aux demandes des visiteurs. Elles ne sont ni cédées, ni
+            revendues à des tiers. Conformément au Règlement Général sur la
+            Protection des Données (RGPD), vous disposez d’un droit d’accès, de
+            rectification et de suppression de vos données personnelles en
+            contactant maxime.eloir@gmail.com.
+          </p>
+          <h3>Cookies</h3>
+          <p>
+            Ce site utilise des cookies pour améliorer l’expérience utilisateur
+            et réaliser des statistiques de visites. Vous pouvez configurer
+            votre navigateur pour bloquer ces cookies ou les accepter selon vos
+            préférences.
+          </p>
+          <h3>Responsabilité</h3>
+          <p>
+            [Ton Nom] ne saurait être tenu responsable des erreurs ou omissions
+            présentes sur le site, ni des dommages directs ou indirects pouvant
+            résulter de son utilisation. Les liens externes présents sur ce site
+            ne relèvent pas de la responsabilité de l'éditeur.
+          </p>
+          <h3>Contact</h3>
+          <p>
+            Pour toute question ou demande d'information concernant ces mentions
+            légales, vous pouvez contacter maxime.eloir@agenceseize.fr.
+          </p>
+        </div>
       </div>
-      <div className={styles.applicationInnerBottom}>
-        <button onClick={() => handleButtonApply("ok")}>Ok</button>
-        <button onClick={() => handleButtonApply("close")}>Cancel</button>
-        <button
-          onClick={() => handleButtonApply("apply")}
-          className={isButtonActive ? "" : styles.inactive}
-        >
-          Apply
-        </button>
-      </div>
+      {activePanel === "back" && (
+        <div className={styles.applicationInnerBottom}>
+          <button onClick={() => handleButtonApply("ok")}>Ok</button>
+          <button onClick={() => handleButtonApply("close")}>Annuler</button>
+          <button
+            onClick={() => handleButtonApply("apply")}
+            className={isButtonActive ? "" : styles.inactive}
+          >
+            Appliquer
+          </button>
+        </div>
+      )}
     </div>
   );
 }

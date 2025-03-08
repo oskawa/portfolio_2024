@@ -187,7 +187,7 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
                   </div>
                 </div>
-                <div
+                {/* <div
                   key="tetris"
                   className={styles.startSubmenu__innerSingle}
                   onClick={() =>
@@ -203,7 +203,7 @@ export function StartBar({
                     <img src="/img/icons/rubiks.png" alt="" />
                     <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
                   </div>
-                </div>
+                </div> */}
                 <div
                   key="picross"
                   className={styles.startSubmenu__innerSingle}

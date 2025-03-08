@@ -8,12 +8,11 @@ import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
 import { useRouter } from "next/router";
 import { translate } from "../../utils/translate";
-import CookieConsent from './cookieConsent';
-
+import CookieConsent from "./cookieConsent";
 
 import styles from "./Computer.module.scss";
 
-export function Computer({lang}) {
+export function Computer({ lang }) {
   const [selectedProjects, setSelectedProjects] = useState([]); // Track the selected project
   const [focusWindow, setFocusWindow] = useState(null); // Track the active window
   const [document, setDocument] = useState(false); // Track the active window
@@ -71,7 +70,7 @@ export function Computer({lang}) {
   };
 
   const handleBackgroundChange = (url) => {
-    setBackgroundImage(url); 
+    setBackgroundImage(url);
   };
 
   async function getMenu() {
@@ -125,91 +124,110 @@ export function Computer({lang}) {
   }, []);
 
   return (
-    <div className={`${styles.inner} ${straight ? styles.straight : ""}`}>
-      {loading && <Loader progress={progress} />}
-      {!loading && <CookieConsent/>}
-      <div
-        className={styles.desktop}
-        style={{ backgroundImage: backgroundImage, backgroundSize: "cover" }}
-      >
-      <div className={styles.line}></div>
-      <div className={styles.scanline}></div>
-        <button
-          onClick={() =>
-            handleWindowSelect({
-              type: "windowClassic",
-              title: "Fond d'écran",
-              slug: "back",
-              logo: "/img/icons/cv.png",
-            })
-          }
+    <div className={styles.innerBack}>
+     
+      <div className={`${styles.inner} ${straight ? styles.straight : ""}`}>
+        {loading && <Loader progress={progress} />}
+        {!loading && <CookieConsent />}
+        <div
+          className={styles.desktop}
+          style={{ backgroundImage: backgroundImage, backgroundSize: "cover" }}
         >
-          <img src="/img/icons/back.png" alt="" />
-          <span>{translate('personnalisation', lang)}</span>
-        </button>
+          <div className={styles.line}></div>
+          <div className={styles.scanline}></div>
+          <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Fond d'écran",
+                slug: "back",
+                logo: "/img/icons/cv.png",
+              })
+            }
+          >
+            <img src="/img/icons/back.png" alt="" />
+            <span>Personnalisation</span>
+          </button>
+          <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Music Player",
+                slug: "music",
+                logo: "/img/icons/music.png",
+              })
+            }
+          >
+            <img src="/img/icons/music.png" alt="" />
+            <span>Music Player</span>
+          </button>
+
+        </div>
+
+        <BottomBar
+          onProjectSelect={handleProjectSelect}
+          onWindowSelect={handleWindowSelect}
+          selectedProjects={selectedProjects}
+          minimizedProjects={minimizedProjects}
+          onProjectClick={handleClickBottomBarProject}
+          focusProject={focusWindow}
+          onDocumentSelect={handleDocument}
+          menu={menu}
+          links={links}
+          onStraight={handleStraight}
+          lang={lang}
+        />
+
+        {selectedProjects &&
+          selectedProjects.map((project) => {
+            // Check if project.slug is "contact"
+            if (project.type == "windowClassic") {
+              return (
+                <div key={project.slug}>
+                  <PaintWindow
+                    data={project}
+                    onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
+                    onClose={() => handleCloseWindow(project.slug)}
+                    isFocus={focusWindow === project.slug}
+                    isMinimized={minimizedProjects.includes(project.slug)}
+                    onMinimize={() => handleMinimizeWindow(project.slug)}
+                    onBackgroundChange={(data) => handleBackgroundChange(data)}
+                  />
+                </div>
+              );
+            }
+            if (project.type == "windowContact") {
+              return (
+                <div key={project.slug}>
+                  <ContactForm
+                    onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
+                    onMinimize={() => handleMinimizeWindow(project.slug)}
+                    onClose={() => handleCloseWindow(project.slug)}
+                    isFocus={focusWindow === project.slug}
+                    isMinimized={minimizedProjects.includes(project.slug)}
+                  />
+                </div>
+              );
+            }
+            if (project.type == "windowMusic"){
+
+            } 
+
+            // Default rendering for other projects
+            return (
+              <div key={project.slug}>
+                <WindowProject
+                  data={project.slug}
+                  onClose={() => handleCloseWindow(project.slug)}
+                  isFocus={focusWindow === project.slug}
+                  onClick={() => handleFocusWindow(project.slug)}
+                  isMinimized={minimizedProjects.includes(project.slug)}
+                  onMinimize={() => handleMinimizeWindow(project.slug)}
+                />
+              </div>
+            );
+          })}
       </div>
-
-      <BottomBar
-        onProjectSelect={handleProjectSelect}
-        onWindowSelect={handleWindowSelect}
-        selectedProjects={selectedProjects}
-        minimizedProjects={minimizedProjects}
-        onProjectClick={handleClickBottomBarProject}
-        focusProject={focusWindow}
-        onDocumentSelect={handleDocument}
-        menu={menu}
-        links={links}
-        onStraight={handleStraight}
-        lang={lang}
-      />
-
-      {selectedProjects &&
-        selectedProjects.map((project) => {
-          // Check if project.slug is "contact"
-          if (project.type == "windowClassic") {
-            return (
-              <div key={project.slug}>
-                <PaintWindow
-                  data={project}
-                  onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
-                  onClose={() => handleCloseWindow(project.slug)}
-                  isFocus={focusWindow === project.slug}
-                  isMinimized={minimizedProjects.includes(project.slug)}
-                  onMinimize={() => handleMinimizeWindow(project.slug)}
-                  onBackgroundChange={(data) => handleBackgroundChange(data)}
-                />
-              </div>
-            );
-          }
-          if (project.type == "windowContact") {
-            return (
-              <div key={project.slug}>
-                <ContactForm
-                  onClick={() => handleFocusWindow(project.slug)} // Handle click to activate
-                  onMinimize={() => handleMinimizeWindow(project.slug)}
-                  onClose={() => handleCloseWindow(project.slug)}
-                  isFocus={focusWindow === project.slug}
-                  isMinimized={minimizedProjects.includes(project.slug)}
-                />
-              </div>
-            );
-          }
-
-          // Default rendering for other projects
-          return (
-            <div key={project.slug}>
-              <WindowProject
-                data={project.slug}
-                onClose={() => handleCloseWindow(project.slug)}
-                isFocus={focusWindow === project.slug}
-                onClick={() => handleFocusWindow(project.slug)}
-                isMinimized={minimizedProjects.includes(project.slug)}
-                onMinimize={() => handleMinimizeWindow(project.slug)}
-              />
-            </div>
-          );
-        })}
-        
     </div>
   );
 }
