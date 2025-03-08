@@ -8,6 +8,7 @@ import { VirtualVisitWindow } from "./window_inner/virtualvisit";
 import { TetrisWindow } from "./window_inner/tetris";
 import { MusicWindow  } from "./window_inner/music";
 import { WebBrowser } from "./window_inner/webbrowser";
+import { WordWindows } from "./window_inner/word";
 import styles from "./PaintWindow.module.scss";
 import http from "./../../axios/http";
 
@@ -90,9 +91,8 @@ export function PaintWindow({
 
   return (
     <div
-      className={`${styles.application} ${
-        upscale ? styles.upscale : styles.inactive
-      } ${isFocus ? styles.focus : styles.unfocus}
+      className={`${styles.application} ${upscale ? styles.upscale : styles.inactive
+        } ${isFocus ? styles.focus : styles.unfocus}
       ${isMinimized ? styles.mini : styles.unmini}
       ${data.slug == "back" ? styles.small : ""}
       ${data.slug == "music" ? styles.smallMini : ""}
@@ -150,6 +150,9 @@ export function PaintWindow({
         />
       ) : data.slug == "webbrowser" ? (
         <WebBrowser href={data.href} />
+      ) : data.slug == "work" ? (
+        <WordWindows href={data.href} />
+
       ) : (
         <BackWindow />
       )}

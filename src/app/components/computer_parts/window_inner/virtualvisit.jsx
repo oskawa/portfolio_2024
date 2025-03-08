@@ -1,6 +1,13 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
 import http from "../../../axios/http";
+import { OrbitControls, PointerLockControls, useGLTF, useAnimations } from "@react-three/drei";
+import * as THREE from "three";
+import Stats from "stats.js"; // Import the stats.js library
+import styles from "./virtualvisit.module.scss";
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'; // Import FBXLoader
+import { AnimationMixer, Euler, MathUtils } from 'three';
+
 
 import {
   ref,
@@ -9,17 +16,15 @@ import {
   onValue,
   onDisconnect,
   remove,
+  update,
 } from "firebase/database";
 
 import { database } from "../../../firebase";
-import { OrbitControls, PointerLockControls, useGLTF } from "@react-three/drei";
-import * as THREE from "three";
-import Stats from "stats.js"; // Import the stats.js library
-import styles from "./virtualvisit.module.scss";
 function Player({
   collisionObjects,
   position,
   updatePosition,
+
   disableControls,
   onUnlock,
 }) {
@@ -40,8 +45,10 @@ function Player({
     down: false,
   });
 
+
+
   useEffect(() => {
-    camera.position.set(0, 1.5, -2);
+    camera.position.set(0, 1.8, -2);
   }, [camera]);
 
   useEffect(() => {
@@ -128,7 +135,19 @@ function Player({
 
       position = cubeBoundingCamera.current.position;
 
-      updatePosition(position);
+      // Extract rotation from quaternion
+      const euler = new Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+
+      // Convert radians to degrees
+      const rotationX = THREE.MathUtils.radToDeg(euler.x); // Pitch
+      const rotationY = THREE.MathUtils.radToDeg(euler.y); // Yaw
+      const rotationZ = THREE.MathUtils.radToDeg(euler.z); // Roll
+
+
+
+
+      const rotation = { x: rotationX, y: rotationY, z: rotationZ };
+      updatePosition(position, rotation);
     }
     direction.set(0, 0, 0);
     if (move.forward) direction.z -= 1;
@@ -218,6 +237,7 @@ function Player({
     }
   });
 
+
   return (
     <>
       {!disableControls && <PointerLockControls ref={controlsRef} />}
@@ -230,6 +250,227 @@ function Player({
   );
 }
 
+function ChatInput(playerId) {
+
+  const [isInputVisible, setIsInputVisible] = useState(false); // Show/hide input
+  const [message, setMessage] = useState(""); // Current message text
+  const inputRef = useRef(null); // Reference to the input element
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "t" || e.key === "T") {
+        setIsInputVisible(true);
+
+
+      }
+    }
+
+    // Add event listener for keypress
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    // Focus the input field when it becomes visible
+    if (isInputVisible && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isInputVisible]);
+
+  function handleKeyPress(e) {
+    if (e.key === "Enter") {
+      console.log('test')
+      console.log(playerId)
+      // Send message to Firebase
+      const playerMessageRef = ref(database, `messages/`);
+      update(playerMessageRef, {
+        player: playerId.playerId,
+        message: message
+      });
+      // Clear the input and hide it
+      setMessage("");
+      setIsInputVisible(false);
+    }
+  }
+
+  return (
+    <div className={styles.chatInnerText}>
+      {isInputVisible && (
+        <input
+          ref={inputRef}
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="Type your message..."
+          style={{
+            zIndex: "10000",
+            display: "block",
+            position: "absolute", // Position the input (you can customize)
+            bottom: "30px",
+            width: "300px",
+            height: "30px",
+            padding: "10px",
+            left: "25px",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+
+function Chat() {
+  const [messages, setMessages] = useState([]); // Array to store messages
+
+  useEffect(() => {
+    const playerMessageRef = ref(database, `messages`);
+
+    const unsubscribe = onValue(playerMessageRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val(); // Get the current message and player
+        const newMessage = { player: data.player, message: data.message };
+
+        // Add the new message to the array, ensuring no duplicates
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          newMessage,
+        ]);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on component unmount
+  }, [database]);
+
+  return (
+    <div
+      className={styles.chatInner}
+      style={{
+        position: "absolute",
+        bottom: "60px",
+        left: "25px",
+        padding: "10px",
+        width: "300px",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        color: "white",
+        borderRadius: "5px",
+        zIndex: 100
+      }}
+    >
+      {/* Display all messages as a list */}
+      {messages.map((msg, index) => (
+        <div key={index} style={{ marginBottom: "5px" }}>
+          <strong>{msg.player}:</strong> <p>{msg.message}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Character({ id, position, rotation, color }) {
+  console.log(id)
+  // Load the FBX files for idle and walking animations
+  const idleModel = useLoader(FBXLoader, `gltf/character/idle.fbx?${id}`);
+  const walkingModel = useLoader(FBXLoader, `gltf/character/walk.fbx?${id}`);
+  const [currentAnimation, setCurrentAnimation] = useState("idle"); // React state for animation
+
+
+  const group = useRef();
+  const [isMoving, setIsMoving] = useState(false); // Track if the character is moving
+  const currentAnimationRef = useRef('idle'); // Use a ref for current animation
+
+
+  const idleMixer = useRef(null);
+  const walkMixer = useRef(null);
+
+
+  const prevPosition = useRef(new THREE.Vector3()); // Initialize the reference
+  const lastMoveTime = useRef(Date.now()); // Track when the position last changed
+
+  const rotationYInRadians = MathUtils.degToRad(rotation.y);
+  const eulerRotation = new Euler(0, rotationYInRadians, 0);
+
+  const idleAction = useRef(null);
+  const walkAction = useRef(null);
+
+  // Initialize mixers and actions on model load
+  useEffect(() => {
+    if (idleModel && idleModel.animations.length > 0) {
+      idleMixer.current = new THREE.AnimationMixer(idleModel);
+      idleAction.current = idleMixer.current.clipAction(idleModel.animations[0]);
+      idleAction.current.setLoop(THREE.LoopRepeat);
+      idleAction.current.play();
+    }
+
+    if (walkingModel && walkingModel.animations.length > 0) {
+      walkMixer.current = new THREE.AnimationMixer(walkingModel);
+      walkAction.current = walkMixer.current.clipAction(walkingModel.animations[0]);
+      walkAction.current.setLoop(THREE.LoopRepeat);
+      walkAction.current.play();
+    }
+
+  }, [idleModel, walkingModel]);
+
+
+  useFrame(() => {
+    const currentPosition = new THREE.Vector3(position[0], position[1], position[2]); // Assuming position is an object {x, y, z}
+    const distance = prevPosition.current.distanceTo(currentPosition);
+    if (distance > 0.01) {
+      if (!isMoving) {
+        setIsMoving(true); // Set moving state if it's not already moving
+      }
+      lastMoveTime.current = Date.now(); // Reset the idle timer
+    } else {
+      // Calculate idle time
+      const timeElapsed = Date.now() - lastMoveTime.current;
+      if (timeElapsed > 500 && isMoving) {
+        setIsMoving(false); // Set to idle after 500ms of no movement
+
+      }
+    }
+
+    // Update the animation mixers
+    walkMixer.current?.update(0.01);
+    idleMixer.current?.update(0.01);
+
+
+    if (isMoving && currentAnimation !== "walk") {
+      walkAction.current.play();
+      idleAction.current.stop();
+      setCurrentAnimation("walk");
+    } else if (!isMoving && currentAnimation !== "idle") {
+      walkAction.current.stop();
+      idleAction.current.play();
+      setCurrentAnimation("idle");
+    }
+    prevPosition.current.copy(currentPosition);
+
+
+  });
+
+
+
+
+
+  return (
+    <group ref={group} rotation={eulerRotation} position={position}>
+      {/* Render the appropriate model based on current animation */}
+      {currentAnimation === 'idle' && <primitive object={idleModel} rotation={[0, Math.PI, 0]} />}
+      {currentAnimation === 'walk' && <primitive object={walkingModel} rotation={[0, Math.PI, 0]} />}
+
+      {/* Optional: Add a box to visualize the group movement */}
+      <mesh position={[0, 1, 0]}>
+        <boxGeometry args={[0.2, 0.2, 0.2]} />
+        <meshStandardMaterial color={color || 'red'} />
+      </mesh>
+    </group>
+  );
+};
+
+
+
 function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
   const collisionObjects = useRef([]);
   const [playerPosition, setPlayerPosition] = useState(
@@ -237,19 +478,32 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
   );
   const [otherPlayers, setOtherPlayers] = useState([]);
 
+  const { scene: modelScene1 } = useGLTF("gltf/scenethree_fusion.glb");
   const { scene: modelScene } = useGLTF("gltf/scenethree.glb");
+
+
+
   useEffect(() => {
     modelScene.traverse((child) => {
-      if (child.material) child.material.metalness = 0;
+      if (child.material) {
+        child.material.metalness = 0;
+
+      }
       if (child.isMesh) {
+        child.visible = false; // Alternatively, hide the entire object
+
         child.geometry.computeBoundingBox();
         if (child.name.includes("wall") || child.name.includes("stair")) {
           collisionObjects.current.push(child);
         } else if (child.name == "floor") {
         }
+
       }
     });
-  }, [modelScene]);
+    modelScene1.traverse((child1) => {
+      if (child1.material) child1.material.metalness = 0;
+    })
+  }, [modelScene1, modelScene]);
 
   // Retrieve all players' positions except the current player
   useEffect(() => {
@@ -262,13 +516,15 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
 
       // Loop through players and update positions of other players
       for (let id in playersData) {
+
         if (id !== playerId) {
           // Exclude current player
           const pos = playersData[id];
-
+          const idother = id
           updatedPlayers.push({
-            id,
+            id: idother,
             position: new THREE.Vector3(pos.x, pos.y, pos.z),
+            rotation: new THREE.Vector3(pos.rotx, pos.roty, pos.rotz),
             color: pos.color,
           });
         }
@@ -286,15 +542,17 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
     return () => unsubscribe();
   }, [playerId]);
 
-  const updatePlayerPositionInFirebase = (position) => {
+  const updatePlayerPositionInFirebase = (position, rotation) => {
     const playerRef = ref(database, "players/" + playerId);
-    set(playerRef, {
+    update(playerRef, {
       x: position.x,
       y: position.y,
       z: position.z,
-      color: selectedColor,
+      roty: rotation.y,
+      color: selectedColor, // Ensure color is preserved
     });
   };
+
 
   useEffect(() => {
     const userRef = ref(database, `players/${playerId}`);
@@ -307,13 +565,13 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
     };
   }, [playerId]);
 
-  const updatePosition = (newPosition) => {
+  const updatePosition = (newPosition, newRotation) => {
     setPlayerPosition(newPosition);
-    updatePlayerPositionInFirebase(newPosition);
+    updatePlayerPositionInFirebase(newPosition, newRotation);
   };
-
   return (
     <>
+      <primitive object={modelScene1} />
       <primitive object={modelScene} />
 
       {/* Player */}
@@ -321,14 +579,20 @@ function Scene({ playerId, disableControls, onUnlock, selectedColor }) {
         collisionObjects={collisionObjects}
         position={playerPosition}
         updatePosition={updatePosition}
+
+
         disableControls={disableControls}
         onUnlock={onUnlock}
       />
       {otherPlayers.map((player) => (
-        <mesh key={player.id} position={player.position}>
-          <boxGeometry args={[0.5, 0.5, 0.5]} />
-          <meshStandardMaterial color={player.color} />
-        </mesh>
+
+        <Character
+          key={player.id}
+          id={player.id}
+          rotation={player.rotation}
+          position={[player.position.x, 0.4, player.position.z]}
+          color={player.color}
+        />
       ))}
     </>
   );
@@ -387,13 +651,28 @@ export function VirtualVisitWindow() {
     setSelectedColor(event.target.value); // Update the color state
   };
 
-  const max = 100; // Replace with any max value
-  const randomInt = Math.floor(Math.random() * max);
-  let playerId = "player" + randomInt;
+  const [playerId] = useState(() => {
+    const max = 100; // Replace with any max value
+    const randomInt = Math.floor(Math.random() * max);
+    return "player" + randomInt;
+  });
+
   const texture = useLoader(THREE.TextureLoader, "img/textures/wood-dif.jpg");
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(16, 16); // Adjust as needed
+  const skyboxImages = [
+    "gltf/skybox/clouds1_east.jpg",
+    "gltf/skybox/clouds1_west.jpg",
+    "gltf/skybox/clouds1_up.jpg",
+    "gltf/skybox/clouds1_down.jpg", // OK
+    "gltf/skybox/clouds1_north.jpg",
+    "gltf/skybox/clouds1_south.jpg",
+
+  ];
+
+  const cubeTexture = new THREE.CubeTextureLoader().load(skyboxImages);
+
 
   const displacementMap = useLoader(
     THREE.TextureLoader,
@@ -419,7 +698,7 @@ export function VirtualVisitWindow() {
                 onChange={handleColorChange}
               />
             </div>
-            <button onClick={handleNoLock}>Découvrir l'exposition</button>
+            <button className={`${loading ? styles.disabled : ''}`} onClick={handleNoLock}>Découvrir l'exposition</button>
             <div className={styles.howToPlay}>
               <img src="./img/virtual/howtoplay.png" alt="" />
             </div>
@@ -435,11 +714,15 @@ export function VirtualVisitWindow() {
           </div>
         </div>
       )}
-      {!nolock && (
+
+      <div className={`${styles.canvasWrapper} ${nolock ? "" : styles.active}`}>
+        <ChatInput playerId={playerId} />
+        <Chat />
+
         <Canvas>
           {!loading && (
             <>
-             
+              <primitive object={cubeTexture} attach="background" />
               <ambientLight position={[10, 10, 5]} intensity={1} />
               <directionalLight position={[10, 10, 5]} intensity={2} />
               <Scene
@@ -448,15 +731,7 @@ export function VirtualVisitWindow() {
                 onUnlock={handleDisableControls}
                 selectedColor={selectedColor}
               />
-              <mesh rotation={[-Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[30, 30, 64, 64]} />
-                <meshStandardMaterial
-                  map={texture}
-                  displacementMap={displacementMap}
-                  displacementScale={0.1}
-                  transparent={true}
-                />
-              </mesh>
+
               {paints.map((painting, index) => {
                 // Load texture from the image URL
 
@@ -492,26 +767,37 @@ export function VirtualVisitWindow() {
                 }
 
                 return (
-                  <mesh
-                    key={index}
-                    position={[x, y, z]}
-                    rotation={[0, rotationY, 0]}
-                  >
-                    <planeGeometry
-                      args={[
-                        painting.image["sizes"]["large-width"] / 500,
-                        painting.image["sizes"]["large-height"] / 500,
-                      ]}
-                    />{" "}
-                    {/* Adjust size as needed */}
-                    <meshStandardMaterial map={texture} />
-                  </mesh>
+                  <>
+
+                    <mesh
+                      key={index}
+                      position={[x, y, z]}
+                      rotation={[0, rotationY, 0]}
+                    >
+                      <planeGeometry
+                        args={[
+                          painting.image["sizes"]["large-width"] / 500,
+                          painting.image["sizes"]["large-height"] / 500,
+                        ]}
+                      />{" "}
+                      {/* Adjust size as needed */}
+                      <meshStandardMaterial map={texture} />
+                    </mesh>
+                    <mesh
+                     
+                      position={[x, y, z]} // Match the position of your painting
+                    >
+                      <boxGeometry args={[1, 1, 1]} /> {/* Adjust size as needed */}
+                      <meshBasicMaterial color="red" transparent opacity={0} />
+                    </mesh>
+                  </>
                 );
               })}
             </>
           )}
         </Canvas>
-      )}
+      </div>
+
     </div>
   );
 }

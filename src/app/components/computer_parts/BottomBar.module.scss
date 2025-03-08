@@ -137,6 +137,9 @@
                         inset -2px -2px 0px #dfdfdf,
                         inset 2px 2px 0px #808080;
                 }
+                &:hover{
+                    cursor: pointer;
+                }
                 &.minimized {
                 }
             }

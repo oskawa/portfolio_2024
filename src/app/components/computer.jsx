@@ -125,7 +125,6 @@ export function Computer({ lang }) {
 
   return (
     <div className={styles.innerBack}>
-     
       <div className={`${styles.inner} ${straight ? styles.straight : ""}`}>
         {loading && <Loader progress={progress} />}
         {!loading && <CookieConsent />}
@@ -146,7 +145,7 @@ export function Computer({ lang }) {
             }
           >
             <img src="/img/icons/back.png" alt="" />
-            <span>Personnalisation</span>
+            <span>{translate("personnalisation", lang)}</span>
           </button>
           <button
             onClick={() =>
@@ -161,7 +160,19 @@ export function Computer({ lang }) {
             <img src="/img/icons/music.png" alt="" />
             <span>Music Player</span>
           </button>
-
+          <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Travaillons ensemble",
+                slug: "work",
+                logo: "/img/icons/work.png",
+              })
+            }
+          >
+            <img src="/img/icons/work.png" alt="" />
+            <span>{translate("Travaillons_ensemble.doc", lang)}</span>
+          </button>
         </div>
 
         <BottomBar
@@ -209,9 +220,8 @@ export function Computer({ lang }) {
                 </div>
               );
             }
-            if (project.type == "windowMusic"){
-
-            } 
+            if (project.type == "windowMusic") {
+            }
 
             // Default rendering for other projects
             return (

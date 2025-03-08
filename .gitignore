@@ -19,7 +19,8 @@
 # misc
 .DS_Store
 *.pem
-
+/public/gltf/*.c4D
+/public/gltf/assets/materials
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -34,3 +35,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+public/gltf/tex
+public/gltf/scenethreee.glb

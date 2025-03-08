@@ -51,8 +51,8 @@
         background-image: url("/global/left.png");
         position: absolute;
         height: 100%;
-        width: 26%; /* Maintain aspect ratio */
-        left: -26%; /* Offset by its own width */
+        width: 35%; /* Maintain aspect ratio */
+        left: -35%; /* Offset by its own width */
         top: 0;
         background-size: contain;
         background-repeat: no-repeat;
@@ -64,8 +64,8 @@
         background-image: url("/global/right.png");
         position: absolute;
         height: 100%;
-        width: 17%; /* Maintain aspect ratio */
-        right: -17%; /* Offset by its own width */
+        width: 24%; /* Maintain aspect ratio */
+        right: -24%; /* Offset by its own width */
         top: 0;
         background-size: contain;
         background-repeat: no-repeat;
@@ -101,7 +101,9 @@
         width: 100%;
         height: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
         padding: 32px;
         gap: 10px;
         background-position: center;
@@ -118,6 +120,12 @@
             border: none;
             cursor: pointer;
             height: fit-content;
+            max-width: 90px;
+            span {
+                display: block;
+                width: 100px;
+                word-wrap: break-word;
+            }
             &:focus {
                 span {
                     background: #000a71;
