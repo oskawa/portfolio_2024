@@ -172,6 +172,9 @@
     }
 }
 @media screen and (max-width: 992px) {
+    .innerBack{
+        aspect-ratio: unset;
+    }
     .inner {
         aspect-ratio: unset;
     }

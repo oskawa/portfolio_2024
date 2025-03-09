@@ -12,6 +12,15 @@
         inset 1px 1px 0px #dfdfdf,
         inset -2px -2px 0px #808080,
         inset 2px 2px 0px #ffffff;
+    button {
+        background-color: transparent;
+        width: 100%;
+        border: none;
+        color: black;
+        &:hover {
+            color: white;
+        }
+    }
 }
 
 .startMenu__logo {
@@ -68,6 +77,10 @@
             background-size: contain;
             background-position: center;
         }
+        img {
+            width: 32px;
+            height: 32px;
+        }
 
         .startMenu__innerSingle__title {
             display: flex;
@@ -116,6 +129,9 @@
                     h4 {
                         color: white;
                     }
+                    button {
+                        color: white;
+                    }
                 }
             }
             .startSubmenu__innerSubSubSub {
@@ -139,6 +155,7 @@
                     inset 1px 1px 0px #dfdfdf,
                     inset -2px -2px 0px #808080,
                     inset 2px 2px 0px #ffffff;
+
                 .startSubmenu__innerSingleSubSubSub {
                     padding: 6px;
                     width: 100%;
@@ -147,9 +164,13 @@
                     > .startSubmenu__innerSubSub {
                         pointer-events: none;
                     }
-                    &:hover, &.active {
+                    &:hover,
+                    &.active {
                         background-color: #000a71;
-                        h4{
+                        h4 {
+                            color: white;
+                        }
+                        button {
                             color: white;
                         }
                         > .startSubmenu__innerSubSub {
@@ -165,6 +186,9 @@
                                 &:hover {
                                     background-color: #000a71;
                                     h5 {
+                                        color: white;
+                                    }
+                                    button {
                                         color: white;
                                     }
                                 }
@@ -206,6 +230,9 @@
                     width: 100%;
                     &:hover {
                         h5 {
+                            color: white;
+                        }
+                        button {
                             color: white;
                         }
                         background-color: #000a71;
@@ -254,6 +281,9 @@
                     h3 {
                         color: white;
                     }
+                    button {
+                        color: white;
+                    }
                     & > .startSubmenu__innerSubSub {
                         display: flex;
                     }
@@ -286,78 +316,85 @@
         }
     }
 }
-
+.startMenu__innerMobile {
+    display: none;
+}
+@media (pointer: coarse) {
+    .menu-item:hover .submenu {
+        display: none !important;
+    }
+}
 @media screen and (max-width: 768px) {
     .startMenu {
+        height: 97vh;
         width: 100%;
-        pointer-events: none;
-        .startMenu__inner {
-            width: 100%;
-            pointer-events: none;
-            .startMenu__innerSingle {
-                width: 91%;
-                pointer-events: none;
-                *:hover{
-                    pointer-events: none;
-                }
-                .startMenu__innerSingle__title {
-                    width: 100%;
-                    pointer-events: none;
-                }
-                .startSubmenu__inner {
-                    top: 0;
-                    left: 0;
-                    width: 91%;
-                    height: 100%;
-                    pointer-events: none;
-                    .startSubmenu__innerSingle {
-                        width: 100%;
-                        & > .startSubmenu__innerSubSubSub {
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            pointer-events: none;
-                            .startSubmenu__innerSingleSubSubSub {
-                                &:hover {
-                                    pointer-events: none;
-                                    & > .startSubmenu__innerSubSub {
-                                        top: 0;
-                                        left: 0;
-                                        width: 100%;
-                                        height: 100%;
-                                        pointer-events: none;
-                                    }
-                                }
-                            }
-                        }
-                        .startSubmenu__innerSingle__title {
-                            width: 100%;
-                            img {
-                                width: 30px;
-                                min-width: 30px;
-                                height: 30px;
-                                min-height: 30px;
-                                object-fit: cover;
-                            }
-                            h3 {
-                                font-size: 15px;
-                            }
-                        }
-                        & > .startSubmenu__innerSingleSubSubSub {
-                            top: 0;
-                            left: 0;
-                            width: 91%;
-                            height: 100%;
-                        }
-                    }
-                }
-            }
+        padding: 0;
+        .startMenu__logo {
+            width: 6vw;
+
+        }
+        button {
+            width: auto;
+            font-weight: 700;
         }
     }
+    .startMenu__inner {
+        display: none;
+    }
+    .startMenu__innerSingle__title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px;
+        border-bottom: 1px solid black;
+    }
+    .border {
+        border-bottom: 1px solid black;
+    }
+
     .startSubmenu__innerSingle__title {
-        &:hover {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px;
+        padding-left: 30px;
+    }
+    .startSubmenu__innerSubSubSub {
+        .startSubmenu__innerSingle__title {
+            font-weight: 500;
+        }
+    }
+    .startSubmenu__innerSubSubSub {
+        padding-left: 40px;
+        button {
+            padding-left: 0;
+            font-weight: 500;
+        }
+    }
+    .border {
+        background: #c0c0c0;
+        color: black;
+        box-shadow:
+            inset -1px -1px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset -2px -2px 0px #808080,
+            inset 2px 2px 0px #dfdfdf;
+    }
+    .startMenu__innerMobile {
+        display: flex;
+        flex-direction: column;
+        left: 6vw;
+        position: absolute;
+        top: 0;
+        width: 94vw;
+        height: 97vh;
+        overflow-y: scroll;
+
+        .startSubmenu__inner {
             display: none;
+            &.active {
+                display: block;
+            }
         }
     }
 }
