@@ -2,23 +2,43 @@ import { useState, useEffect, useRef } from "react";
 import { httpCard } from "../../../../axios/http";
 import styles from "./deck.module.scss";
 import { TcgCard } from "./tcgCard";
-export function Decks({ game, username }) {
+
+type Deck = {
+  username: string;
+  game: string;
+  name: string;
+  cards: []; // Adjust the type based on what `cards` actually contains
+};
+type CardItem = {
+  id: string;
+  image: string;
+  image_thumbnail: string;
+  name: string;
+  // Add other properties as needed
+};
+type CardSet = {
+  id: string;
+  name: string;
+  details?: {
+    cards: CardItem[];
+  };
+};
+
+export function Decks({ game, username }: { game: string; username: string }) {
   const [userDecks, setUserDecks] = useState([]);
-  const [cards, setCards] = useState([]);
-  const [currentDeck, setCurrentDeck] = useState(null);
+  const [cards, setCards] = useState<CardSet[]>([]);
+  const [currentDeck, setCurrentDeck] = useState<Deck | null>(null);
   const [newDeckName, setNewDeckName] = useState("");
-  const [expandedSet, setExpandedSet] = useState("base1");
+  const [expandedSet, setExpandedSet] = useState<string | null>(null);
   const [isCreatingDeck, setIsCreatingDeck] = useState(false);
-  const [selectedCards, setSelectedCards] = useState([]);
+  const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [popup, setPopup] = useState(false);
   const [cardId, setCardId] = useState("");
   const popupRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      console.log("Oui ?");
+    const handleClickOutside = (event: MouseEvent) => {
       console.log(popup);
-      console.log("toto");
 
       setPopup(false); // Close popup if clicked outside
     };
@@ -42,15 +62,15 @@ export function Decks({ game, username }) {
     }
   }, [currentDeck]);
 
-  const toggleCardSelection = (cardId) => {
-    setSelectedCards((prevSelected) =>
+  const toggleCardSelection = (cardId: string) => {
+    setSelectedCards((prevSelected: any) =>
       prevSelected.includes(cardId)
-        ? prevSelected.filter((id) => id !== cardId)
+        ? prevSelected.filter((id: string) => id !== cardId)
         : [...prevSelected, cardId]
     );
   };
 
-  const toggleAccordion = (setId) => {
+  const toggleAccordion = (setId: string) => {
     setExpandedSet(expandedSet === setId ? null : setId);
   };
 
@@ -84,7 +104,7 @@ export function Decks({ game, username }) {
     }
   }
 
-  const selectDeck = async (deck) => {
+  const selectDeck = async (deck: Deck) => {
     setCurrentDeck(deck);
     setSelectedCards(deck.cards);
     try {
@@ -95,11 +115,11 @@ export function Decks({ game, username }) {
     }
   };
 
-  const highCard = (e, cardId) => {
+  const highCard = (e: React.MouseEvent<HTMLLabelElement>, image: string) => {
     e.preventDefault();
 
     setPopup(true);
-    setCardId(cardId);
+    setCardId(image);
   };
 
   const removeDeck = async () => {
@@ -148,7 +168,7 @@ export function Decks({ game, username }) {
           <div>
             <h3>Vos decks :</h3>
             <ul className={styles.deckList}>
-              {userDecks.map((deck, index) => (
+              {userDecks.map((deck: Deck, index) => (
                 <li key={index}>
                   <button
                     className={deck === currentDeck ? styles.active : ""}
@@ -252,6 +272,7 @@ export function Decks({ game, username }) {
       </div>
       {popup && (
         <div className={styles.popup} ref={popupRef}>
+         
           {cardId && <TcgCard cardUrl={cardId} />}
         </div>
       )}
