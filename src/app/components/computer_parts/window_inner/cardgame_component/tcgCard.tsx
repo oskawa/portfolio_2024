@@ -6,7 +6,7 @@ export function TcgCard({ cardUrl }: { cardUrl: string }) {
   const [transformStyle, setTransformStyle] = useState("");
   const [boxShadow, setBoxShadow] = useState("");
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
     if (!card) return;
 
