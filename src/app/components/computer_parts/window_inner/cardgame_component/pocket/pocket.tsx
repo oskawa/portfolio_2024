@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Decks } from "../decks";
 import styles from "./pocket.module.scss";
-export function PocketInner({ username }) {
-  const [view, setView] = useState(null);
+export function PocketInner({ username }: { username: string }) {
+  const [view, setView] = useState("");
 
-  const handleView = (value) => {
+  const handleView = (value: string) => {
     setView(value);
   };
   return (
