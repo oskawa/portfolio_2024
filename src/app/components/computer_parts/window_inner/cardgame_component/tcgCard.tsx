@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
 import styles from "./tcg.module.scss";
 
-export function TcgCard({ cardUrl }) {
-  const cardRef = useRef(null);
+export function TcgCard({ cardUrl }: { cardUrl: string }) {
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const [transformStyle, setTransformStyle] = useState("");
   const [boxShadow, setBoxShadow] = useState("");
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: MouseEvent) => {
     const card = cardRef.current;
     if (!card) return;
 
@@ -18,15 +18,19 @@ export function TcgCard({ cardUrl }) {
     const rotateY = x * 35; // Increased intensity
 
     // Simulating light reflection using box-shadow
-    const shadowX = x * -20; 
+    const shadowX = x * -20;
     const shadowY = y * 20;
 
-    setTransformStyle(`perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`);
+    setTransformStyle(
+      `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.08)`
+    );
     setBoxShadow(`${shadowX}px ${shadowY}px 25px rgba(255, 231, 89, 0.3)`);
   };
 
   const handleMouseLeave = () => {
-    setTransformStyle("perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)");
+    setTransformStyle(
+      "perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)"
+    );
     setBoxShadow("0px 0px 15px rgba(255, 231, 89, 0.2)");
   };
 
