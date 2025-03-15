@@ -3,6 +3,7 @@ import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
 import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
+import { CardWindow } from "./window_inner/cardgame";
 import { MinesweeperWindow } from "./window_inner/minesweeper";
 import { VirtualVisitWindow } from "./window_inner/virtualvisit";
 import { TetrisWindow } from "./window_inner/tetris";
@@ -143,6 +144,8 @@ export function PaintWindow({
         <MusicWindow />
       ): data.slug == "tetris" ? (
         <TetrisWindow />
+      ): data.slug == "cardgame" ? (
+        <CardWindow />
       ) : data.slug == "back" ? (
         <BackWindow
           onBackgroundChange={handleBackgroundChange}

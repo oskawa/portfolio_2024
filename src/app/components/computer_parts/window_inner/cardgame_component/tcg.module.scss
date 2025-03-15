@@ -1,0 +1,79 @@
+.card {
+    height: 80%;
+    aspect-ratio: 0.72;
+    background-color: #211799;
+    transition-duration: 2000ms;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 15px;
+    box-shadow:
+        -3px -3px 3px 0 rgba(#26e6f7, 0.05),
+        3px 3px 3px 0 rgba(#f759e4, 0.05),
+        0 0 6px 2px rgba(#ffe759, 0.05),
+        0 35px 25px -15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 20px 10px;
+   
+    will-change: transform; // Optimized for GPU acceleration
+    > span {
+        position: relative;
+        top: 45%;
+    }
+    &:before,
+    &:after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-image: linear-gradient(
+            115deg,
+            transparent 0%,
+            rgb(0, 231, 255) 30%,
+            rgb(255, 0, 231) 70%,
+            transparent 100%
+        );
+        background-position: 0% 0%;
+        background-repeat: no-repeat;
+        background-size: 300% 300%;
+        mix-blend-mode: color-dodge;
+        opacity: 0.05;
+        z-index: 1;
+        animation: holoGradient 15s ease infinite;
+    }
+    &:after {
+        // background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
+        background-position: center;
+        background-size: 180%;
+        mix-blend-mode: color-dodge;
+        opacity: 1;
+        z-index: 2;
+        animation: holoSparkle 15s ease infinite;
+    }
+    &.active {
+        &:before {
+            opacity: 0;
+            animation: none;
+            transition: none;
+            background-image: linear-gradient(
+                115deg,
+                transparent 0%,
+                transparent 25%,
+                rgba(0, 231, 255, 0.7) 45%,
+                rgba(255, 0, 231, 0.7) 55%,
+                transparent 70%,
+                transparent 100%
+            );
+        }
+
+        &:before,
+        &:after {
+            animation: none;
+        }
+    }
+}

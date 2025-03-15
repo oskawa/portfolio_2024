@@ -1,0 +1,24 @@
+.topMenu {
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  gap: 15px;
+  padding: 4px;
+  background: #c0c0c0;
+  
+  h3 {
+    font-size: 13px;
+    color: black;
+  }
+  button {
+    background-color: transparent;
+    border: none;
+    font-size: 12px !important;
+    box-shadow: unset !important;
+    width: unset !important;
+    padding: 0 !important  ;
+  }
+}

@@ -173,6 +173,32 @@ export function Computer({ lang }) {
             <img src="/img/icons/work.png" alt="" />
             <span>{translate("Travaillons_ensemble.doc", lang)}</span>
           </button>
+          {/* <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Plateformer",
+                slug: "2dplaterformer",
+                logo: "/img/icons/work.png",
+              })
+            }
+          >
+            <img src="/img/icons/work.png" alt="" />
+            <span>{translate("Platerformer", lang)}</span>
+          </button> */}
+          <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Card Game",
+                slug: "cardgame",
+                logo: "/img/icons/card.png",
+              })
+            }
+          >
+            <img src="/img/icons/card.png" alt="" />
+            <span>{translate("CardGame.exe", lang)}</span>
+          </button>
         </div>
 
         <BottomBar
