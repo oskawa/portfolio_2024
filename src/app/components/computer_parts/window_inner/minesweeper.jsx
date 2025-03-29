@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import styles from './minesweeper.module.scss';
+import { useState, useEffect } from "react";
+import styles from "./minesweeper.module.scss";
 
 const TILE_STATUSES = {
-  HIDDEN: 'hidden',
-  MINE: 'mine',
-  NUMBER: 'number',
-  MARKED: 'marked',
+  HIDDEN: "hidden",
+  MINE: "mine",
+  NUMBER: "number",
+  MARKED: "marked",
 };
 
 export function MinesweeperWindow() {
@@ -13,7 +13,7 @@ export function MinesweeperWindow() {
   const NUMBER_OF_MINES = 10;
   const [board, setBoard] = useState([]);
   const [minesLeft, setMinesLeft] = useState(NUMBER_OF_MINES);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   // Create board and mines when component mounts
   useEffect(() => {
@@ -43,7 +43,10 @@ export function MinesweeperWindow() {
   // List remaining mines
   function listMinesLeft() {
     const markedTilesCount = board.reduce((count, row) => {
-      return count + row.filter((tile) => tile.status === TILE_STATUSES.MARKED).length;
+      return (
+        count +
+        row.filter((tile) => tile.status === TILE_STATUSES.MARKED).length
+      );
     }, 0);
     setMinesLeft(NUMBER_OF_MINES - markedTilesCount);
   }
@@ -54,7 +57,7 @@ export function MinesweeperWindow() {
     const lose = checkLose(board);
 
     if (win || lose) {
-      setMessage(win ? 'You Win' : 'You Lose');
+      setMessage(win ? "Bravo, vous avez gagné !" : "Arf, Essayez encore");
       stopGamePropagation();
     }
 
@@ -87,15 +90,16 @@ export function MinesweeperWindow() {
               onClick={() => handleTileClick(tile)}
               onContextMenu={(e) => handleTileRightClick(e, tile)}
             >
-              {tile.status === TILE_STATUSES.NUMBER ? tile.number : ''}
+              {tile.status === TILE_STATUSES.NUMBER ? tile.number : ""}
             </div>
           ))
         )}
       </div>
-      <div>
-        <span>Remaining Mines: {minesLeft}</span>
+      <div className={styles.informations}>
+        <p>Mines restantes: {minesLeft}</p>
+        <div className="message">{message}</div>
+        <button>Recommencer</button>
       </div>
-      <div className="message">{message}</div>
     </div>
   );
 }
@@ -124,11 +128,17 @@ function createBoard(boardSize, numberOfMines) {
 }
 
 function markTile(tile) {
-  if (tile.status !== TILE_STATUSES.HIDDEN && tile.status !== TILE_STATUSES.MARKED) {
+  if (
+    tile.status !== TILE_STATUSES.HIDDEN &&
+    tile.status !== TILE_STATUSES.MARKED
+  ) {
     return;
   }
 
-  tile.status = tile.status === TILE_STATUSES.MARKED ? TILE_STATUSES.HIDDEN : TILE_STATUSES.MARKED;
+  tile.status =
+    tile.status === TILE_STATUSES.MARKED
+      ? TILE_STATUSES.HIDDEN
+      : TILE_STATUSES.MARKED;
 }
 
 function revealTile(board, tile) {
@@ -154,13 +164,17 @@ function checkWin(board) {
     row.every(
       (tile) =>
         tile.status === TILE_STATUSES.NUMBER ||
-        (tile.mine && (tile.status === TILE_STATUSES.HIDDEN || tile.status === TILE_STATUSES.MARKED))
+        (tile.mine &&
+          (tile.status === TILE_STATUSES.HIDDEN ||
+            tile.status === TILE_STATUSES.MARKED))
     )
   );
 }
 
 function checkLose(board) {
-  return board.some((row) => row.some((tile) => tile.status === TILE_STATUSES.MINE));
+  return board.some((row) =>
+    row.some((tile) => tile.status === TILE_STATUSES.MINE)
+  );
 }
 
 function getMinePositions(boardSize, numberOfMines) {

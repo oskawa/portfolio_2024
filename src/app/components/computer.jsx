@@ -6,7 +6,6 @@ import { WindowProject } from "./computer_parts/windowProject";
 import { PaintWindow } from "./computer_parts/paintWindow";
 import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
-import { useRouter } from "next/router";
 import { translate } from "../../utils/translate";
 import CookieConsent from "./cookieConsent";
 

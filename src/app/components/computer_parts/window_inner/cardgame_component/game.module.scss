@@ -1,0 +1,81 @@
+.create {
+  opacity: 0.5;
+  pointer-events: none;
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.gameGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 50px);
+  grid-template-rows: repeat(4, 50px);
+  gap: 5px;
+  margin-top: 20px;
+}
+.gridCell {
+  width: 50px;
+  height: 50px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 1px solid #aaa;
+}
+.innerGame {
+  height: 96%;
+}
+.informations {
+  display: flex;
+  .informationsGame {
+    display: flex;
+    ul {
+      display: flex;
+    }
+  }
+}
+
+.createGame {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  ul {
+    list-style: none;
+    margin-bottom: 15px;
+  }
+  h3 {
+    color: black;
+    margin-top: 10px;
+  }
+  p {
+    padding: 10px 0;
+    margin: 0;
+    color: black;
+  }
+  hr {
+    margin: 10px 0;
+    background: black;
+    border-color: black;
+  }
+  input {
+    padding: 4px 4px;
+    border: none;
+    background: #ffffff;
+    box-shadow:
+      inset -1px -1px 0px #ffffff,
+      inset 1px 1px 0px #808080,
+      inset -2px -2px 0px #dfdfdf,
+      inset 2px 2px 0px #0a0a0a;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 22px;
+    color: #000000;
+    width: 100%;
+  }
+}

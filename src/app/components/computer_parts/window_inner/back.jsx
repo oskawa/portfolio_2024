@@ -20,6 +20,7 @@ export function BackWindow({ onBackgroundChange, onClose }) {
   const handlePanelClick = (event) => {
     const panelToShow = event.currentTarget.getAttribute("data-attr");
     setActivePanel(panelToShow);
+    console.log(panelToShow)
   };
 
   const handleButtonClick = (event) => {

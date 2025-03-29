@@ -1,0 +1,79 @@
+.cardslot {
+    border: 2px solid;
+    width: 6rem; /* Tailwind's w-24 equivalent */
+    height: 8rem; /* Tailwind's h-32 equivalent */
+    display: flex;
+    align-items: center; /* Tailwind's items-center */
+    justify-content: center; /* Tailwind's justify-center */
+    position: relative;
+    &.active_card {
+        img {
+            &:first-of-type {
+                width: 100%;
+            }
+            &:not(:first-of-type) {
+                position: absolute;
+                right: 0;
+                transform: translateX(50%);
+                top: 0;
+                height: 50%;
+                width: auto;
+            }
+        }
+    }
+    &.can {
+        background-color: #d1fae5; /* Tailwind's bg-green-200 */
+        cursor: pointer;
+    }
+    &.empty {
+        border-color: rgba(white, 0.1);
+    }
+    .disabled {
+        background-color: #e5e7eb; /* Tailwind's bg-gray-300 */
+        opacity: 0.5; /* Tailwind's opacity-50 */
+    }
+    img {
+        width: 100%;
+        &.selected {
+            outline: 2px solid #ffcb05;
+            box-shadow: 0 0 12px rgba(255, 203, 5, 0.6);
+            transform: scale(1.05);
+            z-index: 10;
+            border-radius: 4px;
+        }
+    }
+    .deckButtons {
+        position: absolute;
+        right: -25px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        button {
+            width: unset;
+            height: unset;
+            min-width: 40px;
+            min-height: 40px;
+            display: block;
+            border-radius: 50%;
+            padding: 0;
+        }
+    }
+    &.prize_cards {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+        img {
+            margin-top: -100%; // Adjust for desired overlap
+            z-index: 1;
+
+            &:first-child {
+                margin-top: 0;
+            }
+            &:not(:first-child) {
+                box-shadow: 5px -15px 16.1px rgba(0, 0, 0, 0.25);
+            }
+        }
+    }
+}

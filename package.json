@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@next/third-parties": "^15.0.2",
+    "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^9.120.0",
     "@react-three/fiber": "^8.17.10",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "cannon-es": "^0.20.0",
     "firebase": "^11.0.1",
     "js-cookie": "^3.0.5",
     "next": "14.2.13",

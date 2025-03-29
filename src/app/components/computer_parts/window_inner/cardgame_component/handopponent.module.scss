@@ -1,0 +1,16 @@
+.handOpponent {
+    position: absolute;
+    top: 0;
+    z-index: -0;
+    width: 100%;
+    .handInner {
+        display: flex;
+        justify-content: center;
+        max-height: 50px;
+        overflow: hidden;
+        align-items: flex-end;
+        img {
+            width: 150px;
+        }
+    }
+}

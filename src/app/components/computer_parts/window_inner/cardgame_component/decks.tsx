@@ -7,7 +7,9 @@ type Deck = {
   username: string;
   game: string;
   name: string;
-  cards: []; // Adjust the type based on what `cards` actually contains
+  cards: {
+    [cardId: string]: number;
+  };
 };
 type CardItem = {
   id: string;
@@ -31,7 +33,9 @@ export function Decks({ game, username }: { game: string; username: string }) {
   const [newDeckName, setNewDeckName] = useState("");
   const [expandedSet, setExpandedSet] = useState<string | null>(null);
   const [isCreatingDeck, setIsCreatingDeck] = useState(false);
-  const [selectedCards, setSelectedCards] = useState<string[]>([]);
+  const [selectedCards, setSelectedCards] = useState<{
+    [cardId: string]: number;
+  }>({});
   const [popup, setPopup] = useState(false);
   const [cardId, setCardId] = useState("");
   const popupRef = useRef(null);
@@ -62,12 +66,24 @@ export function Decks({ game, username }: { game: string; username: string }) {
     }
   }, [currentDeck]);
 
+  const updateCardQuantity = (cardId: string, quantity: number) => {
+    setSelectedCards((prev) => {
+      if (quantity <= 0) {
+        const { [cardId]: _, ...rest } = prev;
+        return rest; // remove card if quantity is 0
+      }
+      return { ...prev, [cardId]: quantity };
+    });
+  };
+
   const toggleCardSelection = (cardId: string) => {
-    setSelectedCards((prevSelected: any) =>
-      prevSelected.includes(cardId)
-        ? prevSelected.filter((id: string) => id !== cardId)
-        : [...prevSelected, cardId]
-    );
+    setSelectedCards((prev) => {
+      const quantity = prev[cardId] || 0;
+      if (quantity > 0) {
+        return prev; // already selected, do nothing
+      }
+      return { ...prev, [cardId]: 1 }; // add with quantity 1
+    });
   };
 
   const toggleAccordion = (setId: string) => {
@@ -193,41 +209,78 @@ export function Decks({ game, username }: { game: string; username: string }) {
                         <div>
                           <ul className={styles.cardList}>
                             {cardSet.details?.cards?.map(
-                              (cardItem, cardIndex) => (
-                                <li
-                                  key={cardIndex}
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <label
-                                    onContextMenu={(e) =>
-                                      highCard(e, cardItem.image)
-                                    }
-                                    className={`${
-                                      selectedCards.includes(cardItem.id)
-                                        ? styles.checked
-                                        : ""
-                                    }`}
+                              (cardItem, cardIndex) => {
+                                const quantity =
+                                  selectedCards[cardItem.id] || 0;
+
+                                return (
+                                  <li
+                                    key={cardIndex}
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      alignItems: "center",
+                                      margin: "10px",
+                                    }}
                                   >
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedCards.includes(
-                                        cardItem.id
-                                      )}
-                                      onChange={() =>
+                                    <div
+                                      onClick={() =>
                                         toggleCardSelection(cardItem.id)
                                       }
-                                    />
-                                    <img
-                                      src={cardItem.image_thumbnail}
-                                      alt={cardItem.name}
-                                      style={{ width: "100px", height: "auto" }}
-                                    />
-                                  </label>
-                                </li>
-                              )
+                                      onContextMenu={(e) =>
+                                        highCard(e, cardItem.image)
+                                      }
+                                      className={
+                                        quantity > 0 ? styles.checked : ""
+                                      }
+                                      
+                                    >
+                                      <img
+                                        src={cardItem.image_thumbnail}
+                                        alt={cardItem.name}
+                                        style={{
+                                          width: "100px",
+                                          height: "auto",
+                                        }}
+                                      />
+                                    </div>
+
+                                    {quantity > 0 && (
+                                      <div className={styles.quantityManage}
+                                        style={{
+                                          marginTop: "8px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <button
+                                          onClick={() =>
+                                            updateCardQuantity(
+                                              cardItem.id,
+                                              quantity - 1
+                                            )
+                                          }
+                                        >
+                                          -
+                                        </button>
+                                        <span style={{ margin: "0 8px" }}>
+                                          {quantity}
+                                        </span>
+                                        <button
+                                          onClick={() =>
+                                            updateCardQuantity(
+                                              cardItem.id,
+                                              quantity + 1
+                                            )
+                                          }
+                                        >
+                                          +
+                                        </button>
+                                      </div>
+                                    )}
+                                  </li>
+                                );
+                              }
                             )}
                           </ul>
                         </div>
@@ -272,7 +325,6 @@ export function Decks({ game, username }: { game: string; username: string }) {
       </div>
       {popup && (
         <div className={styles.popup} ref={popupRef}>
-         
           {cardId && <TcgCard cardUrl={cardId} />}
         </div>
       )}

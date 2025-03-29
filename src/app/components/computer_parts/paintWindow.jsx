@@ -1,13 +1,14 @@
 import { useRef, useEffect, useState } from "react";
 import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
+import { ConnectWindows } from "./window_inner/connect";
 import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
 import { CardWindow } from "./window_inner/cardgame";
 import { MinesweeperWindow } from "./window_inner/minesweeper";
 import { VirtualVisitWindow } from "./window_inner/virtualvisit";
 import { TetrisWindow } from "./window_inner/tetris";
-import { MusicWindow  } from "./window_inner/music";
+import { MusicWindow } from "./window_inner/music";
 import { WebBrowser } from "./window_inner/webbrowser";
 import { WordWindows } from "./window_inner/word";
 import styles from "./PaintWindow.module.scss";
@@ -92,8 +93,9 @@ export function PaintWindow({
 
   return (
     <div
-      className={`${styles.application} ${upscale ? styles.upscale : styles.inactive
-        } ${isFocus ? styles.focus : styles.unfocus}
+      className={`${styles.application} ${
+        upscale ? styles.upscale : styles.inactive
+      } ${isFocus ? styles.focus : styles.unfocus}
       ${isMinimized ? styles.mini : styles.unmini}
       ${data.slug == "back" ? styles.small : ""}
       ${data.slug == "music" ? styles.smallMini : ""}
@@ -117,12 +119,14 @@ export function PaintWindow({
             className={`${styles.applicationButtons__inner} ${styles.applicationButtons__mini}`}
             onClick={handleMini}
           ></button>
-          {data.slug !== "back" && data.slug !== "music" && data.slug !== "picross" && (
-            <button
-              className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
-              onClick={() => handleUpscale()}
-            ></button>
-          )}
+          {data.slug !== "back" &&
+            data.slug !== "music" &&
+            data.slug !== "picross" && (
+              <button
+                className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
+                onClick={() => handleUpscale()}
+              ></button>
+            )}
           <button
             className={`${styles.applicationButtons__inner} ${styles.applicationButtons__close}`}
             onClick={onClose}
@@ -134,17 +138,19 @@ export function PaintWindow({
         <CvWindow />
       ) : data.slug == "rubiks" ? (
         <RubiksWindow />
+      ) : data.slug == "connect" ? (
+        <ConnectWindows />
       ) : data.slug == "picross" ? (
         <PicrossWindow />
       ) : data.slug == "minesweeper" ? (
         <MinesweeperWindow />
       ) : data.slug == "virtualvisit" ? (
         <VirtualVisitWindow />
-      ): data.slug == "music" ? (
+      ) : data.slug == "music" ? (
         <MusicWindow />
-      ): data.slug == "tetris" ? (
+      ) : data.slug == "tetris" ? (
         <TetrisWindow />
-      ): data.slug == "cardgame" ? (
+      ) : data.slug == "cardgame" ? (
         <CardWindow />
       ) : data.slug == "back" ? (
         <BackWindow
@@ -155,7 +161,6 @@ export function PaintWindow({
         <WebBrowser href={data.href} />
       ) : data.slug == "work" ? (
         <WordWindows href={data.href} />
-
       ) : (
         <BackWindow />
       )}

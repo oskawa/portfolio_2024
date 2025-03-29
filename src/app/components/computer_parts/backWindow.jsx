@@ -1,6 +1,5 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./BackWindow.module.scss";
-import http from "../../axios/http";
 
 export function BackWindow({
   data,
@@ -15,12 +14,12 @@ export function BackWindow({
   const [mini, setMini] = useState(false);
 
   useEffect(() => {
-  
     if (loading) return;
+    setLoading(false);
     const elmnt = document.getElementById(`application-${data.slug}`);
     if (!elmnt) return; // Exit if the element doesn't exist
     const header = document.getElementById(`applicationheader-${data.slug}`);
-   
+
     const dragMouseDown = (e) => {
       e.preventDefault();
       let pos3 = e.clientX;
@@ -107,11 +106,14 @@ export function BackWindow({
           ></button>
         </div>
       </div>
-      
-        {data.slug == "cv" ? <CvWindow /> : 
-        data.slug == "rubiks" ? <RubiksWindow /> :
-        <div></div>}
-      
+
+      {data.slug == "cv" ? (
+        <CvWindow />
+      ) : data.slug == "rubiks" ? (
+        <RubiksWindow />
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }

@@ -47,3 +47,31 @@
         }
     }
 }
+.informations {
+    color: black;
+    text-align: center;
+    p {
+        color: black;
+    }
+    button {
+        border: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 10px;
+        background: #c0c0c0;
+        color: black;
+        box-shadow:
+            inset -1px -1px 0px #0a0a0a,
+            inset 1px 1px 0px #ffffff,
+            inset -2px -2px 0px #808080,
+            inset 2px 2px 0px #dfdfdf;
+        font-family: "MS Sans Serif";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        margin: auto;
+        margin:10px auto;
+    }
+}

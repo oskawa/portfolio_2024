@@ -209,6 +209,23 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
                   </div>
                 </button>
+                <button
+                  key="connect"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Connect 4",
+                      slug: "connect",
+                      logo: "/img/icons/connect.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/connect.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Puissance 4</h3>
+                  </div>
+                </button>
                 {/* <div
                   key="tetris"
                   className={styles.startSubmenu__innerSingle}
@@ -286,7 +303,9 @@ export function StartBar({
 
         <div className={styles.startMenu__innerMobile}>
           {menu.projects && (
-            <div className={` ${styles.startMenu__innerSingle} ${styles.border} `} >
+            <div
+              className={` ${styles.startMenu__innerSingle} ${styles.border} `}
+            >
               <button
                 className={` ${styles.startMenu__innerSingle__title} `}
                 onClick={() => toggleMenu("projects")}
@@ -342,7 +361,9 @@ export function StartBar({
                             {/* Render the list of projects for each child taxonomy */}
                             {child.projects && (
                               <div
-                                className={` ${styles.startSubmenu__innerSubSub} ${
+                                className={` ${
+                                  styles.startSubmenu__innerSubSub
+                                } ${
                                   openMenu === child.taxonomy
                                     ? styles.active
                                     : ""
@@ -467,6 +488,7 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
                   </div>
                 </button>
+               
                 {/* <div
                   key="tetris"
                   className={styles.startSubmenu__innerSingle}

@@ -1,0 +1,9 @@
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem; /* Tailwind gap-2 equivalent */
+}
+.rotate {
+    transform: rotate(180deg);
+  }

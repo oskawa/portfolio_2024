@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/router"; 
 // import { useLocale, usePathname } from 'next-intl/client'; // client-side intl hooks
 
 const LanguageSwitcher = () => {
