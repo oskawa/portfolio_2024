@@ -131,7 +131,7 @@ export function Decks({ game, username }: { game: string; username: string }) {
     }
   };
 
-  const highCard = (e: React.MouseEvent<HTMLLabelElement>, image: string) => {
+  const highCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, image: string) => {
     e.preventDefault();
 
     setPopup(true);

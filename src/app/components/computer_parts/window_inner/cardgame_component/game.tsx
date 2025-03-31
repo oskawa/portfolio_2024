@@ -18,6 +18,10 @@ type Deck = {
   name: string;
   cards: [];
 };
+type Player = {
+  name: string;
+  // Add other properties if necessary
+};
 
 export function CardGameLobby({ game, username, type }) {
   const [uuid, setUuid] = useState("");
@@ -192,8 +196,9 @@ export function CardGameLobby({ game, username, type }) {
             onClick={createGame}
             className={`${styles.create} ${currentDeck ? styles.active : ""}`}
           >
-            Créer une partie</button>
-            <p>OU</p>
+            Créer une partie
+          </button>
+          <p>OU</p>
           <p>Game Code: {uuid}</p>
 
           <input
@@ -220,7 +225,7 @@ export function CardGameLobby({ game, username, type }) {
               <div className={styles.informationsGame}>
                 <h3>Players:</h3>
                 <ul>
-                  {Object.values(gameData.players).map((player, index) => (
+                  {Object.values(gameData.players).map((player:Player, index) => (
                     <li key={index}>{player.name}</li>
                   ))}
                 </ul>
