@@ -198,6 +198,19 @@ export function Computer({ lang }) {
             <img src="/img/icons/card.png" alt="" />
             <span>{translate("CardGame.exe", lang)}</span>
           </button>
+          <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Platerformer",
+                slug: "plateformer",
+                logo: "/img/icons/plateformer.png",
+              })
+            }
+          >
+            <img src="/img/icons/plateformer.png" alt="" />
+            <span>{translate("Plateformer", lang)}</span>
+          </button>
         </div>
 
         <BottomBar

@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
 import { ConnectWindows } from "./window_inner/connect";
+import { PlateformerWindow } from "./window_inner/platformer";
 import { BackWindow } from "./window_inner/back";
 import { PicrossWindow } from "./window_inner/picross";
 import { CardWindow } from "./window_inner/cardgame";
@@ -101,6 +102,9 @@ export function PaintWindow({
       ${data.slug == "music" ? styles.smallMini : ""}
       ${data.slug == "picross" ? styles.auto : ""}
       ${data.slug == "minesweeper" ? styles.auto : ""}
+      ${data.slug == "plateformer" ? styles.specific : ""}
+     
+      
       `}
       id={`application-${data.slug}`}
       onClick={onClick}
@@ -121,6 +125,7 @@ export function PaintWindow({
           ></button>
           {data.slug !== "back" &&
             data.slug !== "music" &&
+            data.slug !== "plateformer" &&
             data.slug !== "picross" && (
               <button
                 className={`${styles.applicationButtons__inner} ${styles.applicationButtons__upscale}`}
@@ -140,6 +145,8 @@ export function PaintWindow({
         <RubiksWindow />
       ) : data.slug == "connect" ? (
         <ConnectWindows />
+      ) : data.slug == "plateformer" ? (
+        <PlateformerWindow />
       ) : data.slug == "picross" ? (
         <PicrossWindow />
       ) : data.slug == "minesweeper" ? (

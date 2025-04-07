@@ -226,6 +226,23 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Puissance 4</h3>
                   </div>
                 </button>
+                <button
+                  key="plateformer"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Plateformer",
+                      slug: "plateformer",
+                      logo: "/img/icons/plateformer.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/plateformer.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Plateformer</h3>
+                  </div>
+                </button>
                 {/* <div
                   key="tetris"
                   className={styles.startSubmenu__innerSingle}
@@ -488,7 +505,7 @@ export function StartBar({
                     <h3 className={styles.startSubmenu__cat}>Rubiks</h3>
                   </div>
                 </button>
-               
+
                 {/* <div
                   key="tetris"
                   className={styles.startSubmenu__innerSingle}

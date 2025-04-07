@@ -15,6 +15,10 @@
         inset 1px 1px 0px #dfdfdf,
         inset -2px -2px 0px #808080,
         inset 2px 2px 0px #ffffff;
+    &.specific {
+        width: 800px;
+        height: 470px;
+    }
     &.small {
         width: 450px;
         height: 448px;
