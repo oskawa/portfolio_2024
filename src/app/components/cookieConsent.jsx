@@ -16,7 +16,6 @@ export default function CookieConsent() {
     if (state) setCookieState(state);
   }, []);
 
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
@@ -25,20 +24,39 @@ export default function CookieConsent() {
     return () => clearTimeout(timer); // Clean up the timer on component unmount
   }, []);
 
+  useEffect(() => {
+    if (cookieState === "accepted") {
+      window.trackClick = (label = "unknown_button") => {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "button_click",
+          button_name: label,
+        });
+      };
+    } else {
+      window.trackClick = () => {}; // No-op if no consent
+    }
+  }, [cookieState]);
+
   const handleConsent = (state) => {
     Cookies.set("cookie-consent-state", state, {
       // Set to your domain; omit for the current domain only
-      domain: process.env.NODE_ENV === 'production' ? 'portfolio-2024-delta-beryl.vercel.app' : undefined,
-      path: '/',
-      sameSite: 'Lax',  // Adjust based on your needs
-      secure: process.env.NODE_ENV === 'production', // Secure cookies only on HTTPS
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "portfolio-2024-delta-beryl.vercel.app"
+          : undefined,
+      path: "/",
+      sameSite: "Lax", // Adjust based on your needs
+      secure: process.env.NODE_ENV === "production", // Secure cookies only on HTTPS
     });
     setCookieState(state);
   };
 
   if (cookieState === "not-answered") {
     return (
-      <div className={`${styles.cookieConsent} ${isVisible ? styles.visible : ""}`}>
+      <div
+        className={`${styles.cookieConsent} ${isVisible ? styles.visible : ""}`}
+      >
         <div className={styles.cookieConsentHeader}>
           <div className={styles.applicationName}>
             <img src="/img/icons/msn.png" alt="" />
@@ -51,10 +69,10 @@ export default function CookieConsent() {
           </div>
           <div className={styles.cookieConsent__innerText}>
             <p>
-              <span>Maxime<img src="/img/icons/16.png"></img> dit :</span>
-             
+              <span>
+                Maxime<img src="/img/icons/16.png"></img> dit :
+              </span>
               Kk, j'utilise des cookies, tu acceptes ?{" "}
-             
             </p>
             <div className={styles.cookieContent__buttons}>
               <button onClick={() => handleConsent("accepted")}>

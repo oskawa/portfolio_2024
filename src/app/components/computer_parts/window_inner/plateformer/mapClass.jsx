@@ -43,14 +43,24 @@ export default class GameMap {
   update(player) {
     const halfCanvasW = this.canvasWidth / 2;
     const halfCanvasH = this.canvasHeight / 2;
+    const zoom = 2;
+    const scaledCanvasW = this.canvasWidth / zoom;
+    const scaledCanvasH = this.canvasHeight / zoom;
 
     this.camera.x = Math.max(
       0,
-      Math.min(player.position.x - halfCanvasW, this.width - this.canvasWidth)
+      Math.min(
+        player.position.x - scaledCanvasW / 2,
+        this.width - scaledCanvasW
+      )
     );
+
     this.camera.y = Math.max(
       0,
-      Math.min(player.position.y - halfCanvasH, this.height - this.canvasHeight)
+      Math.min(
+        player.position.y - scaledCanvasH / 2,
+        this.height - scaledCanvasH
+      )
     );
 
     this.checkCollisions(player);

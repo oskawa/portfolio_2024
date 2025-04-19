@@ -8,6 +8,7 @@ import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
 import { translate } from "../../utils/translate";
 import CookieConsent from "./cookieConsent";
+import ClickTracker from "./ClickTracker";
 
 import styles from "./Computer.module.scss";
 
@@ -127,6 +128,7 @@ export function Computer({ lang }) {
       <div className={`${styles.inner} ${straight ? styles.straight : ""}`}>
         {loading && <Loader progress={progress} />}
         {!loading && <CookieConsent />}
+        <ClickTracker />
         <div
           className={styles.desktop}
           style={{ backgroundImage: backgroundImage, backgroundSize: "cover" }}
@@ -134,6 +136,8 @@ export function Computer({ lang }) {
           <div className={styles.line}></div>
           <div className={styles.scanline}></div>
           <button
+            className={`${styles.trackable} trackable`}
+            data-gtm-label="screen_back"
             onClick={() =>
               handleWindowSelect({
                 type: "windowClassic",

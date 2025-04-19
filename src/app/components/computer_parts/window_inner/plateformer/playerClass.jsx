@@ -11,6 +11,9 @@ export default class Player {
     this.doubleJumpAvailable = true;
     this.state = "idle"; // idle, running, jumping, attacking, damaged
 
+    this.comboStep = 0;
+    this.comboResetTimer = 0;
+
     this.hitbox = {
       offsetX: 10,
       offsetY: 5,
@@ -30,6 +33,13 @@ export default class Player {
       this.currentAnim = name;
       this.currentFrame = 0;
       this.frameTimer = 0;
+
+      const anim = this.animations[name];
+      if (anim && anim.frames.length > 0) {
+        const firstFrame = anim.frames[0];
+        this.width = firstFrame.w;
+        this.height = firstFrame.h;
+      }
     }
   }
   updateAnimation(deltaTime) {
@@ -99,10 +109,17 @@ export default class Player {
   attack() {
     console.log("ATTACK");
     if (this.state !== "attacking") {
-      console.log("OUI ON ATTAQUE");
-      this.playAnimation("fightone");
+      this.comboStep++;
+      if (this.comboStep > 4) this.comboStep = 1;
+      const animName = `fight${
+        ["one", "two", "three", "four"][this.comboStep - 1]
+      }`;
+
+      this.playAnimation(animName);
+
       this.state = "attacking";
-      this.attackTimer = 300; // ms
+      this.attackTimer = this.comboStep === 4 ? 600 : 300;
+      this.comboResetTimer = 1000;
 
       // Create an attack hitbox
       this.attackHitbox = {
@@ -125,22 +142,21 @@ export default class Player {
         this.attackHitbox = null;
       }
     }
+    if (this.comboStep > 0) {
+      this.comboResetTimer -= deltaTime;
+      if (this.comboResetTimer <= 0) {
+        this.comboStep = 0;
+      }
+    }
 
-    // 🧲 Apply gravity
     this.velocity.y += gravity;
 
-    // ☁️ Horizontal movement
     this.position.x += this.velocity.x;
 
-    // 🔄 Horizontal collision (walls)
     const hitbox = this.getHitbox();
-    
 
-    // 🌍 Vertical movement
     this.position.y += this.velocity.y;
     this.onGround = false;
-
-    
   }
 
   draw(ctx, camera) {

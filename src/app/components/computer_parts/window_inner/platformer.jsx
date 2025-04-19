@@ -27,7 +27,6 @@ function loadLevel(levelKey, canvasWidth, canvasHeight, callback) {
   const bgImage = new Image();
   bgImage.src = levelData.backgroundSrc;
 
- 
   let loaded = 0;
   const onLoad = () => {
     loaded++;
@@ -66,10 +65,25 @@ function loadLevel(levelKey, canvasWidth, canvasHeight, callback) {
   levelImage.onload = onLoad;
   bgImage.onload = onLoad;
 }
+function loadImages(paths, callback) {
+  const images = {};
+  let loaded = 0;
+  const keys = Object.keys(paths);
 
-function handleTrigger(trigger) {
-  console.log("toto");
+  keys.forEach((key) => {
+    const img = new Image();
+    img.src = paths[key];
+    img.onload = () => {
+      loaded++;
+      if (loaded === keys.length) callback(images);
+    };
+    img.onerror = () => {
+      console.error(`Failed to load image: ${img.src}`);
+    };
+    images[key] = img;
+  });
 }
+
 export function PlateformerWindow() {
   const canvasRef = useRef(null);
   const canvasWidth = 480;
@@ -78,21 +92,58 @@ export function PlateformerWindow() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    let map;
+    let player;
 
-    const idleImage = new Image();
-    idleImage.src = "/img/plateformer/sprites/main_character/idle.png"; // Make sure this exists in /public
-    const runImage = new Image();
-    runImage.src = "/img/plateformer/sprites/main_character/run.png"; // Make sure this exists in /public
-    const jumpImage = new Image();
-    jumpImage.src = "/img/plateformer/sprites/main_character/jump.png"; // Make sure this exists in /public
-    const jumptwoImage = new Image();
-    jumptwoImage.src = "/img/plateformer/sprites/main_character/jumptwo.png"; // Make sure this exists in /public
-    const fightoneImage = new Image();
-    fightoneImage.src = "/img/plateformer/sprites/main_character/fightone.png"; // Make sure this exists in /public
+    function handleTrigger(trigger) {
+      switch (trigger.action) {
+        case "read":
+          alert(trigger.data.text || "No text found.");
+          break;
 
-    idleImage.onload = () => {
-      loadLevel("level1", canvasWidth, canvasHeight, (map) => {
-        const player = new Player(1900, 100, 40, 50, null);
+        case "change_level":
+          const nextLevel = trigger.data.to;
+          if (nextLevel) {
+            const canvasWidth = 480;
+            const canvasHeight = 320;
+            console.log("Loading level:", nextLevel);
+            loadLevel(nextLevel, canvasWidth, canvasHeight, (newMap) => {
+              // Replace current map
+              map = newMap;
+
+              // Optionally reset player position
+              player.position = { x: 100, y: 100 };
+            });
+          }
+          break;
+
+        case "heal":
+          player.hp = Math.min(
+            player.hp + (trigger.data.amount || 1),
+            player.maxHp || 3
+          );
+          break;
+
+        default:
+          console.warn("Unknown trigger:", trigger);
+      }
+    }
+
+    const imagePaths = {
+      idle: "/img/plateformer/sprites/main_character/idle.png",
+      run: "/img/plateformer/sprites/main_character/run.png",
+      jump: "/img/plateformer/sprites/main_character/jump.png",
+      jumptwo: "/img/plateformer/sprites/main_character/jumptwo.png",
+      fightone: "/img/plateformer/sprites/main_character/fightone.png",
+      fighttwo: "/img/plateformer/sprites/main_character/fighttwo.png",
+      fighthree: "/img/plateformer/sprites/main_character/fightthree.png",
+      fightfour: "/img/plateformer/sprites/main_character/fightfour.png",
+    };
+
+    loadImages(imagePaths, (images) => {
+      loadLevel("level1", canvasWidth, canvasHeight, (loadedMap) => {
+        map = loadedMap;
+        player = new Player(40, 100, 40, 50, null);
 
         const keys = { left: false, right: false, up: false };
 
@@ -112,7 +163,7 @@ export function PlateformerWindow() {
 
         player.setAnimations({
           idle: {
-            image: idleImage,
+            image: images.idle,
             loop: true,
             frameDuration: 120, // 120 ms per frame
             frames: generateFrames({
@@ -122,38 +173,38 @@ export function PlateformerWindow() {
             }),
           },
           run: {
-            image: runImage,
+            image: images.run,
             loop: true,
             frameDuration: 120, // 120 ms per frame
             frames: generateFrames({
               frameWidth: 38,
-              frameHeight: 43, // or your real height
+              frameHeight: 46, // or your real height
               count: 8,
             }),
           },
           jump: {
-            image: jumpImage,
+            image: images.jump,
             loop: false,
             frameDuration: 120, // 120 ms per frame
             frames: generateFrames({
               frameWidth: 36,
-              frameHeight: 41, // or your real height
+              frameHeight: 46, // or your real height
               count: 9,
             }),
           },
           jumptwo: {
             loop: false,
-            image: jumptwoImage,
+            image: images.jumptwo,
             frameDuration: 120, // 120 ms per frame
             frames: generateFrames({
               frameWidth: 36,
-              frameHeight: 32, // or your real height
+              frameHeight: 36, // or your real height
               count: 6,
             }),
           },
           fightone: {
             loop: true,
-            image: fightoneImage,
+            image: images.fightone,
             frameDuration: 120, // 120 ms per frame
             frames: generateFrames({
               frameWidth: 34,
@@ -161,14 +212,47 @@ export function PlateformerWindow() {
               count: 6,
             }),
           },
+          fighttwo: {
+            loop: true,
+            image: images.fighttwo,
+            frameDuration: 120, // 120 ms per frame
+            frames: generateFrames({
+              frameWidth: 42,
+              frameHeight: 46, // or your real height
+              count: 5,
+            }),
+          },
+          fighthree: {
+            loop: true,
+            image: images.fightthree,
+            frameDuration: 120, // 120 ms per frame
+            frames: generateFrames({
+              frameWidth: 50,
+              frameHeight: 46, // or your real height
+              count: 9,
+            }),
+          },
+          fightfour: {
+            loop: true,
+            image: images.fightfour,
+            frameDuration: 120, // 120 ms per frame
+            frames: generateFrames({
+              frameWidth: 82,
+              frameHeight: 36, // or your real height
+              count: 4,
+            }),
+          },
         });
 
         let lastTime = 0;
+        const zoom = 2;
         function gameLoop(time = 0) {
           const deltaTime = time - lastTime;
           lastTime = time;
-
+          ctx.save();
           ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+          ctx.scale(zoom, zoom);         // 🔍 Apply zoom to everything
+
           player.move(keys);
           player.update(deltaTime, 0.5);
           map.update(player);
@@ -178,14 +262,16 @@ export function PlateformerWindow() {
           if (map.triggers) {
             for (const trigger of map.triggers) {
               if (trigger.intersects(player) && keys.action) {
-                handleTrigger(trigger);
+                handleTrigger(trigger, player, (newMap) => {
+                  map = newMap;
+                });
               }
             }
           }
           // Update & draw enemies
           for (const enemy of map.enemies) {
             if (enemy.dead) continue;
-           
+
             enemy.update(map.zones, 0.5);
             enemy.draw(ctx, map.camera);
             enemy.drawDebugHitbox(ctx, map.camera);
@@ -216,13 +302,13 @@ export function PlateformerWindow() {
 
           player.draw(ctx, map.camera);
           player.drawDebugHitbox(ctx, map.camera);
-
+          ctx.restore()
           requestAnimationFrame(gameLoop);
         }
 
         requestAnimationFrame(gameLoop);
       });
-    };
+    });
   }, []);
 
   return (
