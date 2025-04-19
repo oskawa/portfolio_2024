@@ -14,6 +14,7 @@ export default function ClickTracker() {
 
         if (target) {
           const label = target.getAttribute("data-gtm-label") || "unknown";
+          console.log(label)
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             event: "button_click",
