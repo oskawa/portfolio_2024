@@ -19,6 +19,7 @@ export default function ClickTracker() {
           window.dataLayer.push({
             event: "button_click",
             button_name: label,
+            debug_mode: true, // ← Ajoute ça
           });
         }
       };
