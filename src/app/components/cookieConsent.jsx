@@ -43,7 +43,7 @@ export default function CookieConsent() {
       // Set to your domain; omit for the current domain only
       domain:
         process.env.NODE_ENV === "production"
-          ? "portfolio-2024-delta-beryl.vercel.app"
+          ? "maxime-eloir.fr"
           : undefined,
       path: "/",
       sameSite: "Lax", // Adjust based on your needs
