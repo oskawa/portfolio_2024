@@ -12,11 +12,13 @@
         inset 1px 1px 0px #dfdfdf,
         inset -2px -2px 0px #808080,
         inset 2px 2px 0px #ffffff;
+
     button {
         background-color: transparent;
         width: 100%;
         border: none;
         color: black;
+
         &:hover {
             color: white;
         }
@@ -40,6 +42,7 @@
     align-self: stretch;
     flex-grow: 0;
     position: relative;
+
     img {
         position: absolute;
         transform: rotate(-90deg) translate(-106px, -106px);
@@ -60,6 +63,7 @@
     height: 250px;
     display: flex;
     flex-direction: column;
+
     .startMenu__innerSingle {
         padding: 6px;
         width: 234px;
@@ -68,6 +72,7 @@
         align-items: center;
         justify-content: space-between;
         cursor: pointer;
+
         &::after {
             content: "";
 
@@ -77,6 +82,7 @@
             background-size: contain;
             background-position: center;
         }
+
         img {
             width: 32px;
             height: 32px;
@@ -102,6 +108,7 @@
                 object-fit: cover;
             }
         }
+
         .startSubmenu__inner {
             display: none;
             position: absolute;
@@ -119,21 +126,27 @@
                 inset 1px 1px 0px #dfdfdf,
                 inset -2px -2px 0px #808080,
                 inset 2px 2px 0px #ffffff;
+
             .startSubmenu__inner {
                 display: none;
+
                 &:hover {
                     background-color: #000a71;
+
                     h5 {
                         color: white;
                     }
+
                     h4 {
                         color: white;
                     }
+
                     button {
                         color: white;
                     }
                 }
             }
+
             .startSubmenu__innerSubSubSub {
                 display: none;
                 padding: 6px;
@@ -161,33 +174,43 @@
                     width: 100%;
                     display: flex;
                     align-items: center;
-                    > .startSubmenu__innerSubSub {
+
+                    >.startSubmenu__innerSubSub {
                         pointer-events: none;
                     }
+
                     &:hover,
                     &.active {
                         background-color: #000a71;
+
                         h4 {
                             color: white;
                         }
+
                         button {
                             color: white;
                         }
-                        > .startSubmenu__innerSubSub {
+
+                        >.startSubmenu__innerSubSub {
                             display: flex;
                             pointer-events: all;
+
                             &:hover {
                                 background-color: #b8c0c1;
+
                                 h5 {
                                     color: black;
                                 }
                             }
+
                             .startSubmenu__innerSingle__title {
                                 &:hover {
                                     background-color: #000a71;
+
                                     h5 {
                                         color: white;
                                     }
+
                                     button {
                                         color: white;
                                     }
@@ -197,6 +220,7 @@
                     }
                 }
             }
+
             .startSubmenu__innerSubSub {
                 display: none;
                 padding: 6px;
@@ -218,6 +242,7 @@
                     inset 1px 1px 0px #dfdfdf,
                     inset -2px -2px 0px #808080,
                     inset 2px 2px 0px #ffffff;
+
                 // &> :hover {
                 //     & > .startSubmenu__innerSingle__title {
                 //         h5 {
@@ -228,28 +253,34 @@
                 // }
                 .startSubmenu__innerSingle__title {
                     width: 100%;
+
                     &:hover {
                         h5 {
                             color: white;
                         }
+
                         button {
                             color: white;
                         }
+
                         background-color: #000a71;
                     }
                 }
             }
+
             .startSubmenu__innerSingle {
                 padding: 6px;
                 width: 100%;
                 display: flex;
                 align-items: center;
+
                 .startSubmenu__innerSingle__title {
                     display: flex;
                     align-items: center;
                     gap: 10px;
                     padding: 3px;
                     color: black;
+
                     img {
                         width: 16px;
                         min-width: 16px;
@@ -257,18 +288,21 @@
                         min-height: 16px;
                         object-fit: cover;
                     }
+
                     h3 {
                         font-size: 12px;
                         font-weight: 400;
                         color: black;
                         white-space: nowrap;
                     }
+
                     h4 {
                         font-size: 12px;
                         font-weight: 400;
                         color: black;
                         white-space: nowrap;
                     }
+
                     h5 {
                         font-size: 12px;
                         font-weight: 400;
@@ -276,20 +310,26 @@
                         white-space: nowrap;
                     }
                 }
+
                 &:hover {
                     background-color: #000a71;
+
                     h3 {
                         color: white;
                     }
+
                     button {
                         color: white;
                     }
-                    & > .startSubmenu__innerSubSub {
+
+                    &>.startSubmenu__innerSubSub {
                         display: flex;
                     }
-                    & > .startSubmenu__innerSubSubSub {
+
+                    &>.startSubmenu__innerSubSubSub {
                         display: flex;
                     }
+
                     //     &:hover {
                     //         h5 {
                     //             color: white;
@@ -297,6 +337,7 @@
                     //     }
                     // }
                 }
+
                 //     h3 {
                 //         color: white;
                 //     }
@@ -307,40 +348,50 @@
 
         &:hover {
             background-color: #000a71;
+
             h2 {
                 color: white;
             }
-            & > .startSubmenu__inner {
+
+            &>.startSubmenu__inner {
                 display: flex;
             }
         }
     }
 }
+
 .startMenu__innerMobile {
     display: none;
 }
+
 @media (pointer: coarse) {
     .menu-item:hover .submenu {
         display: none !important;
     }
 }
+
 @media screen and (max-width: 768px) {
     .startMenu {
         height: 97vh;
         width: 100%;
         padding: 0;
+
         .startMenu__logo {
+            display: none;
             width: 6vw;
 
         }
+
         button {
             width: auto;
             font-weight: 700;
         }
     }
+
     .startMenu__inner {
         display: none;
     }
+
     .startMenu__innerSingle__title {
         display: flex;
         align-items: center;
@@ -348,8 +399,13 @@
         padding: 15px;
         border-bottom: 1px solid black;
     }
+
     .border {
         border-bottom: 1px solid black;
+    }
+
+    .startSubmenu__innerSingle {
+        border-top: 1px solid rgba(0, 0, 0, 0.521);
     }
 
     .startSubmenu__innerSingle__title {
@@ -358,19 +414,40 @@
         gap: 10px;
         padding: 15px;
         padding-left: 30px;
-    }
-    .startSubmenu__innerSubSubSub {
-        .startSubmenu__innerSingle__title {
-            font-weight: 500;
+
+        img {
+            width: 16px;
+            max-width: 16px;
+            height: 16px;
+            max-height: 16px;
+            aspect-ratio: 1;
+            object-fit: cover;
         }
     }
+
+    .startSubmenu__innerSubSub {
+        padding-left: 1rem;
+    }
+
+    .startSubmenu__innerSubSubSub {
+
+        .startSubmenu__innerSingle__title {
+            font-weight: 500;
+
+
+        }
+
+    }
+
     .startSubmenu__innerSubSubSub {
         padding-left: 40px;
+
         button {
             padding-left: 0;
             font-weight: 500;
         }
     }
+
     .border {
         background: #c0c0c0;
         color: black;
@@ -380,18 +457,20 @@
             inset -2px -2px 0px #808080,
             inset 2px 2px 0px #dfdfdf;
     }
+
     .startMenu__innerMobile {
         display: flex;
         flex-direction: column;
-        left: 6vw;
+        left: 0vw;
         position: absolute;
         top: 0;
-        width: 94vw;
+        width: 100vw;
         height: 97vh;
         overflow-y: scroll;
 
         .startSubmenu__inner {
             display: none;
+
             &.active {
                 display: block;
             }

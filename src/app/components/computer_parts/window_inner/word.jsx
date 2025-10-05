@@ -20,7 +20,7 @@ export function WordWindows({ onBackgroundChange, onClose }) {
       try {
         const data = await getPro();
         setPro(data);
-        console.log(musics);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -331,6 +331,25 @@ export function StartBar({
                     </h3>
                   </div>
                 </button>
+                <button
+                  key="cardgame"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Card game",
+                      slug: "cardgame",
+                      logo: "/img/icons/card.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/card.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>
+                      Card Game
+                    </h3>
+                  </div>
+                </button>
               </div>
             </div>
           )}
