@@ -33,7 +33,6 @@ export function MusicWindow({ onClose }) {
       try {
         const data = await getMusics();
         setMusics(data);
-        console.log(musics);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

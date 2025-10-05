@@ -25,7 +25,6 @@ export function BottomBar({
     setIsStartMenuVisible((prev) => !prev); // Toggle start menu visibility
   };
   const hideStartMenu = () => {
-    console.log("HIDE");
     setIsStartMenuVisible(false); // Toggle start menu visibility
   };
 

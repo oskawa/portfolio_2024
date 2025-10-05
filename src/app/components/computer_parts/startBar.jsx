@@ -21,7 +21,6 @@ export function StartBar({
   const [openMenu, setOpenMenu] = useState(null); // Track which menu is open
 
   const toggleMenu = (menuKey) => {
-    console.log(menuKey);
     setOpenMenu(openMenu === menuKey ? null : menuKey);
   };
 
@@ -224,6 +223,25 @@ export function StartBar({
                   <div className={styles.startSubmenu__innerSingle__title}>
                     <img src="/img/icons/connect.png" alt="" />
                     <h3 className={styles.startSubmenu__cat}>Puissance 4</h3>
+                  </div>
+                </button>
+
+                
+                <button
+                  key="horse"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Horse Game",
+                      slug: "horse",
+                      logo: "/img/icons/horse.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/horse.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Horse Game</h3>
                   </div>
                 </button>
                 <button

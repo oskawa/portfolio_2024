@@ -215,6 +215,21 @@ export function Computer({ lang }) {
             <img src="/img/icons/plateformer.png" alt="" />
             <span>{translate("Plateformer", lang)}</span>
           </button>
+          
+          {/* <button
+            onClick={() =>
+              handleWindowSelect({
+                type: "windowClassic",
+                title: "Futball",
+                slug: "futball",
+                logo: "/img/icons/plateformer.png",
+              })
+            }
+          >
+            <img src="/img/icons/futbal.png" alt="" />
+            <span>{translate("Futball", lang)}</span>
+          </button> */}
+
         </div>
 
         <BottomBar
