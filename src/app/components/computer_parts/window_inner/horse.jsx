@@ -26,7 +26,6 @@ const WORD_LISTS = {
     "main",
     "pied",
     "tête",
-    "cœur",
     "eau",
     "feu",
     "air",
@@ -88,7 +87,7 @@ const WORD_LISTS = {
     "oignon",
     "parallélépipède",
     "pneumatique",
-    "œsophage",
+   
     "philosophie",
     "psychologie",
     "hypothèse",
@@ -110,7 +109,6 @@ const WORD_LISTS = {
     "métamorphose",
     "parachute",
     "orchestre",
-    "manœuvre",
   ],
 };
 
