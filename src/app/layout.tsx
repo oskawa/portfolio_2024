@@ -14,9 +14,26 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio Maxime Eloir",
+  title: "Portfolio Maxime Eloir - Designer & Développeur Web",
   description:
     "Une sélection de projets prints et web réalisés pendant mes études et mon expérience professionnelle.",
+  keywords: ["portfolio", "design", "développement web", "Maxime Eloir"],
+  authors: [{ name: "Maxime Eloir" }],
+  openGraph: {
+    title: "Portfolio Maxime Eloir",
+    description:
+      "Une sélection de projets prints et web réalisés pendant mes études et mon expérience professionnelle.",
+    type: "website",
+    locale: "fr_FR",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +46,10 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet"></link>
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+          rel="stylesheet"
+        ></link>
       </head>
       <body className={`${bios.variable} ${geistMono.variable}`}>
         {children}
