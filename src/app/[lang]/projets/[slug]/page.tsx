@@ -15,8 +15,9 @@ export async function generateStaticParams() {
   try {
     const response = await http.get("portfolio");
     const projets = response.data;
-
+    console.log(projets)
     return projets.map((projet) => ({
+      lang: 'fr',   
       slug: projet.slug,
     }));
   } catch (error) {
