@@ -17,6 +17,7 @@ export function BottomBar({
   links,
   onStraight,
   lang,
+  isSimplified,
 }) {
   const [isStartMenuVisible, setIsStartMenuVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
@@ -29,16 +30,16 @@ export function BottomBar({
   };
 
   const handleProjectSelect = (project) => {
-    onProjectSelect(project);  // Call the function passed from the parent
-    hideStartMenu();        // Hide the start menu after project selection
+    onProjectSelect(project); // Call the function passed from the parent
+    hideStartMenu(); // Hide the start menu after project selection
   };
   const handleWindowSelect = (window) => {
-    onWindowSelect(window);  // Call the function passed from the parent
-    hideStartMenu();        // Hide the start menu after project selection
+    onWindowSelect(window); // Call the function passed from the parent
+    hideStartMenu(); // Hide the start menu after project selection
   };
   const handleDocSelect = (project) => {
-    onDocumentSelect();  // Call the function passed from the parent
-    hideStartMenu();        // Hide the start menu after project selection
+    onDocumentSelect(); // Call the function passed from the parent
+    hideStartMenu(); // Hide the start menu after project selection
   };
 
   const handleStraightButton = () => {
@@ -63,15 +64,28 @@ export function BottomBar({
   return (
     <div className={styles.bottomBar}>
       <div className={styles.bottomBar__left}>
-        <div
-          className={`
+        {isSimplified ? (
+          <Link href={`/fr`}>
+            <div
+              className={`${styles.bottomBar__start} ${
+                styles.bottomBar__start__width
+              }`}
+            >
+              
+              Retour au site
+            </div>
+          </Link>
+        ) : (
+          <div
+            className={`
           ${styles.bottomBar__start}
           ${isStartMenuVisible ? styles.active : styles.inactive}
           `}
-          onClick={toggleStartMenu}
-        >
-          Menu
-        </div>
+            onClick={toggleStartMenu}
+          >
+            Menu
+          </div>
+        )}
         <div className={styles.bottomBar__applications}>
           <div className={styles.bottomBar__applicationLinks}>
             <ul className={styles.bottomBar__applicationLinks__list}>
