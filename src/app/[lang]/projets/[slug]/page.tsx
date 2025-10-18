@@ -11,20 +11,22 @@ import ClickTracker from "@/app/components/ClickTracker";
 import { BottomBar } from "@/app/components/computer_parts/bottomBar";
 
 // Génère tous les slugs au build
-export async function generateStaticParams() {
-  try {
-    const response = await http.get("portfolio");
-    const projets = response.data;
-    console.log(projets)
-    return projets.map((projet) => ({
-      lang: 'fr',   
-      slug: projet.slug,
-    }));
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
-  }
-}
+// export async function generateStaticParams() {
+//   try {
+//     const response = await http.get("portfolio");
+//     const projets = response.data;
+//     console.log(projets)
+//     return projets.map((projet) => ({
+//       lang: 'fr',   
+//       slug: projet.slug,
+//     }));
+//   } catch (error) {
+//     console.error("Error fetching projects:", error);
+//     return [];
+//   }
+// }
+
+export const revalidate = 60 // Régénère la page toutes les 60 secondes
 
 // Métadonnées dynamiques
 export async function generateMetadata({ params }): Promise<Metadata> {
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     const projet = response.data;
 
     return {
-      title: `${projet.title} - Portfolio Maxime Eloir`,
+      title: `Projet : ${projet.title} - Portfolio Maxime Eloir`,
       description: projet.subtitle || projet.description,
       openGraph: {
         title: projet.title,
