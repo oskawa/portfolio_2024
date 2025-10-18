@@ -19,6 +19,14 @@ export const metadata: Metadata = {
     "Une sélection de projets prints et web réalisés pendant mes études et mon expérience professionnelle.",
   keywords: ["portfolio", "design", "développement web", "Maxime Eloir"],
   authors: [{ name: "Maxime Eloir" }],
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: "Portfolio Maxime Eloir",
     description:
