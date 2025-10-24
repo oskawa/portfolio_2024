@@ -6,7 +6,7 @@ import { WindowProject } from "./computer_parts/windowProject";
 import { PaintWindow } from "./computer_parts/paintWindow";
 import { ContactForm } from "./computer_parts/contact";
 import { Loader } from "./loader";
-import { translate } from "../../utils/translate";
+// import { translate } from "../../utils/translate";
 import CookieConsent from "./cookieConsent";
 import ClickTracker from "./ClickTracker";
 
@@ -148,7 +148,7 @@ export function Computer({ lang }) {
             }
           >
             <img src="/img/icons/back.png" alt="" />
-            <span>{translate("personnalisation", lang)}</span>
+            <span>Personnalisation</span>
           </button>
           <button
             onClick={() =>
@@ -174,7 +174,7 @@ export function Computer({ lang }) {
             }
           >
             <img src="/img/icons/work.png" alt="" />
-            <span>{translate("Travaillons_ensemble.doc", lang)}</span>
+            <span>"Travaillons_ensemble.doc"</span>
           </button>
           {/* <button
             onClick={() =>
@@ -200,7 +200,7 @@ export function Computer({ lang }) {
             }
           >
             <img src="/img/icons/card.png" alt="" />
-            <span>{translate("CardGame.exe", lang)}</span>
+            <span>Card_Game.exe</span>
           </button>
           <button
             onClick={() =>
@@ -213,9 +213,9 @@ export function Computer({ lang }) {
             }
           >
             <img src="/img/icons/plateformer.png" alt="" />
-            <span>{translate("Plateformer", lang)}</span>
+            <span>Platerformer</span>
           </button>
-          
+
           {/* <button
             onClick={() =>
               handleWindowSelect({
@@ -229,7 +229,6 @@ export function Computer({ lang }) {
             <img src="/img/icons/futbal.png" alt="" />
             <span>{translate("Futball", lang)}</span>
           </button> */}
-
         </div>
 
         <BottomBar

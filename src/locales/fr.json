@@ -1,7 +1,6 @@
 {
   "welcome": "Bienvenue sur notre site Web!",
   "description": "Ceci est une description d'exemple en français.",
-  "projects" : "Les projets",
+  "projects": "Les projets",
   "personnalisation": "Personnaliser"
-
 }

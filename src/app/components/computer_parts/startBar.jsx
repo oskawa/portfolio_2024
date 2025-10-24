@@ -245,6 +245,23 @@ export function StartBar({
                   </div>
                 </button>
                 <button
+                  key="quizz"
+                  className={styles.startSubmenu__innerSingle}
+                  onClick={() =>
+                    onWindowSelect({
+                      type: "windowClassic",
+                      title: "Who wants to become a Millionaire",
+                      slug: "quizz",
+                      logo: "/img/icons/horse.png",
+                    })
+                  }
+                >
+                  <div className={styles.startSubmenu__innerSingle__title}>
+                    <img src="/img/icons/horse.png" alt="" />
+                    <h3 className={styles.startSubmenu__cat}>Who wants to become..</h3>
+                  </div>
+                </button>
+                <button
                   key="plateformer"
                   className={styles.startSubmenu__innerSingle}
                   onClick={() =>

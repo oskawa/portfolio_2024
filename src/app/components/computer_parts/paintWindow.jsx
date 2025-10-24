@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { CvWindow } from "./window_inner/cv";
 import { RubiksWindow } from "./window_inner/rubiks";
 import { HorseWindow } from "./window_inner/horse";
+import { QuizzWindow } from "./window_inner/quizz";
 import { ConnectWindows } from "./window_inner/connect";
 import { PlateformerWindow } from "./window_inner/platformer";
 import { FutballWindow } from "./window_inner/futball";
@@ -147,6 +148,8 @@ export function PaintWindow({
         <RubiksWindow />
       ) : data.slug == "horse" ? (
         <HorseWindow />
+      ) : data.slug == "quizz" ? (
+        <QuizzWindow />
       ) : data.slug == "connect" ? (
         <ConnectWindows />
       ) : data.slug == "plateformer" ? (
