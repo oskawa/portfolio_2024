@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../../quizz.module.scss";
-import { SceneCanvas } from "./SceneCanvas";
 
 export const UsernameScreen = ({
   username,
@@ -15,11 +14,7 @@ export const UsernameScreen = ({
 
   return (
     <>
-      <SceneCanvas
-        targetPosition={[-2, 2, 4]}
-        showOrbitControls={true}
-        style={{ width: "100%", height: "97.7%", position: "absolute" }}
-      />
+      
       <div className={styles.menu}>
         <input
           type="text"

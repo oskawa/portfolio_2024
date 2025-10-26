@@ -6,6 +6,15 @@ import { GameScreen } from "./quizz/components/GameScreen";
 import { useQuizAudio } from "./quizz/hooks/useQuizAudio";
 import { useQuizData } from "./quizz/hooks/useQuizData";
 import { getContextualMessage } from "./quizz/utils/quizMessages";
+import { SceneCanvas } from "./quizz/components/SceneCanvas";
+
+const CAMERA_POSITIONS = {
+  menu: { position: [7, 1, -5], rotation: [0, 2.5, 0] },
+  category: { position: [7, 1, 0], rotation: [0, 2.2, 0.5] },
+  username: { position: [5, 1.5, -2], rotation: [0, 2, 0] },
+  game: { position: [2, 2, -0.4], rotation: [0, 1.56, 0] },
+  default: { position: [7, 1, -5], rotation: [0, 2.5, 0] },
+};
 
 export function QuizzWindow() {
   // State management
@@ -24,7 +33,7 @@ export function QuizzWindow() {
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [publicVote, setPublicVote] = useState(null);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
-  const [showPublicModal, setShowPublicModal] = useState(false);
+  const [showPublicModal, setShowPublicModal] = useState(true);
   const [usedLifelines, setUsedLifelines] = useState([]);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const thinkingTimerRef = useRef(null);
@@ -175,9 +184,9 @@ export function QuizzWindow() {
       case "public":
         setPublicVote(result.votes);
         setShowPublicModal(true);
-        setTimeout(() => {
-          setShowPublicModal(false);
-        }, 1000);
+        // setTimeout(() => {
+        //   setShowPublicModal(true);
+        // }, 8000);
         break;
     }
 
@@ -200,57 +209,72 @@ export function QuizzWindow() {
     }
   };
 
-  // Render screens
-  if (screen === "menu") {
-    return (
-      <MenuScreen
-        onStart={() => setScreen("username")}
-        onCategorySelect={handleLoadCategories}
-        onEnableAudio={enableAudio}
-      />
-    );
-  }
 
-  if (screen === "category") {
-    return (
-      <CategoryScreen
-        categories={categories}
-        onToggleCategory={toggleCategory}
-        onContinue={startGame}
-        onBack={() => setScreen("menu")}
-        onEnableAudio={enableAudio}
-      />
-    );
-  }
 
-  if (screen === "username") {
-    return (
-      <UsernameScreen
-        username={username}
-        onUsernameChange={setUsername}
-        onContinue={loadQuestions}
-        onEnableAudio={enableAudio}
-      />
-    );
-  }
+  const cameraConfig = CAMERA_POSITIONS[screen] || CAMERA_POSITIONS.default;
+
+
+
+
+
+
+
 
   return (
-    <GameScreen
-      currentQuestion={currentQuestion}
-      selectedAnswer={selectedAnswer}
-      result={result}
-      removedAnswers={removedAnswers}
-      currentIndex={currentIndex}
-      chatMessage={chatMessage}
-      publicVote={publicVote}
-      showPublicModal={showPublicModal}
-      usedLifelines={usedLifelines}
-      isMuted={isMuted}
-      audioRefs={audioRefs}
-      onAnswerClick={handleAnswerClick}
-      onSubmit={handleSubmit}
-      onUseLifeline={handleUseLifeline}
-      onToggleMute={() => setIsMuted(!isMuted)}
-    />
+    <>
+      <SceneCanvas
+        targetPosition={cameraConfig.position}
+        targetRotation={cameraConfig.rotation}
+        style={{ width: "100%", height: "97.7%", position: "absolute" }}
+      />
+      {screen === "menu" && (
+        <MenuScreen
+          onStart={() => setScreen("username")}
+          onCategorySelect={handleLoadCategories}
+          onEnableAudio={enableAudio}
+        />
+      )}
+
+
+      {screen === "category" && (
+
+        <CategoryScreen
+          categories={categories}
+          onToggleCategory={toggleCategory}
+          onContinue={startGame}
+          onBack={() => setScreen("menu")}
+          onEnableAudio={enableAudio}
+        />
+      )}
+
+      {screen === "username" && (
+
+        <UsernameScreen
+          username={username}
+          onUsernameChange={setUsername}
+          onContinue={loadQuestions}
+          onEnableAudio={enableAudio}
+        />
+      )}
+
+
+      <GameScreen
+        currentQuestion={currentQuestion}
+        selectedAnswer={selectedAnswer}
+        result={result}
+        removedAnswers={removedAnswers}
+        currentIndex={currentIndex}
+        chatMessage={chatMessage}
+        publicVote={publicVote}
+        showPublicModal={showPublicModal}
+        usedLifelines={usedLifelines}
+        isMuted={isMuted}
+        audioRefs={audioRefs}
+        onAnswerClick={handleAnswerClick}
+        onSubmit={handleSubmit}
+        onUseLifeline={handleUseLifeline}
+        onToggleMute={() => setIsMuted(!isMuted)}
+      />
+    </>
   );
 }

@@ -9,18 +9,19 @@ export const AnswerOptions = ({
   onAnswerClick,
   onSubmit,
 }) => {
+  const labels = ['A', 'B', 'C', 'D'];
   return (
     <div className={styles.responses}>
-      {answers.map((ans) => {
-        const isRemoved = removedAnswers.includes(ans);
 
+      {answers.map((ans, index) => {
+        const isRemoved = removedAnswers.includes(ans);
+        const label = labels[index]
         return (
           <div
-            className={`${styles.responsesInner} ${
-              selectedAnswer === ans ? styles.checked : ""
-            } ${
-              result !== null ? (result ? styles.correct : styles.wrong) : ""
-            } ${isRemoved ? styles.removed : ""}`}
+            className={`${styles.responsesInner} 
+            ${selectedAnswer === ans ? styles.checked : ""} 
+            ${result !== null ? (result ? styles.correct : styles.wrong) : ""}
+            ${isRemoved ? styles.removed : ""}`}
             key={ans}
             onClick={() => !isRemoved && onAnswerClick(ans)}
             style={isRemoved ? { pointerEvents: "none" } : {}}
@@ -30,10 +31,14 @@ export const AnswerOptions = ({
                 type="radio"
                 value={ans}
                 checked={selectedAnswer === ans}
-                onChange={() => {}}
+                onChange={() => { }}
                 disabled={isRemoved}
               />
-              {!isRemoved && ans}
+              {!isRemoved && (
+                <>
+                  <span><strong>{label}:</strong> {ans}</span>
+                </>
+              )}
             </label>
           </div>
         );

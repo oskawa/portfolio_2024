@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../../quizz.module.scss";
-import { SceneCanvas } from "./SceneCanvas";
 import { MuteButton } from "./MuteButton";
 import { QuestionDisplay } from "./QuestionDisplay";
 import { AnswerOptions } from "./AnswerOptions";
@@ -44,7 +43,6 @@ export const GameScreen = ({
       <MuteButton isMuted={isMuted} onToggle={onToggleMute} />
 
       <div className={styles.canvasInner}>
-        <SceneCanvas targetPosition={[0, 1, 3]} showOrbitControls={true} />
 
         <div className={styles.innerQuestion}>
           <QuestionDisplay question={currentQuestion.question} />
@@ -65,7 +63,7 @@ export const GameScreen = ({
           usedLifelines={usedLifelines}
         />
         <PriceCounter currentIndex={currentIndex} />
-        <PublicVoteModal show={showPublicModal} publicVote={publicVote} />
+        <PublicVoteModal show={showPublicModal} answserList={currentQuestion.answers} publicVote={publicVote} />
       </div>
 
       <ChatMessage message={chatMessage} />

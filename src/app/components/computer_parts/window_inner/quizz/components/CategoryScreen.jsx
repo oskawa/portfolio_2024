@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../../quizz.module.scss";
-import { SceneCanvas } from "./SceneCanvas";
 
 export const CategoryScreen = ({
   categories,
@@ -21,11 +20,7 @@ export const CategoryScreen = ({
 
   return (
     <>
-      <SceneCanvas
-        targetPosition={[3, 3, 6]}
-        showOrbitControls={true}
-        style={{ width: "100%", height: "97.7%", position: "absolute" }}
-      />
+     
       <div className={styles.menu}>
         <h3>Choisir les catégories</h3>
         {categories.map((cat) => (
